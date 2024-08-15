@@ -4,6 +4,10 @@ This project is a web-based platform designed to manage train trips. It includes
 
 ## Team members 🤝
 
+Mentor: [Dzmitry Tsiareshchanka](https://github.com/dmitrytereshchenko)
+
+Developers:
+
 - [Mariia Bogdanova](https://github.com/mashabogdanova)
 - [Lada Santalava](https://github.com/sunlaa)
 - [Danila Markelov](https://github.com/hny-badger)
