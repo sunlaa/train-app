@@ -1,0 +1,12 @@
+branch_name="$(git rev-parse --abbrev-ref HEAD)"
+
+branch_regex='^TA-[0-9]{1,4}(-[a-z0-9]+)+$'
+
+message="Branch name doesn't match naming convention. Example: 'TA-12-create-some'. Regex for the name: $branch_regex. Push is rejected. Rename your branch and try again."
+
+if [[ ! $branch_name =~ $branch_regex ]]; then
+    echo "$message"
+    exit 1
+fi
+
+exit 0
