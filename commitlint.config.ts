@@ -1,13 +1,32 @@
 import type { UserConfig } from '@commitlint/types';
 
+const regexType = /(TA-[0-9]{1,4}\s(?:feat|fix|init|refactor):)/;
+const regexSubject = /\s(.+)/;
+
 const Configuration: UserConfig = {
-  extends: ['@commitlint/config-conventional'],
   parserPreset: {
     parserOpts: {
-      headerPattern: /^TA-[0-9]{1,4}\s(feat|fix|init|refactor):\s(.+)$/,
+      headerPattern: new RegExp(`^${regexType.source}${regexSubject.source}$`),
       headerCorrespondence: ['type', 'subject'],
-      issuePrefixes: ['^TA-[0-9]{1,4}'],
     },
+  },
+  plugins: [
+    {
+      rules: {
+        'match-commit-name': (parsed) => {
+          const { type, subject } = parsed;
+
+          if (type === null || subject === null) {
+            return [false, 'Commit must be in format TA-123: bla bla'];
+          }
+
+          return [true, ''];
+        },
+      },
+    },
+  ],
+  rules: {
+    'match-commit-name': [2, 'always'],
   },
 };
 
