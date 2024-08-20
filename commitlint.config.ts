@@ -17,7 +17,10 @@ const Configuration: UserConfig = {
           const { type, subject } = parsed;
 
           if (type === null || subject === null) {
-            return [false, 'Commit must be in format TA-123: bla bla'];
+            return [
+              false,
+              "Commit must be in format 'TA-123 feat/fix/refactor/init: bla bla'",
+            ];
           }
 
           return [true, ''];
