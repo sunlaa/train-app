@@ -1,5 +1,5 @@
-<form [formGroup]="searchForm">
-  <mat-form-field class="example-full-width">
+<form [formGroup]="searchForm" (ngSubmit)="search()">
+  <mat-form-field>
     <input
       type="text"
       placeholder="From"
@@ -13,7 +13,8 @@
       }
     </mat-autocomplete>
   </mat-form-field>
-  <mat-form-field class="example-full-width">
+  <mat-icon>compare_arrows</mat-icon>
+  <mat-form-field>
     <input
       type="text"
       placeholder="To"
@@ -28,14 +29,31 @@
     </mat-autocomplete>
   </mat-form-field>
   <mat-form-field class="example-full-width">
-    <mat-label>Choose a date</mat-label>
     <input
-      matInput
       formControlName="date"
+      [min]="initDateValue"
       [matDatepickerFilter]="dateFilter"
+      matInput
       [matDatepicker]="picker"
     />
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    @if (date.hasError("correctDate")) {
+      <mat-error>Please select a valid date </mat-error>
+    }
+    <mat-datepicker-toggle matIconSuffix [for]="picker">
+      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+    </mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
+  <mat-form-field>
+    <input
+      formControlName="time"
+      type="time"
+      matInput
+      value="00:00"
+      formControlName="time"
+    />
+  </mat-form-field>
+  <button mat-flat-button type="submit" [disabled]="searchForm.valid">
+    Search
+  </button>
 </form>
