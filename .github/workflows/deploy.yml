@@ -5,6 +5,7 @@ on:
       - develop
     paths-ignore:
       - ".github/workflows/*"
+  workflow_dispatch:
 jobs:
   build-deploy:
     runs-on: ubuntu-22.04
