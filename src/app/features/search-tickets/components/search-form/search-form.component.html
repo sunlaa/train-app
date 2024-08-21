@@ -1,59 +1,53 @@
 <form [formGroup]="searchForm" (ngSubmit)="search()">
-  <mat-form-field>
-    <input
-      type="text"
-      placeholder="From"
-      matInput
-      formControlName="from"
-      [matAutocomplete]="auto"
-    />
-    <mat-autocomplete #auto="matAutocomplete">
-      @for (option of options; track option) {
-        <mat-option [value]="option">{{ option }}</mat-option>
-      }
-    </mat-autocomplete>
-  </mat-form-field>
-  <mat-icon>compare_arrows</mat-icon>
-  <mat-form-field>
-    <input
-      type="text"
-      placeholder="To"
-      matInput
-      formControlName="to"
-      [matAutocomplete]="auto"
-    />
-    <mat-autocomplete #auto="matAutocomplete">
-      @for (option of options; track option) {
-        <mat-option [value]="option">{{ option }}</mat-option>
-      }
-    </mat-autocomplete>
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input
+  <label for="from">From:</label>
+  <label for="to">To:</label>
+  <label for="date">Date/Time:</label>
+
+  <p-autoComplete
+    class="from"
+    inputId="from"
+    placeholder="Paris"
+    formControlName="from"
+    [suggestions]="options"
+    [forceSelection]="true"
+    (completeMethod)="getCountries($event)"
+  />
+
+  <i class="pi pi-arrows-h"></i>
+
+  <p-autoComplete
+    class="to"
+    inputId="to"
+    placeholder="Madrid"
+    formControlName="to"
+    [suggestions]="options"
+    [forceSelection]="true"
+    (completeMethod)="getCountries($event)"
+  />
+
+  <div class="date-time">
+    <p-calendar
+      inputId="date"
+      class="date"
+      placeholder="12 August, 2024"
       formControlName="date"
-      [min]="initDateValue"
-      [matDatepickerFilter]="dateFilter"
-      matInput
-      [matDatepicker]="picker"
+      dateFormat="dd MM, yy"
+      [showIcon]="true"
+      [iconDisplay]="'input'"
+      [minDate]="minDate"
     />
-    @if (date.hasError("correctDate")) {
-      <mat-error>Please select a valid date </mat-error>
-    }
-    <mat-datepicker-toggle matIconSuffix [for]="picker">
-      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-    </mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field>
-    <input
+    <p-calendar
+      class="time"
+      placeholder="00:00"
       formControlName="time"
-      type="time"
-      matInput
-      value="00:00"
-      formControlName="time"
+      inputId="calendar-timeonly"
+      [timeOnly]="true"
     />
-  </mat-form-field>
-  <button mat-flat-button type="submit" [disabled]="searchForm.valid">
-    Search
-  </button>
+  </div>
+  <p-button
+    class="search"
+    [disabled]="!searchForm.valid"
+    type="submit"
+    label="Search"
+  />
 </form>

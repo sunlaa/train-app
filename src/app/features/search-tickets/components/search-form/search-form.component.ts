@@ -1,26 +1,17 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { Subject, takeUntil } from 'rxjs';
-import { correctDate } from '../../form-validators/correct-date';
+import {
+  AutoCompleteCompleteEvent,
+  AutoCompleteModule,
+} from 'primeng/autocomplete';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-search-form',
   standalone: true,
-  providers: [provideNativeDateAdapter()],
-  imports: [
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatIconModule,
-    MatButtonModule,
-  ],
+  providers: [],
+  imports: [ReactiveFormsModule, AutoCompleteModule, CalendarModule],
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.scss',
 })
@@ -29,14 +20,24 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   fb: FormBuilder = inject(FormBuilder);
 
-  options = ['Warsaw', 'Minsk', 'Madrid', 'Paris'];
+  options: string[] = [];
+
+  minDate: Date = new Date();
 
   searchForm = this.fb.group({
     from: ['', Validators.required],
     to: ['', Validators.required],
-    date: [this.initDateValue, [Validators.required, correctDate]],
-    time: [{ value: '00:00', disabled: true }],
+    date: ['', [Validators.required]],
+    time: [{ value: '', disabled: true }],
   });
+
+  get from() {
+    return this.searchForm.controls.from;
+  }
+
+  get to() {
+    return this.searchForm.controls.to;
+  }
 
   get date() {
     return this.searchForm.controls.date;
@@ -46,23 +47,17 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     return this.searchForm.controls.time;
   }
 
-  get initDateValue() {
-    const date = new Date();
-    date.setDate(date.getDate() + 1);
-    return date;
-  }
-
   ngOnInit() {
     this.date.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      if (
-        !this.date.hasError('correctDate') &&
-        !this.date.hasError('required')
-      ) {
+      if (!this.date.hasError('required')) {
         this.time.enable();
       } else {
         this.time.disable();
       }
     });
+
+    const today = new Date();
+    this.minDate.setDate(today.getDate() + 1);
   }
 
   ngOnDestroy() {
@@ -70,11 +65,19 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  dateFilter = (date: Date | null) => {
-    const now = new Date();
+  getCountries(event: AutoCompleteCompleteEvent) {
+    const options = ['Warsaw', 'Minsk', 'Madrid', 'Paris'];
+    const filtered: string[] = [];
+    const { query } = event;
 
-    return (date || new Date()) > now;
-  };
+    options.forEach((opt) => {
+      if (opt.toLowerCase().includes(query.toLowerCase())) {
+        filtered.push(opt);
+      }
+    });
+
+    this.options = filtered;
+  }
 
   search() {
     // console.log(this.searchForm.value);
