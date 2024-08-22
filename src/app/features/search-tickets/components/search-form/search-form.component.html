@@ -1,0 +1,53 @@
+<form [formGroup]="searchForm" (ngSubmit)="search()">
+  <label for="from">From:</label>
+  <label for="to">To:</label>
+  <label for="date">Date/Time:</label>
+
+  <p-autoComplete
+    class="from"
+    inputId="from"
+    placeholder="Paris"
+    formControlName="from"
+    [suggestions]="options"
+    [forceSelection]="true"
+    (completeMethod)="getCountries($event)"
+  />
+
+  <i class="pi pi-arrows-h"></i>
+
+  <p-autoComplete
+    class="to"
+    inputId="to"
+    placeholder="Madrid"
+    formControlName="to"
+    [suggestions]="options"
+    [forceSelection]="true"
+    (completeMethod)="getCountries($event)"
+  />
+
+  <div class="date-time">
+    <p-calendar
+      inputId="date"
+      class="date"
+      placeholder="12 August, 2024"
+      formControlName="date"
+      dateFormat="dd MM, yy"
+      [showIcon]="true"
+      [iconDisplay]="'input'"
+      [minDate]="minDate"
+    />
+    <p-calendar
+      class="time"
+      placeholder="00:00"
+      formControlName="time"
+      inputId="calendar-timeonly"
+      [timeOnly]="true"
+    />
+  </div>
+  <p-button
+    class="search"
+    [disabled]="!searchForm.valid"
+    type="submit"
+    label="Search"
+  />
+</form>
