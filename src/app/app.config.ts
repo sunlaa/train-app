@@ -15,6 +15,8 @@ import { routes } from './app.routes';
 import { tokenInterceptor } from './features/auth/interceptors/token.interceptor';
 import { routesReducer } from './redux/reducers/routes.reducer';
 import { RoutesEffects } from './redux/effects/routes.effects';
+import { StationsEffects } from './redux/effects/stations.effects';
+import { stationsReducer } from './redux/reducers/stations.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,7 +26,8 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideStore(),
     provideState({ name: 'routes', reducer: routesReducer }),
-    provideEffects([RoutesEffects]),
+    provideState({ name: 'stations', reducer: stationsReducer }),
+    provideEffects([RoutesEffects, StationsEffects]),
     provideRouterStore(),
     provideStoreDevtools({
       maxAge: 25,
