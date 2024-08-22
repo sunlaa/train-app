@@ -20,7 +20,7 @@ This project is a web-based platform designed to manage train trips. It includes
   - [NgRx](https://ngrx.io/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [SCSS](https://sass-lang.com/)
-- [Angular Material](https://material.angular.io/)
+- [PrimeNG](https://primeng.org)
 
 ### Deployment
 
