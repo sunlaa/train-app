@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideRouterStore } from '@ngrx/router-store';
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(),
+    provideAnimationsAsync(),
     provideStore(),
     provideEffects(),
     provideRouterStore(),
