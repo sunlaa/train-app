@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import {
@@ -6,6 +6,7 @@ import {
   AutoCompleteModule,
 } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
+import { DestroyService } from '@/core/services/destroy/destroy.service';
 
 @Component({
   selector: 'app-search-form',
@@ -15,8 +16,8 @@ import { CalendarModule } from 'primeng/calendar';
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.scss',
 })
-export class SearchFormComponent implements OnInit, OnDestroy {
-  destroy$: Subject<void> = new Subject();
+export class SearchFormComponent implements OnInit {
+  destroy$: Subject<void> = inject(DestroyService);
 
   fb: FormBuilder = inject(FormBuilder);
 
@@ -58,11 +59,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
     const today = new Date();
     this.minDate.setDate(today.getDate() + 1);
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   getCountries(event: AutoCompleteCompleteEvent) {
