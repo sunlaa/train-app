@@ -2,17 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { StationsService } from '@/features/stations-management/services/stations.service';
-import {
-  createStation,
-  createStationError,
-  createStationSuccess,
-  deleteStation,
-  deleteStationError,
-  deleteStationSuccess,
-  loadStations,
-  loadStationsError,
-  loadStationsSuccess,
-} from '../actions/stations.actions';
+import { stationsActions } from '../actions';
 
 @Injectable()
 export class StationsEffects {
@@ -23,11 +13,13 @@ export class StationsEffects {
 
   loadStations$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(loadStations),
+      ofType(stationsActions.loadStations),
       switchMap(() =>
         this.stationsService.getStations().pipe(
-          map((stations) => loadStationsSuccess({ stations })),
-          catchError((error) => of(loadStationsError({ error }))),
+          map((stations) => stationsActions.loadStationsSuccess({ stations })),
+          catchError((error) =>
+            of(stationsActions.loadStationsError({ error })),
+          ),
         ),
       ),
     );
@@ -35,16 +27,22 @@ export class StationsEffects {
 
   createStation$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(createStation),
+      ofType(stationsActions.createStation),
       switchMap(({ station }) =>
         this.stationsService.createStation(station).pipe(
           switchMap(() =>
             this.stationsService.getStations().pipe(
-              map((stations) => createStationSuccess({ stations })),
-              catchError((error) => of(createStationError({ error }))),
+              map((stations) =>
+                stationsActions.createStationSuccess({ stations }),
+              ),
+              catchError((error) =>
+                of(stationsActions.createStationError({ error })),
+              ),
             ),
           ),
-          catchError((error) => of(createStationError({ error }))),
+          catchError((error) =>
+            of(stationsActions.createStationError({ error })),
+          ),
         ),
       ),
     );
@@ -52,11 +50,13 @@ export class StationsEffects {
 
   deleteStation$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(deleteStation),
+      ofType(stationsActions.deleteStation),
       switchMap(({ id }) =>
         this.stationsService.deleteStation(id).pipe(
-          map(() => deleteStationSuccess({ id })),
-          catchError((error) => of(deleteStationError({ error }))),
+          map(() => stationsActions.deleteStationSuccess({ id })),
+          catchError((error) =>
+            of(stationsActions.deleteStationError({ error })),
+          ),
         ),
       ),
     );

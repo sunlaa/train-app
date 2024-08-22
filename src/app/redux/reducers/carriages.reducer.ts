@@ -1,20 +1,7 @@
-import { createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
 import { ApiError } from '@/core/models/api.model';
 import { TCarriage } from '@/core/models/carriages.model';
-import {
-  createCarriage,
-  createCarriageError,
-  createCarriageSuccess,
-  deleteCarriage,
-  deleteCarriageError,
-  deleteCarriageSuccess,
-  loadCarriages,
-  loadCarriagesError,
-  loadCarriagesSuccess,
-  updateCarriage,
-  updateCarriageError,
-  updateCarriageSuccess,
-} from '../actions/carriages.actions';
+import { carriagesActions } from '../actions';
 
 export type CarriagesState = {
   carriages: TCarriage[];
@@ -28,15 +15,15 @@ const initialState: CarriagesState = {
   status: 'loading',
 };
 
-export const carriagesReducer = createReducer(
+const carriagesReducer = createReducer(
   initialState,
   // Load carriages
   on(
-    loadCarriages,
+    carriagesActions.loadCarriages,
     (state): CarriagesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    loadCarriagesSuccess,
+    carriagesActions.loadCarriagesSuccess,
     (state, { carriages }): CarriagesState => ({
       carriages,
       error: null,
@@ -44,7 +31,7 @@ export const carriagesReducer = createReducer(
     }),
   ),
   on(
-    loadCarriagesError,
+    carriagesActions.loadCarriagesError,
     (state, { error }): CarriagesState => ({
       ...state,
       error: error.error,
@@ -53,11 +40,11 @@ export const carriagesReducer = createReducer(
   ),
   // Create carriage
   on(
-    createCarriage,
+    carriagesActions.createCarriage,
     (state): CarriagesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    createCarriageSuccess,
+    carriagesActions.createCarriageSuccess,
     (state, { carriage }): CarriagesState => ({
       carriages: [...state.carriages, carriage],
       error: null,
@@ -65,7 +52,7 @@ export const carriagesReducer = createReducer(
     }),
   ),
   on(
-    createCarriageError,
+    carriagesActions.createCarriageError,
     (state, { error }): CarriagesState => ({
       ...state,
       error: error.error,
@@ -74,11 +61,11 @@ export const carriagesReducer = createReducer(
   ),
   // Update carriage
   on(
-    updateCarriage,
+    carriagesActions.updateCarriage,
     (state): CarriagesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    updateCarriageSuccess,
+    carriagesActions.updateCarriageSuccess,
     (state, { carriage }): CarriagesState => ({
       carriages: state.carriages.map((storeCarriage) =>
         storeCarriage.code === carriage.code ? carriage : storeCarriage,
@@ -88,7 +75,7 @@ export const carriagesReducer = createReducer(
     }),
   ),
   on(
-    updateCarriageError,
+    carriagesActions.updateCarriageError,
     (state, { error }): CarriagesState => ({
       ...state,
       error: error.error,
@@ -97,11 +84,11 @@ export const carriagesReducer = createReducer(
   ),
   // Delete carriage
   on(
-    deleteCarriage,
+    carriagesActions.deleteCarriage,
     (state): CarriagesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    deleteCarriageSuccess,
+    carriagesActions.deleteCarriageSuccess,
     (state, { code }): CarriagesState => ({
       carriages: state.carriages.filter((carriage) => carriage.code !== code),
       error: null,
@@ -109,7 +96,7 @@ export const carriagesReducer = createReducer(
     }),
   ),
   on(
-    deleteCarriageError,
+    carriagesActions.deleteCarriageError,
     (state, { error }): CarriagesState => ({
       ...state,
       error: error.error,
@@ -117,3 +104,8 @@ export const carriagesReducer = createReducer(
     }),
   ),
 );
+
+export const carriagesFeature = createFeature({
+  name: 'carriages',
+  reducer: carriagesReducer,
+});

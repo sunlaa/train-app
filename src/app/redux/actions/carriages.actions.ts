@@ -1,70 +1,24 @@
 import { TCarriage } from '@/core/models/carriages.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import { createAction, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-// Load carriages
+export const carriagesActions = createActionGroup({
+  source: 'Carriages Management',
+  events: {
+    'Load carriages': emptyProps(),
+    'Load carriages success': props<{ carriages: TCarriage[] }>(),
+    'Load carriages error': props<{ error: HttpErrorResponse }>(),
 
-export const loadCarriages = createAction(
-  '[Carriages Management] Load carriages',
-);
+    'Create carriage': props<{ carriage: Omit<TCarriage, 'code'> }>(),
+    'Create carriage success': props<{ carriage: TCarriage }>(),
+    'Create carriage error': props<{ error: HttpErrorResponse }>(),
 
-export const loadCarriagesSuccess = createAction(
-  '[Carriages API] Load carriages success',
-  props<{ carriages: TCarriage[] }>(),
-);
+    'Update carriage': props<{ carriage: TCarriage }>(),
+    'Update carriage success': props<{ carriage: TCarriage }>(),
+    'Update carriage error': props<{ error: HttpErrorResponse }>(),
 
-export const loadCarriagesError = createAction(
-  '[Carriages API] Load carriages error',
-  props<{ error: HttpErrorResponse }>(),
-);
-
-// Create carriage
-
-export const createCarriage = createAction(
-  '[Carriages Management] Create carriage',
-  props<{ carriage: Omit<TCarriage, 'code'> }>(),
-);
-
-export const createCarriageSuccess = createAction(
-  '[Carriages API] Create carriage success',
-  props<{ carriage: TCarriage }>(),
-);
-
-export const createCarriageError = createAction(
-  '[Carriages API] Create carriage error',
-  props<{ error: HttpErrorResponse }>(),
-);
-
-// Update carriage
-
-export const updateCarriage = createAction(
-  '[Carriages Management] Update carriage',
-  props<{ carriage: TCarriage }>(),
-);
-
-export const updateCarriageSuccess = createAction(
-  '[Carriages API] Update carriage success',
-  props<{ carriage: TCarriage }>(),
-);
-
-export const updateCarriageError = createAction(
-  '[Carriages API] Update carriage error',
-  props<{ error: HttpErrorResponse }>(),
-);
-
-// Delete carriage
-
-export const deleteCarriage = createAction(
-  '[Carriages Management] Delete carriage',
-  props<{ code: string }>(),
-);
-
-export const deleteCarriageSuccess = createAction(
-  '[Carriages API] Delete carriage success',
-  props<{ code: string }>(),
-);
-
-export const deleteCarriageError = createAction(
-  '[Carriages API] Delete carriage error',
-  props<{ error: HttpErrorResponse }>(),
-);
+    'Delete carriage': props<{ code: string }>(),
+    'Delete carriage success': props<{ code: string }>(),
+    'Delete carriage error': props<{ error: HttpErrorResponse }>(),
+  },
+});

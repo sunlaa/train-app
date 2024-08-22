@@ -13,12 +13,16 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
 import { tokenInterceptor } from './features/auth/interceptors/token.interceptor';
-import { routesReducer } from './redux/reducers/routes.reducer';
-import { RoutesEffects } from './redux/effects/routes.effects';
-import { StationsEffects } from './redux/effects/stations.effects';
-import { stationsReducer } from './redux/reducers/stations.reducer';
-import { carriagesReducer } from './redux/reducers/carriages.reducer';
-import { CarriagesEffects } from './redux/effects/carriages.effects';
+import {
+  CarriagesEffects,
+  StationsEffects,
+  RoutesEffects,
+} from './redux/effects';
+import {
+  carriagesFeature,
+  stationsFeature,
+  routesFeature,
+} from './redux/reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,9 +31,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([tokenInterceptor])),
     provideAnimationsAsync(),
     provideStore(),
-    provideState({ name: 'routes', reducer: routesReducer }),
-    provideState({ name: 'stations', reducer: stationsReducer }),
-    provideState({ name: 'carriages', reducer: carriagesReducer }),
+    provideState(routesFeature),
+    provideState(stationsFeature),
+    provideState(carriagesFeature),
     provideEffects([RoutesEffects, StationsEffects, CarriagesEffects]),
     provideRouterStore(),
     provideStoreDevtools({

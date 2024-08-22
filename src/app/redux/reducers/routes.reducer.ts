@@ -1,20 +1,7 @@
 import { TRoute } from '@/core/models/routes.model';
-import { createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
 import { ApiError } from '@/core/models/api.model';
-import {
-  createRoute,
-  createRouteError,
-  createRouteSuccess,
-  deleteRoute,
-  deleteRouteError,
-  deleteRouteSuccess,
-  loadRoutes,
-  loadRoutesError,
-  loadRoutesSuccess,
-  updateRoute,
-  updateRouteError,
-  updateRouteSuccess,
-} from '../actions/routes.actions';
+import { routesActions } from '../actions';
 
 export type RoutesState = {
   routes: TRoute[];
@@ -28,12 +15,15 @@ const initialState: RoutesState = {
   status: 'loading',
 };
 
-export const routesReducer = createReducer(
+const routesReducer = createReducer(
   initialState,
   // Load routes
-  on(loadRoutes, (state): RoutesState => ({ ...state, status: 'loading' })),
   on(
-    loadRoutesSuccess,
+    routesActions.loadRoutes,
+    (state): RoutesState => ({ ...state, status: 'loading' }),
+  ),
+  on(
+    routesActions.loadRoutesSuccess,
     (state, { routes }): RoutesState => ({
       routes,
       error: null,
@@ -41,7 +31,7 @@ export const routesReducer = createReducer(
     }),
   ),
   on(
-    loadRoutesError,
+    routesActions.loadRoutesError,
     (state, { error }): RoutesState => ({
       ...state,
       error: error.error,
@@ -49,9 +39,12 @@ export const routesReducer = createReducer(
     }),
   ),
   // Create route
-  on(createRoute, (state): RoutesState => ({ ...state, status: 'loading' })),
   on(
-    createRouteSuccess,
+    routesActions.createRoute,
+    (state): RoutesState => ({ ...state, status: 'loading' }),
+  ),
+  on(
+    routesActions.createRouteSuccess,
     (state, { route }): RoutesState => ({
       routes: [...state.routes, route],
       error: null,
@@ -59,7 +52,7 @@ export const routesReducer = createReducer(
     }),
   ),
   on(
-    createRouteError,
+    routesActions.createRouteError,
     (state, { error }): RoutesState => ({
       ...state,
       error: error.error,
@@ -67,9 +60,12 @@ export const routesReducer = createReducer(
     }),
   ),
   // Update route
-  on(updateRoute, (state): RoutesState => ({ ...state, status: 'loading' })),
   on(
-    updateRouteSuccess,
+    routesActions.updateRoute,
+    (state): RoutesState => ({ ...state, status: 'loading' }),
+  ),
+  on(
+    routesActions.updateRouteSuccess,
     (state, { route }): RoutesState => ({
       routes: state.routes.map((storeRoute) =>
         storeRoute.id === route.id ? route : storeRoute,
@@ -79,7 +75,7 @@ export const routesReducer = createReducer(
     }),
   ),
   on(
-    updateRouteError,
+    routesActions.updateRouteError,
     (state, { error }): RoutesState => ({
       ...state,
       error: error.error,
@@ -87,9 +83,12 @@ export const routesReducer = createReducer(
     }),
   ),
   // Delete route
-  on(deleteRoute, (state): RoutesState => ({ ...state, status: 'loading' })),
   on(
-    deleteRouteSuccess,
+    routesActions.deleteRoute,
+    (state): RoutesState => ({ ...state, status: 'loading' }),
+  ),
+  on(
+    routesActions.deleteRouteSuccess,
     (state, { id }): RoutesState => ({
       routes: state.routes.filter((route) => route.id !== id),
       error: null,
@@ -97,7 +96,7 @@ export const routesReducer = createReducer(
     }),
   ),
   on(
-    deleteRouteError,
+    routesActions.deleteRouteError,
     (state, { error }): RoutesState => ({
       ...state,
       error: error.error,
@@ -105,3 +104,8 @@ export const routesReducer = createReducer(
     }),
   ),
 );
+
+export const routesFeature = createFeature({
+  name: 'routes',
+  reducer: routesReducer,
+});

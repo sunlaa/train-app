@@ -1,17 +1,7 @@
-import { createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
 import { ApiError } from '@/core/models/api.model';
 import { TStationListed } from '@/core/models/stations.model';
-import {
-  createStation,
-  createStationError,
-  createStationSuccess,
-  deleteStation,
-  deleteStationError,
-  deleteStationSuccess,
-  loadStations,
-  loadStationsError,
-  loadStationsSuccess,
-} from '../actions/stations.actions';
+import { stationsActions } from '../actions';
 
 export type StationsState = {
   stations: TStationListed[];
@@ -25,12 +15,15 @@ const initialState: StationsState = {
   status: 'loading',
 };
 
-export const stationsReducer = createReducer(
+const stationsReducer = createReducer(
   initialState,
   // Load stations
-  on(loadStations, (state): StationsState => ({ ...state, status: 'loading' })),
   on(
-    loadStationsSuccess,
+    stationsActions.loadStations,
+    (state): StationsState => ({ ...state, status: 'loading' }),
+  ),
+  on(
+    stationsActions.loadStationsSuccess,
     (state, { stations }): StationsState => ({
       stations,
       error: null,
@@ -38,7 +31,7 @@ export const stationsReducer = createReducer(
     }),
   ),
   on(
-    loadStationsError,
+    stationsActions.loadStationsError,
     (state, { error }): StationsState => ({
       ...state,
       error: error.error,
@@ -47,11 +40,11 @@ export const stationsReducer = createReducer(
   ),
   // Create station
   on(
-    createStation,
+    stationsActions.createStation,
     (state): StationsState => ({ ...state, status: 'loading' }),
   ),
   on(
-    createStationSuccess,
+    stationsActions.createStationSuccess,
     (state, { stations }): StationsState => ({
       stations,
       error: null,
@@ -59,7 +52,7 @@ export const stationsReducer = createReducer(
     }),
   ),
   on(
-    createStationError,
+    stationsActions.createStationError,
     (state, { error }): StationsState => ({
       ...state,
       error: error.error,
@@ -68,11 +61,11 @@ export const stationsReducer = createReducer(
   ),
   // Delete station
   on(
-    deleteStation,
+    stationsActions.deleteStation,
     (state): StationsState => ({ ...state, status: 'loading' }),
   ),
   on(
-    deleteStationSuccess,
+    stationsActions.deleteStationSuccess,
     (state, { id }): StationsState => ({
       stations: state.stations.filter((station) => station.id !== id),
       error: null,
@@ -80,7 +73,7 @@ export const stationsReducer = createReducer(
     }),
   ),
   on(
-    deleteStationError,
+    stationsActions.deleteStationError,
     (state, { error }): StationsState => ({
       ...state,
       error: error.error,
@@ -88,3 +81,8 @@ export const stationsReducer = createReducer(
     }),
   ),
 );
+
+export const stationsFeature = createFeature({
+  name: 'stations',
+  reducer: stationsReducer,
+});
