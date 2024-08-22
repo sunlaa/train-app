@@ -17,6 +17,8 @@ import { routesReducer } from './redux/reducers/routes.reducer';
 import { RoutesEffects } from './redux/effects/routes.effects';
 import { StationsEffects } from './redux/effects/stations.effects';
 import { stationsReducer } from './redux/reducers/stations.reducer';
+import { carriagesReducer } from './redux/reducers/carriages.reducer';
+import { CarriagesEffects } from './redux/effects/carriages.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,7 +29,8 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideState({ name: 'routes', reducer: routesReducer }),
     provideState({ name: 'stations', reducer: stationsReducer }),
-    provideEffects([RoutesEffects, StationsEffects]),
+    provideState({ name: 'carriages', reducer: carriagesReducer }),
+    provideEffects([RoutesEffects, StationsEffects, CarriagesEffects]),
     provideRouterStore(),
     provideStoreDevtools({
       maxAge: 25,
