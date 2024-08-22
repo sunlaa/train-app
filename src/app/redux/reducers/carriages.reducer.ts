@@ -19,11 +19,11 @@ const carriagesReducer = createReducer(
   initialState,
   // Load carriages
   on(
-    carriagesActions.loadCarriages,
+    carriagesActions.load,
     (state): CarriagesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    carriagesActions.loadCarriagesSuccess,
+    carriagesActions.loadSuccess,
     (state, { carriages }): CarriagesState => ({
       carriages,
       error: null,
@@ -31,7 +31,7 @@ const carriagesReducer = createReducer(
     }),
   ),
   on(
-    carriagesActions.loadCarriagesError,
+    carriagesActions.loadError,
     (state, { error }): CarriagesState => ({
       ...state,
       error: error.error,
@@ -40,11 +40,11 @@ const carriagesReducer = createReducer(
   ),
   // Create carriage
   on(
-    carriagesActions.createCarriage,
+    carriagesActions.create,
     (state): CarriagesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    carriagesActions.createCarriageSuccess,
+    carriagesActions.createSuccess,
     (state, { carriage }): CarriagesState => ({
       carriages: [...state.carriages, carriage],
       error: null,
@@ -52,7 +52,7 @@ const carriagesReducer = createReducer(
     }),
   ),
   on(
-    carriagesActions.createCarriageError,
+    carriagesActions.createError,
     (state, { error }): CarriagesState => ({
       ...state,
       error: error.error,
@@ -61,11 +61,11 @@ const carriagesReducer = createReducer(
   ),
   // Update carriage
   on(
-    carriagesActions.updateCarriage,
+    carriagesActions.update,
     (state): CarriagesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    carriagesActions.updateCarriageSuccess,
+    carriagesActions.updateSuccess,
     (state, { carriage }): CarriagesState => ({
       carriages: state.carriages.map((storeCarriage) =>
         storeCarriage.code === carriage.code ? carriage : storeCarriage,
@@ -75,7 +75,7 @@ const carriagesReducer = createReducer(
     }),
   ),
   on(
-    carriagesActions.updateCarriageError,
+    carriagesActions.updateError,
     (state, { error }): CarriagesState => ({
       ...state,
       error: error.error,
@@ -84,11 +84,11 @@ const carriagesReducer = createReducer(
   ),
   // Delete carriage
   on(
-    carriagesActions.deleteCarriage,
+    carriagesActions.delete,
     (state): CarriagesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    carriagesActions.deleteCarriageSuccess,
+    carriagesActions.deleteSuccess,
     (state, { code }): CarriagesState => ({
       carriages: state.carriages.filter((carriage) => carriage.code !== code),
       error: null,
@@ -96,7 +96,7 @@ const carriagesReducer = createReducer(
     }),
   ),
   on(
-    carriagesActions.deleteCarriageError,
+    carriagesActions.deleteError,
     (state, { error }): CarriagesState => ({
       ...state,
       error: error.error,

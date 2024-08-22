@@ -19,11 +19,11 @@ const routesReducer = createReducer(
   initialState,
   // Load routes
   on(
-    routesActions.loadRoutes,
+    routesActions.load,
     (state): RoutesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    routesActions.loadRoutesSuccess,
+    routesActions.loadSuccess,
     (state, { routes }): RoutesState => ({
       routes,
       error: null,
@@ -31,7 +31,7 @@ const routesReducer = createReducer(
     }),
   ),
   on(
-    routesActions.loadRoutesError,
+    routesActions.loadError,
     (state, { error }): RoutesState => ({
       ...state,
       error: error.error,
@@ -40,11 +40,11 @@ const routesReducer = createReducer(
   ),
   // Create route
   on(
-    routesActions.createRoute,
+    routesActions.create,
     (state): RoutesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    routesActions.createRouteSuccess,
+    routesActions.createSuccess,
     (state, { route }): RoutesState => ({
       routes: [...state.routes, route],
       error: null,
@@ -52,7 +52,7 @@ const routesReducer = createReducer(
     }),
   ),
   on(
-    routesActions.createRouteError,
+    routesActions.createError,
     (state, { error }): RoutesState => ({
       ...state,
       error: error.error,
@@ -61,11 +61,11 @@ const routesReducer = createReducer(
   ),
   // Update route
   on(
-    routesActions.updateRoute,
+    routesActions.update,
     (state): RoutesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    routesActions.updateRouteSuccess,
+    routesActions.updateSuccess,
     (state, { route }): RoutesState => ({
       routes: state.routes.map((storeRoute) =>
         storeRoute.id === route.id ? route : storeRoute,
@@ -75,7 +75,7 @@ const routesReducer = createReducer(
     }),
   ),
   on(
-    routesActions.updateRouteError,
+    routesActions.updateError,
     (state, { error }): RoutesState => ({
       ...state,
       error: error.error,
@@ -84,11 +84,11 @@ const routesReducer = createReducer(
   ),
   // Delete route
   on(
-    routesActions.deleteRoute,
+    routesActions.delete,
     (state): RoutesState => ({ ...state, status: 'loading' }),
   ),
   on(
-    routesActions.deleteRouteSuccess,
+    routesActions.deleteSuccess,
     (state, { id }): RoutesState => ({
       routes: state.routes.filter((route) => route.id !== id),
       error: null,
@@ -96,7 +96,7 @@ const routesReducer = createReducer(
     }),
   ),
   on(
-    routesActions.deleteRouteError,
+    routesActions.deleteError,
     (state, { error }): RoutesState => ({
       ...state,
       error: error.error,

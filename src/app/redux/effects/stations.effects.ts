@@ -13,13 +13,11 @@ export class StationsEffects {
 
   loadStations$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(stationsActions.loadStations),
+      ofType(stationsActions.load),
       switchMap(() =>
         this.stationsService.getStations().pipe(
-          map((stations) => stationsActions.loadStationsSuccess({ stations })),
-          catchError((error) =>
-            of(stationsActions.loadStationsError({ error })),
-          ),
+          map((stations) => stationsActions.loadSuccess({ stations })),
+          catchError((error) => of(stationsActions.loadError({ error }))),
         ),
       ),
     );
@@ -27,22 +25,16 @@ export class StationsEffects {
 
   createStation$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(stationsActions.createStation),
+      ofType(stationsActions.create),
       switchMap(({ station }) =>
         this.stationsService.createStation(station).pipe(
           switchMap(() =>
             this.stationsService.getStations().pipe(
-              map((stations) =>
-                stationsActions.createStationSuccess({ stations }),
-              ),
-              catchError((error) =>
-                of(stationsActions.createStationError({ error })),
-              ),
+              map((stations) => stationsActions.createSuccess({ stations })),
+              catchError((error) => of(stationsActions.createError({ error }))),
             ),
           ),
-          catchError((error) =>
-            of(stationsActions.createStationError({ error })),
-          ),
+          catchError((error) => of(stationsActions.createError({ error }))),
         ),
       ),
     );
@@ -50,13 +42,11 @@ export class StationsEffects {
 
   deleteStation$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(stationsActions.deleteStation),
+      ofType(stationsActions.delete),
       switchMap(({ id }) =>
         this.stationsService.deleteStation(id).pipe(
-          map(() => stationsActions.deleteStationSuccess({ id })),
-          catchError((error) =>
-            of(stationsActions.deleteStationError({ error })),
-          ),
+          map(() => stationsActions.deleteSuccess({ id })),
+          catchError((error) => of(stationsActions.deleteError({ error }))),
         ),
       ),
     );

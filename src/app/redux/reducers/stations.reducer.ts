@@ -19,11 +19,11 @@ const stationsReducer = createReducer(
   initialState,
   // Load stations
   on(
-    stationsActions.loadStations,
+    stationsActions.load,
     (state): StationsState => ({ ...state, status: 'loading' }),
   ),
   on(
-    stationsActions.loadStationsSuccess,
+    stationsActions.loadSuccess,
     (state, { stations }): StationsState => ({
       stations,
       error: null,
@@ -31,7 +31,7 @@ const stationsReducer = createReducer(
     }),
   ),
   on(
-    stationsActions.loadStationsError,
+    stationsActions.loadError,
     (state, { error }): StationsState => ({
       ...state,
       error: error.error,
@@ -40,11 +40,11 @@ const stationsReducer = createReducer(
   ),
   // Create station
   on(
-    stationsActions.createStation,
+    stationsActions.create,
     (state): StationsState => ({ ...state, status: 'loading' }),
   ),
   on(
-    stationsActions.createStationSuccess,
+    stationsActions.createSuccess,
     (state, { stations }): StationsState => ({
       stations,
       error: null,
@@ -52,7 +52,7 @@ const stationsReducer = createReducer(
     }),
   ),
   on(
-    stationsActions.createStationError,
+    stationsActions.createError,
     (state, { error }): StationsState => ({
       ...state,
       error: error.error,
@@ -61,11 +61,11 @@ const stationsReducer = createReducer(
   ),
   // Delete station
   on(
-    stationsActions.deleteStation,
+    stationsActions.delete,
     (state): StationsState => ({ ...state, status: 'loading' }),
   ),
   on(
-    stationsActions.deleteStationSuccess,
+    stationsActions.deleteSuccess,
     (state, { id }): StationsState => ({
       stations: state.stations.filter((station) => station.id !== id),
       error: null,
@@ -73,7 +73,7 @@ const stationsReducer = createReducer(
     }),
   ),
   on(
-    stationsActions.deleteStationError,
+    stationsActions.deleteError,
     (state, { error }): StationsState => ({
       ...state,
       error: error.error,

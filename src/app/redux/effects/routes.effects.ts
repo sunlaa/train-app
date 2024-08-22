@@ -13,11 +13,11 @@ export class RoutesEffects {
 
   loadRoutes$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(routesActions.loadRoutes),
+      ofType(routesActions.load),
       switchMap(() =>
         this.routeService.getRoutes().pipe(
-          map((routes) => routesActions.loadRoutesSuccess({ routes })),
-          catchError((error) => of(routesActions.loadRoutesError({ error }))),
+          map((routes) => routesActions.loadSuccess({ routes })),
+          catchError((error) => of(routesActions.loadError({ error }))),
         ),
       ),
     );
@@ -25,15 +25,15 @@ export class RoutesEffects {
 
   createRoute$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(routesActions.createRoute),
+      ofType(routesActions.create),
       switchMap(({ route }) =>
         this.routeService.createRoute(route).pipe(
           map((routeId) =>
-            routesActions.createRouteSuccess({
+            routesActions.createSuccess({
               route: { ...route, ...routeId },
             }),
           ),
-          catchError((error) => of(routesActions.createRouteError({ error }))),
+          catchError((error) => of(routesActions.createError({ error }))),
         ),
       ),
     );
@@ -41,15 +41,15 @@ export class RoutesEffects {
 
   updateRoute$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(routesActions.updateRoute),
+      ofType(routesActions.update),
       switchMap(({ route }) =>
         this.routeService.updateRoute(route).pipe(
           map((routeId) =>
-            routesActions.updateRouteSuccess({
+            routesActions.updateSuccess({
               route: { ...route, ...routeId },
             }),
           ),
-          catchError((error) => of(routesActions.updateRouteError({ error }))),
+          catchError((error) => of(routesActions.updateError({ error }))),
         ),
       ),
     );
@@ -57,11 +57,11 @@ export class RoutesEffects {
 
   deleteRoute$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(routesActions.deleteRoute),
+      ofType(routesActions.delete),
       switchMap(({ id }) =>
         this.routeService.deleteRoute(id).pipe(
-          map(() => routesActions.deleteRouteSuccess({ id })),
-          catchError((error) => of(routesActions.deleteRouteError({ error }))),
+          map(() => routesActions.deleteSuccess({ id })),
+          catchError((error) => of(routesActions.deleteError({ error }))),
         ),
       ),
     );

@@ -5,20 +5,20 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 export const carriagesActions = createActionGroup({
   source: 'Carriages Management',
   events: {
-    'Load carriages': emptyProps(),
-    'Load carriages success': props<{ carriages: TCarriage[] }>(),
-    'Load carriages error': props<{ error: HttpErrorResponse }>(),
+    Load: emptyProps(),
+    'Load success': props<{ carriages: TCarriage[] }>(),
+    'Load error': props<{ error: HttpErrorResponse }>(),
 
-    'Create carriage': props<{ carriage: Omit<TCarriage, 'code'> }>(),
-    'Create carriage success': props<{ carriage: TCarriage }>(),
-    'Create carriage error': props<{ error: HttpErrorResponse }>(),
+    Create: props<{ carriage: Omit<TCarriage, 'code'> }>(),
+    'Create success': props<{ carriage: TCarriage }>(),
+    'Create error': props<{ error: HttpErrorResponse }>(),
 
-    'Update carriage': props<{ carriage: TCarriage }>(),
-    'Update carriage success': props<{ carriage: TCarriage }>(),
-    'Update carriage error': props<{ error: HttpErrorResponse }>(),
+    Update: props<{ carriage: TCarriage }>(),
+    'Update success': props<{ carriage: TCarriage }>(),
+    'Update error': props<{ error: HttpErrorResponse }>(),
 
-    'Delete carriage': props<{ code: string }>(),
-    'Delete carriage success': props<{ code: string }>(),
-    'Delete carriage error': props<{ error: HttpErrorResponse }>(),
+    Delete: props<{ code: string }>(),
+    'Delete success': props<{ code: string }>(),
+    'Delete error': props<{ error: HttpErrorResponse }>(),
   },
 });

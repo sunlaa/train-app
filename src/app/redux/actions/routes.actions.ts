@@ -5,20 +5,20 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 export const routesActions = createActionGroup({
   source: 'Routes Management',
   events: {
-    'Load routes': emptyProps(),
-    'Load routes success': props<{ routes: TRoute[] }>(),
-    'Load routes error': props<{ error: HttpErrorResponse }>(),
+    Load: emptyProps(),
+    'Load success': props<{ routes: TRoute[] }>(),
+    'Load error': props<{ error: HttpErrorResponse }>(),
 
-    'Create route': props<{ route: Omit<TRoute, 'id'> }>(),
-    'Create route success': props<{ route: TRoute }>(),
-    'Create route error': props<{ error: HttpErrorResponse }>(),
+    Create: props<{ route: Omit<TRoute, 'id'> }>(),
+    'Create success': props<{ route: TRoute }>(),
+    'Create error': props<{ error: HttpErrorResponse }>(),
 
-    'Update route': props<{ route: TRoute }>(),
-    'Update route success': props<{ route: TRoute }>(),
-    'Update route error': props<{ error: HttpErrorResponse }>(),
+    Update: props<{ route: TRoute }>(),
+    'Update success': props<{ route: TRoute }>(),
+    'Update error': props<{ error: HttpErrorResponse }>(),
 
-    'Delete route': props<{ id: number }>(),
-    'Delete route success': props<{ id: number }>(),
-    'Delete route error': props<{ error: HttpErrorResponse }>(),
+    Delete: props<{ id: number }>(),
+    'Delete success': props<{ id: number }>(),
+    'Delete error': props<{ error: HttpErrorResponse }>(),
   },
 });

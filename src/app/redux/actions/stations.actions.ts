@@ -7,16 +7,16 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 export const stationsActions = createActionGroup({
   source: 'Stations Management',
   events: {
-    'Load stations': emptyProps(),
-    'Load stations success': props<{ stations: TStationListed[] }>(),
-    'Load stations error': props<{ error: HttpErrorResponse }>(),
+    Load: emptyProps(),
+    'Load success': props<{ stations: TStationListed[] }>(),
+    'Load error': props<{ error: HttpErrorResponse }>(),
 
-    'Create station': props<{ station: TStationCreation }>(),
-    'Create station success': props<{ stations: TStationListed[] }>(),
-    'Create station error': props<{ error: HttpErrorResponse }>(),
+    Create: props<{ station: TStationCreation }>(),
+    'Create success': props<{ stations: TStationListed[] }>(),
+    'Create error': props<{ error: HttpErrorResponse }>(),
 
-    'Delete station': props<{ id: number }>(),
-    'Delete station success': props<{ id: number }>(),
-    'Delete station error': props<{ error: HttpErrorResponse }>(),
+    Delete: props<{ id: number }>(),
+    'Delete success': props<{ id: number }>(),
+    'Delete error': props<{ error: HttpErrorResponse }>(),
   },
 });

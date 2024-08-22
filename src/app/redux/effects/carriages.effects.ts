@@ -13,15 +13,11 @@ export class CarriagesEffects {
 
   loadCarriages$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(carriagesActions.loadCarriages),
+      ofType(carriagesActions.load),
       switchMap(() =>
         this.carriageService.getCarriages().pipe(
-          map((carriages) =>
-            carriagesActions.loadCarriagesSuccess({ carriages }),
-          ),
-          catchError((error) =>
-            of(carriagesActions.loadCarriagesError({ error })),
-          ),
+          map((carriages) => carriagesActions.loadSuccess({ carriages })),
+          catchError((error) => of(carriagesActions.loadError({ error }))),
         ),
       ),
     );
@@ -29,17 +25,15 @@ export class CarriagesEffects {
 
   createCarriage$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(carriagesActions.createCarriage),
+      ofType(carriagesActions.create),
       switchMap(({ carriage }) =>
         this.carriageService.createCarriage(carriage).pipe(
           map((carriageCode) =>
-            carriagesActions.createCarriageSuccess({
+            carriagesActions.createSuccess({
               carriage: { ...carriage, ...carriageCode },
             }),
           ),
-          catchError((error) =>
-            of(carriagesActions.createCarriageError({ error })),
-          ),
+          catchError((error) => of(carriagesActions.createError({ error }))),
         ),
       ),
     );
@@ -47,17 +41,15 @@ export class CarriagesEffects {
 
   updateCarriage$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(carriagesActions.updateCarriage),
+      ofType(carriagesActions.update),
       switchMap(({ carriage }) =>
         this.carriageService.updateCarriage(carriage).pipe(
           map((carriageCode) =>
-            carriagesActions.updateCarriageSuccess({
+            carriagesActions.updateSuccess({
               carriage: { ...carriage, ...carriageCode },
             }),
           ),
-          catchError((error) =>
-            of(carriagesActions.updateCarriageError({ error })),
-          ),
+          catchError((error) => of(carriagesActions.updateError({ error }))),
         ),
       ),
     );
@@ -65,13 +57,11 @@ export class CarriagesEffects {
 
   deleteCarriage$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(carriagesActions.deleteCarriage),
+      ofType(carriagesActions.delete),
       switchMap(({ code }) =>
         this.carriageService.deleteCarriage(code).pipe(
-          map(() => carriagesActions.deleteCarriageSuccess({ code })),
-          catchError((error) =>
-            of(carriagesActions.deleteCarriageError({ error })),
-          ),
+          map(() => carriagesActions.deleteSuccess({ code })),
+          catchError((error) => of(carriagesActions.deleteError({ error }))),
         ),
       ),
     );
