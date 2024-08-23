@@ -50,4 +50,9 @@ export type Ticket = {
   price?: { [key: string]: number };
 };
 
-export type FilteredTickets = { [key: string]: Ticket[] };
+export type DayTickets = {
+  date: string;
+  tickets: Ticket[];
+};
+
+export type FilteredTickets = DayTickets[];

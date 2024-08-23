@@ -62,16 +62,16 @@ export class SearchService {
   filterTicketsByDate(tickets: Ticket[]): FilteredTickets {
     const ticketsMap = new Map<string, Ticket[]>();
 
-    if (tickets.length === 0) return {};
+    if (tickets.length === 0) return [];
 
     const minDate = new Date(
-      Math.min(...tickets.map((ticket) => ticket.arrivalDate.getTime())),
+      Math.min(...tickets.map((ticket) => ticket.departureDate.getTime())),
     );
 
     const dates: string[] = [];
 
     for (let i = 0; i < 10; i += 1) {
-      const date = new Date();
+      const date = new Date(minDate);
       date.setDate(minDate.getDate() + i);
       dates.push(date.toISOString().split('T')[0]);
     }
@@ -80,11 +80,17 @@ export class SearchService {
       ticketsMap.set(
         date,
         tickets.filter(
-          (ticket) => date === ticket.arrivalDate.toISOString().split('T')[0],
+          (ticket) => date === ticket.departureDate.toISOString().split('T')[0],
         ),
       );
     });
 
-    return Object.fromEntries(ticketsMap);
+    const filteredTickets: FilteredTickets = [];
+
+    ticketsMap.forEach((t, date) => {
+      filteredTickets.push({ date, tickets: t });
+    });
+
+    return filteredTickets;
   }
 }

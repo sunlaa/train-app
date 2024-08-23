@@ -1,8 +1,16 @@
-<p-tabView (onChange)="some($event)">
-  @for (tab of tabs; track $index) {
-    <p-tabPanel [header]="tab.title">
+@let filteredTickets = tickects$ | async;
+
+<p-tabView [scrollable]="true">
+  @for (dayTickets of filteredTickets; track dayTickets.date) {
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tab">
+          <h3>{{ dayTickets.date | date: "MMMM d" }}</h3>
+          <p>{{ dayTickets.date | date: "EEEE" }}</p>
+        </div>
+      </ng-template>
       <p>
-        {{ tab.content }}
+        {{ dayTickets.tickets | json }}
       </p>
     </p-tabPanel>
   }
