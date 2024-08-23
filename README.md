@@ -24,7 +24,7 @@ Developers:
   - [NgRx](https://ngrx.io/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [SCSS](https://sass-lang.com/)
-- [Angular Material](https://material.angular.io/)
+- [PrimeNG](https://primeng.org/)
 
 ### Deployment
 
