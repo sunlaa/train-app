@@ -37,3 +37,15 @@ export type Segment = {
   price: { [key: string]: number };
   occupiedSeats: number[];
 };
+
+export type Ticket = {
+  departureDate: Date;
+  arrivalDate: Date;
+  startCity: string;
+  endCity: string;
+  tripDuration: number;
+  firstRouteStation: string;
+  lastRouteStation: string;
+  // temporarily
+  price?: { [key: string]: number };
+};
