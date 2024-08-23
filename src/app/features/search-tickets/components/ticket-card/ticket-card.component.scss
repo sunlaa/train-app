@@ -1,69 +1,141 @@
-::ng-deep {
-  .p-divider {
-    width: 15em;
-  }
+h3,
+h4,
+p {
+  margin: 0;
+}
 
+::ng-deep {
   .p-card {
     margin-top: 1em;
   }
 
-  .p-chip {
-    font-size: 0.7em;
-    padding: 0.5em;
-    width: fit-content;
+  .p-card-content {
     display: flex;
-    gap: 0.5em;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
   }
 }
 
 .first-section {
-  display: grid;
-  gap: 1em;
-}
-
-.info {
-  display: flex;
-  gap: 0.5em;
-}
-
-.point {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  h3 {
-    margin: 0;
-  }
-  p {
-    margin: 0;
+  gap: 2em;
+
+  ::ng-deep {
+    .p-divider {
+      width: 10em;
+    }
+
+    .p-chip {
+      font-size: 0.7em;
+      padding: 0.5em;
+      width: fit-content;
+      display: flex;
+      gap: 0.5em;
+      align-items: center;
+      justify-content: space-around;
+
+      .pi-compass {
+        font-size: 0.9rem;
+      }
+
+      .pi-arrow-right {
+        font-size: 0.6rem;
+      }
+    }
   }
 
-  .date {
-    font-size: 0.85em;
-    margin-top: 0.3em;
+  .path {
+    display: flex;
+    gap: 0.5em;
   }
 
-  .city {
-    font-weight: 500;
+  .point {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .date {
+      font-size: 0.85em;
+      margin-top: 0.3em;
+    }
+
+    .city {
+      font-weight: 500;
+    }
+  }
+
+  .duration {
+    font-weight: 300;
+    font-size: 0.9em;
+  }
+
+  .interact {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
   }
 }
 
-.duration {
-  font-weight: 300;
-  font-size: 0.9em;
+.second-section {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+
+  ::ng-deep {
+    .p-divider {
+      width: 0.5em;
+    }
+  }
+
+  .price-area {
+    max-width: 10em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin: 1em 0;
+
+    .price-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5em;
+
+      .carriage-type {
+        display: flex;
+        font-weight: 600;
+      }
+
+      .seats {
+        font-size: 0.8em;
+        font-weight: 300;
+        color: var(--text-secondary-color);
+      }
+
+      h4 {
+        margin-top: 2em;
+      }
+    }
+  }
 }
 
-.interact {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-}
+@media screen and (max-width: 1000px) {
+  ::ng-deep {
+    .p-card-content {
+      flex-direction: column;
+      align-items: center;
+      gap: 2em;
+    }
+  }
 
-.pi-compass {
-  font-size: 0.9rem;
-}
+  .first-section {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-.pi-arrow-right {
-  font-size: 0.6rem;
+  .second-section {
+    width: 100%;
+    grid-template-columns: repeat(4, auto);
+  }
 }

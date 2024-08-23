@@ -1,5 +1,5 @@
 import { Ticket } from '@/core/models/search.model';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
@@ -13,6 +13,7 @@ import { DuarationPipe } from '../../pipes/duration.pipe';
   standalone: true,
   imports: [
     DatePipe,
+    CurrencyPipe,
     DuarationPipe,
     CardModule,
     DividerModule,

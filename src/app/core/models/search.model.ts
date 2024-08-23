@@ -47,7 +47,13 @@ export type Ticket = {
   firstRouteStation: string;
   lastRouteStation: string;
   // temporarily
-  price?: { [key: string]: number };
+  carriages: CarriageData[];
+};
+
+export type CarriageData = {
+  type: string;
+  price: number;
+  freeSeats: number;
 };
 
 export type DayTickets = {

@@ -52,6 +52,7 @@ export class SearchService {
           tripDuration,
           firstRouteStation: `${firstRouteStationId}`,
           lastRouteStation: `${lastRouteStationId}`,
+          carriages: [],
         };
       });
     });

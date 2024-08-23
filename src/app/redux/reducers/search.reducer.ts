@@ -22,6 +22,14 @@ const initialState: SearchState = {
           tripDuration: 12354678,
           firstRouteStation: 'Minsk',
           lastRouteStation: 'Amsterdam',
+          carriages: [
+            { type: 'Sleeper', price: 150, freeSeats: 5 },
+            { type: 'Business', price: 200, freeSeats: 3 },
+            { type: 'Open Plan', price: 100, freeSeats: 12 },
+            { type: 'Compartment', price: 130, freeSeats: 8 },
+            { type: 'Open Plan', price: 100, freeSeats: 12 },
+            { type: 'Compartment', price: 130, freeSeats: 8 },
+          ],
         },
         {
           departureDate: new Date('2024-10-08T14:00:00'),
@@ -31,6 +39,11 @@ const initialState: SearchState = {
           tripDuration: 34786867,
           firstRouteStation: 'Paris',
           lastRouteStation: 'Dubai',
+          carriages: [
+            { type: 'Luxury', price: 250, freeSeats: 2 },
+            { type: 'Open Plan', price: 100, freeSeats: 12 },
+            { type: 'Compartment', price: 130, freeSeats: 8 },
+          ],
         },
         {
           departureDate: new Date('2024-10-08T20:00:00'),
@@ -40,6 +53,11 @@ const initialState: SearchState = {
           tripDuration: 6325524,
           firstRouteStation: 'Berlin',
           lastRouteStation: 'London',
+          carriages: [
+            { type: 'Sleeper', price: 150, freeSeats: 5 },
+            { type: 'Business', price: 200, freeSeats: 3 },
+            { type: 'Coupe', price: 180, freeSeats: 7 },
+          ],
         },
       ],
     },
@@ -54,6 +72,11 @@ const initialState: SearchState = {
           tripDuration: 14400000,
           firstRouteStation: 'Chicago',
           lastRouteStation: 'Detroit',
+          carriages: [
+            { type: 'Luxury', price: 250, freeSeats: 2 },
+            { type: 'Open Plan', price: 100, freeSeats: 12 },
+            { type: 'Compartment', price: 130, freeSeats: 8 },
+          ],
         },
         {
           departureDate: new Date('2024-10-09T15:30:00'),
@@ -63,6 +86,11 @@ const initialState: SearchState = {
           tripDuration: 9000000,
           firstRouteStation: 'Houston Station',
           lastRouteStation: 'Dallas',
+          carriages: [
+            { type: 'Sleeper', price: 150, freeSeats: 5 },
+            { type: 'Business', price: 200, freeSeats: 3 },
+            { type: 'Coupe', price: 180, freeSeats: 7 },
+          ],
         },
       ],
     },
@@ -77,6 +105,11 @@ const initialState: SearchState = {
           tripDuration: 9000000,
           firstRouteStation: 'Miami',
           lastRouteStation: 'Orlando',
+          carriages: [
+            { type: 'Economy', price: 70, freeSeats: 15 },
+            { type: 'Reserved Seat', price: 60, freeSeats: 20 },
+            { type: 'Standard', price: 80, freeSeats: 10 },
+          ],
         },
         {
           departureDate: new Date('2024-10-10T12:00:00'),
@@ -86,6 +119,11 @@ const initialState: SearchState = {
           tripDuration: 14400000,
           firstRouteStation: 'Seattle',
           lastRouteStation: 'Portland',
+          carriages: [
+            { type: 'Economy', price: 70, freeSeats: 15 },
+            { type: 'Reserved Seat', price: 60, freeSeats: 20 },
+            { type: 'Standard', price: 80, freeSeats: 10 },
+          ],
         },
         {
           departureDate: new Date('2024-10-10T18:00:00'),
@@ -95,6 +133,11 @@ const initialState: SearchState = {
           tripDuration: 7200000,
           firstRouteStation: 'Las Vegas',
           lastRouteStation: 'LA',
+          carriages: [
+            { type: 'Luxury', price: 250, freeSeats: 2 },
+            { type: 'Open Plan', price: 100, freeSeats: 12 },
+            { type: 'Compartment', price: 130, freeSeats: 8 },
+          ],
         },
       ],
     },

@@ -1,6 +1,6 @@
 <p-card>
   <div class="first-section">
-    <div class="info">
+    <div class="path">
       <div class="point">
         <h3>{{ ticket.departureDate | date: "HH:mm" }}</h3>
         <p class="date">{{ ticket.departureDate | date: "MMMM dd" }}</p>
@@ -35,6 +35,18 @@
         (onClick)="showRoute()"
       />
     </div>
+  </div>
+  <div class="second-section">
+    @for (carriage of ticket.carriages; track $index) {
+      <div class="price-area">
+        <p-divider layout="vertical" />
+        <div class="price-content">
+          <p class="carriage-type">Carriage type: {{ carriage.type }}</p>
+          <p class="seats">{{ carriage.freeSeats }} seats</p>
+          <h4>{{ carriage.price | currency }}</h4>
+        </div>
+      </div>
+    }
   </div>
 </p-card>
 
