@@ -1,0 +1,9 @@
+<p-tabView (onChange)="some($event)">
+  @for (tab of tabs; track $index) {
+    <p-tabPanel [header]="tab.title">
+      <p>
+        {{ tab.content }}
+      </p>
+    </p-tabPanel>
+  }
+</p-tabView>

@@ -49,3 +49,5 @@ export type Ticket = {
   // temporarily
   price?: { [key: string]: number };
 };
+
+export type FilteredTickets = { [key: string]: Ticket[] };

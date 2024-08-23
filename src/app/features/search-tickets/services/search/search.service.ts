@@ -1,4 +1,5 @@
 import {
+  FilteredTickets,
   SearchRequest,
   SearchResponse,
   Ticket,
@@ -15,10 +16,10 @@ export class SearchService {
 
   http: HttpClient = inject(HttpClient);
 
-  search(params: SearchRequest): Observable<Ticket[]> {
+  search(params: SearchRequest): Observable<FilteredTickets> {
     return this.http.get<SearchResponse>('/api/search', { params }).pipe(
       map((data) => {
-        return this.getTicketsData(data);
+        return this.filterTicketsByDate(this.getTicketsData(data));
       }),
     );
   }
@@ -56,5 +57,34 @@ export class SearchService {
     });
 
     return ticketsData;
+  }
+
+  filterTicketsByDate(tickets: Ticket[]): FilteredTickets {
+    const ticketsMap = new Map<string, Ticket[]>();
+
+    if (tickets.length === 0) return {};
+
+    const minDate = new Date(
+      Math.min(...tickets.map((ticket) => ticket.arrivalDate.getTime())),
+    );
+
+    const dates: string[] = [];
+
+    for (let i = 0; i < 10; i += 1) {
+      const date = new Date();
+      date.setDate(minDate.getDate() + i);
+      dates.push(date.toISOString().split('T')[0]);
+    }
+
+    dates.forEach((date) => {
+      ticketsMap.set(
+        date,
+        tickets.filter(
+          (ticket) => date === ticket.arrivalDate.toISOString().split('T')[0],
+        ),
+      );
+    });
+
+    return Object.fromEntries(ticketsMap);
   }
 }
