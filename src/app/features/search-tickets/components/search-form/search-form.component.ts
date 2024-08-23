@@ -11,7 +11,7 @@ import { DestroyService } from '@/core/services/destroy/destroy.service';
 @Component({
   selector: 'app-search-form',
   standalone: true,
-  providers: [],
+  providers: [DestroyService],
   imports: [ReactiveFormsModule, AutoCompleteModule, CalendarModule],
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.scss',
