@@ -1,0 +1,43 @@
+<p-card>
+  <div class="first-section">
+    <div class="info">
+      <div class="point">
+        <h3>{{ ticket.departureDate | date: "HH:mm" }}</h3>
+        <p class="date">{{ ticket.departureDate | date: "MMMM dd" }}</p>
+        <p class="city">{{ ticket.startCity }}</p>
+      </div>
+
+      <p-divider align="center" type="solid">
+        <b class="duration">{{ ticket.tripDuration | duration }}</b>
+      </p-divider>
+
+      <div class="point">
+        <h3>{{ ticket.arrivalDate | date: "HH:mm" }}</h3>
+        <p class="date">{{ ticket.arrivalDate | date: "MMMM dd" }}</p>
+        <p class="city">{{ ticket.endCity }}</p>
+      </div>
+    </div>
+
+    <div class="interact">
+      <p-chip>
+        <i class="pi pi-compass"></i>
+        <span>{{ ticket.firstRouteStation }}</span>
+        <i class="pi pi-arrow-right"></i>
+        <span>{{ ticket.lastRouteStation }}</span>
+      </p-chip>
+
+      <p-button
+        size="small"
+        label="Route"
+        [link]="true"
+        icon="pi pi-info-circle"
+        iconPos="right"
+        (onClick)="showRoute()"
+      />
+    </div>
+  </div>
+</p-card>
+
+<p-dialog header="Route N" [modal]="true" [(visible)]="modalVisible">
+  <h1>There's nothing yet.</h1>
+</p-dialog>

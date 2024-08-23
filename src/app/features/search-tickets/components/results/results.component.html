@@ -5,13 +5,13 @@
     <p-tabPanel>
       <ng-template pTemplate="header">
         <div class="tab">
-          <h3>{{ dayTickets.date | date: "MMMM d" }}</h3>
+          <h3>{{ dayTickets.date | date: "MMMM dd" }}</h3>
           <p>{{ dayTickets.date | date: "EEEE" }}</p>
         </div>
       </ng-template>
-      <p>
-        {{ dayTickets.tickets | json }}
-      </p>
+      @for (ticket of dayTickets.tickets; track $index) {
+        <app-ticket-card [ticket]="ticket"></app-ticket-card>
+      }
     </p-tabPanel>
   }
 </p-tabView>

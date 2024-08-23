@@ -5,11 +5,12 @@ import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { TabViewModule } from 'primeng/tabview';
+import { TicketCardComponent } from '../ticket-card/ticket-card.component';
 
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [TabViewModule, DatePipe, AsyncPipe, JsonPipe],
+  imports: [TicketCardComponent, TabViewModule, DatePipe, AsyncPipe, JsonPipe],
   templateUrl: './results.component.html',
   styleUrl: './results.component.scss',
 })
