@@ -1,19 +1,11 @@
-import { SearchRequest, SearchResponse } from '@/core/models/search.model';
+import {
+  SearchRequest,
+  SearchResponse,
+  Ticket,
+} from '@/core/models/search.model';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-
-export type Ticket = {
-  departureDate: Date;
-  arrivalDate: Date;
-  startCity: string;
-  endCity: string;
-  tripDuration: number;
-  firstRouteStation: string;
-  lastRouteStation: string;
-  // temporarily
-  price?: { [key: string]: number };
-};
 
 @Injectable({
   providedIn: 'root',
