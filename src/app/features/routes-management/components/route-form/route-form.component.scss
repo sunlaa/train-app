@@ -1,0 +1,69 @@
+::ng-deep {
+  .input-box .p-dropdown {
+    flex: 1;
+  }
+}
+
+p {
+  margin: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  border-radius: var(--border-radius);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  padding: 1em;
+}
+
+.title {
+  margin: 0;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.dropdown-sections {
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+
+  .input-section {
+    flex: 1;
+
+    .input-box {
+      flex: 1;
+      display: flex;
+      gap: 0.25em;
+
+      .dropdown {
+        display: flex;
+        flex: 1;
+      }
+
+      .remove-dropdown {
+        display: none;
+      }
+
+      &:not(:first-child):nth-last-child(2) .remove-dropdown {
+        display: inline-flex;
+      }
+    }
+  }
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.save-btn {
+  align-self: center;
+}
