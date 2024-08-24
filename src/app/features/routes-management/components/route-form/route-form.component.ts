@@ -158,7 +158,6 @@ export class RouteFormComponent implements OnInit {
     return options.original;
   }
 
-  // Remove a station control
   public removeStation(index: number) {
     const { controls } = this.stations;
     this.stations.removeAt(index);
@@ -200,7 +199,6 @@ export class RouteFormComponent implements OnInit {
     this.addEmptyCarriage();
   }
 
-  // Submit the form
   public onSubmit() {
     const path = this.stations.controls.map((ctrl) => ctrl.value);
     path.pop();
