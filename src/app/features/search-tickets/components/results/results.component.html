@@ -1,4 +1,4 @@
-@let filteredTickets = tickects$ | async;
+@let filteredTickets = tickets$ | async;
 
 <p-tabView [scrollable]="true">
   @for (dayTickets of filteredTickets; track dayTickets.date) {

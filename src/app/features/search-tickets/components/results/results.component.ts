@@ -1,11 +1,10 @@
-import { FilteredTickets } from '@/core/models/search.model';
-import { selectSearchTickets } from '@/redux/selectors/search.selector';
 import { AsyncPipe, DatePipe, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { TabViewModule } from 'primeng/tabview';
+import { Observable } from 'rxjs';
+import { FilteredTickets } from '@/core/models/search.model';
 import { TicketCardComponent } from '../ticket-card/ticket-card.component';
+import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
 
 @Component({
   selector: 'app-results',
@@ -15,10 +14,9 @@ import { TicketCardComponent } from '../ticket-card/ticket-card.component';
   styleUrl: './results.component.scss',
 })
 export class ResultsComponent {
-  store: Store = inject(Store);
+  private searcFacadeService: SearchFacadeService = inject(SearchFacadeService);
 
-  tickects$: Observable<FilteredTickets> =
-    this.store.select(selectSearchTickets);
+  tickets$: Observable<FilteredTickets> = this.searcFacadeService.tickets$;
 
   tabs: { title: string; content: string }[] = [];
 }

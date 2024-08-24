@@ -53,6 +53,7 @@ export class SearchService {
           firstRouteStation: `${firstRouteStationId}`,
           lastRouteStation: `${lastRouteStationId}`,
           carriages: [],
+          routeDetails: { routeId: 1, stopInfo: [] },
         };
       });
     });
