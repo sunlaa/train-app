@@ -1,0 +1,46 @@
+<div class="container">
+  <form [formGroup]="signupForm" (ngSubmit)="handleSignup()">
+    <h1>Sign Up</h1>
+    <div class="wrapper">
+      <label for="email">Email</label>
+      <input id="email" type="email" pInputText formControlName="email" />
+    </div>
+    <div class="wrapper">
+      <label class="password-label" for="password">Password</label>
+      <p-password
+        inputId="password"
+        formControlName="password"
+        [feedback]="false"
+      />
+      <span *ngIf="signupForm.get('password')?.hasError('minlength')"
+        >Password must be at least 8 characters long</span
+      >
+    </div>
+    <div class="wrapper">
+      <label class="password-label" for="repeatPassword">Repeat Password</label>
+      <p-password
+        inputId="repeatPassword"
+        formControlName="repeatPassword"
+        [feedback]="false"
+      />
+      <span
+        *ngIf="
+          signupForm.get('password')?.value !==
+          signupForm.get('repeatPassword')?.value
+        "
+        >Passwords do not match</span
+      >
+      <span *ngIf="signupForm.get('repeatPassword')?.hasError('minlength')"
+        >Password must be at least 8 characters long</span
+      >
+    </div>
+    <div class="btn-wrapper">
+      <p-button
+        [disabled]="signupForm.invalid"
+        label="Register"
+        type="submit"
+      />
+      <p-button label="Sign In" [text]="true" />
+    </div>
+  </form>
+</div>

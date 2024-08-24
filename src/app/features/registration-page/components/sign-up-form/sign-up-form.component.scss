@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  justify-content: center;
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 500px;
+    height: 700px;
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      .password-label {
+        margin-top: 15px;
+      }
+      span {
+        color: red;
+      }
+    }
+    .btn-wrapper {
+      display: flex;
+      margin-top: 40px;
+    }
+  }
+}
