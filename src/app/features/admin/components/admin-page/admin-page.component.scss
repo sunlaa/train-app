@@ -1,0 +1,59 @@
+::ng-deep {
+  .p-menuitem-link-active {
+    background-color: color-mix(
+      in srgb,
+      var(--primary-color) 15%,
+      #00000000 85%
+    );
+    border-radius: var(--border-radius);
+  }
+
+  .mobile-sidebar {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    width: 100%;
+
+    .p-menu {
+      width: 100%;
+    }
+  }
+}
+
+// TODO: Replace height value
+.admin-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.desktop-menu {
+  display: flex;
+}
+
+.mobile-menu-button {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+}
+
+.content {
+  flex: 1;
+  padding: 0 1em;
+  overflow-y: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .desktop-menu {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: block;
+  }
+
+  .content {
+    margin-top: 50px;
+  }
+}
