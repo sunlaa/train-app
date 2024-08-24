@@ -4,8 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'duration',
   standalone: true,
 })
-export class DuarationPipe implements PipeTransform {
-  transform(value: number): string {
+export class DurationPipe implements PipeTransform {
+  transform(value: number, onlyMin: boolean = false): string {
     let ms = value;
 
     const msInMinute = 60000;
@@ -20,11 +20,18 @@ export class DuarationPipe implements PipeTransform {
 
     const minutes = Math.floor(ms / msInMinute);
 
+    if (onlyMin) {
+      const totalMinutes = Math.floor(value / msInMinute);
+      return `${totalMinutes} min`;
+    }
+
     let result = '';
     if (days > 0) {
       result += `${days}d `;
     }
-    result += `${hours}h `;
+    if (days > 0 || hours > 0) {
+      result += `${hours}h `;
+    }
     result += `${minutes}m`;
 
     return result.trim();

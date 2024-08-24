@@ -9,8 +9,12 @@
           <p>{{ dayTickets.date | date: "EEEE" }}</p>
         </div>
       </ng-template>
-      @for (ticket of dayTickets.tickets; track $index) {
-        <app-ticket-card [ticket]="ticket"></app-ticket-card>
+      @if (dayTickets.tickets.length === 0) {
+        <h2 class="message">No rides available.</h2>
+      } @else {
+        @for (ticket of dayTickets.tickets; track $index) {
+          <app-ticket-card [ticket]="ticket"></app-ticket-card>
+        }
       }
     </p-tabPanel>
   }

@@ -6,15 +6,17 @@ import { DividerModule } from 'primeng/divider';
 import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { DuarationPipe } from '../../pipes/duration.pipe';
+import { DurationPipe } from '../../pipes/duration.pipe';
+import { ModalContentComponent } from '../modal-content/modal-content.component';
 
 @Component({
   selector: 'app-ticket-card',
   standalone: true,
   imports: [
+    ModalContentComponent,
     DatePipe,
     CurrencyPipe,
-    DuarationPipe,
+    DurationPipe,
     CardModule,
     DividerModule,
     ChipModule,
@@ -27,9 +29,9 @@ import { DuarationPipe } from '../../pipes/duration.pipe';
 export class TicketCardComponent {
   @Input({ required: true }) ticket!: Ticket;
 
-  modalVisible: boolean = false;
+  public modalVisible: boolean = false;
 
-  showRoute() {
+  public showRoute() {
     this.modalVisible = true;
   }
 }

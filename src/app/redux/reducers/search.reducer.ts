@@ -19,10 +19,12 @@ const initialState: SearchState = {
           arrivalDate: new Date('2024-08-25T12:00:00'),
           startCity: 'New York',
           endCity: 'Boston',
-          tripDuration: 14400000, // 4 hours in milliseconds
-          firstRouteStation: 'New York',
-          lastRouteStation: 'Boston',
+          tripDuration: 14400000,
+          firstRouteStation: 'London',
+          lastRouteStation: 'Minsk',
           carriages: [
+            { type: 'Economy', price: 50, freeSeats: 30 },
+            { type: 'Business', price: 100, freeSeats: 10 },
             { type: 'Economy', price: 50, freeSeats: 30 },
             { type: 'Business', price: 100, freeSeats: 10 },
             { type: 'Economy', price: 50, freeSeats: 30 },
@@ -34,26 +36,26 @@ const initialState: SearchState = {
                 station: 'New York',
                 departureTime: '08:00',
                 arrivalTime: undefined,
-                duration: 7200000,
-              }, // 2 hours in milliseconds
+                duration: 'First station',
+              },
               {
                 station: 'New Haven',
                 departureTime: '10:00',
                 arrivalTime: '09:45',
                 duration: 900000,
-              }, // 15 minutes in milliseconds
+              },
               {
                 station: 'Providence',
                 departureTime: '11:15',
                 arrivalTime: '11:00',
                 duration: 600000,
-              }, // 10 minutes in milliseconds
+              },
               {
                 station: 'Boston',
                 departureTime: undefined,
                 arrivalTime: '12:00',
-                duration: 0,
-              }, // last station
+                duration: 'Last station',
+              },
             ],
           },
         },
@@ -62,9 +64,9 @@ const initialState: SearchState = {
           arrivalDate: new Date('2024-08-25T14:00:00'),
           startCity: 'Chicago',
           endCity: 'Detroit',
-          tripDuration: 14400000, // 4 hours in milliseconds
-          firstRouteStation: 'Chicago',
-          lastRouteStation: 'Detroit',
+          tripDuration: 14400000,
+          firstRouteStation: 'Paris',
+          lastRouteStation: 'Amsterdam',
           carriages: [
             { type: 'Economy', price: 55, freeSeats: 25 },
             { type: 'Business', price: 110, freeSeats: 8 },
@@ -76,26 +78,26 @@ const initialState: SearchState = {
                 station: 'Chicago',
                 departureTime: '10:00',
                 arrivalTime: undefined,
-                duration: 7200000,
-              }, // 2 hours in milliseconds
+                duration: 'First station',
+              },
               {
                 station: 'South Bend',
                 departureTime: '12:15',
                 arrivalTime: '12:00',
                 duration: 600000,
-              }, // 10 minutes in milliseconds
+              },
               {
                 station: 'Toledo',
                 departureTime: '13:15',
                 arrivalTime: '13:00',
                 duration: 600000,
-              }, // 10 minutes in milliseconds
+              },
               {
                 station: 'Detroit',
                 departureTime: undefined,
                 arrivalTime: '14:00',
-                duration: 0,
-              }, // last station
+                duration: 'Last station',
+              },
             ],
           },
         },
@@ -104,7 +106,7 @@ const initialState: SearchState = {
           arrivalDate: new Date('2024-08-25T19:30:00'),
           startCity: 'Philadelphia',
           endCity: 'Washington D.C.',
-          tripDuration: 12600000, // 3.5 hours in milliseconds
+          tripDuration: 12600000,
           firstRouteStation: 'Philadelphia',
           lastRouteStation: 'Washington D.C.',
           carriages: [
@@ -118,20 +120,32 @@ const initialState: SearchState = {
                 station: 'Philadelphia',
                 departureTime: '16:00',
                 arrivalTime: undefined,
-                duration: 7200000,
-              }, // 2 hours in milliseconds
+                duration: 'First station',
+              },
               {
                 station: 'Baltimore',
                 departureTime: '18:00',
                 arrivalTime: '17:45',
                 duration: 900000,
-              }, // 15 minutes in milliseconds
+              },
+              {
+                station: 'South Bend',
+                departureTime: '12:15',
+                arrivalTime: '12:00',
+                duration: 600000,
+              },
+              {
+                station: 'Toledo',
+                departureTime: '13:15',
+                arrivalTime: '13:00',
+                duration: 600000,
+              },
               {
                 station: 'Washington D.C.',
                 departureTime: undefined,
                 arrivalTime: '19:30',
-                duration: 0,
-              }, // last station
+                duration: 'Last station',
+              },
             ],
           },
         },
@@ -145,7 +159,7 @@ const initialState: SearchState = {
           arrivalDate: new Date('2024-08-26T13:00:00'),
           startCity: 'San Francisco',
           endCity: 'Los Angeles',
-          tripDuration: 14400000, // 4 hours in milliseconds
+          tripDuration: 14400000,
           firstRouteStation: 'San Francisco',
           lastRouteStation: 'Los Angeles',
           carriages: [
@@ -159,26 +173,26 @@ const initialState: SearchState = {
                 station: 'San Francisco',
                 departureTime: '09:00',
                 arrivalTime: undefined,
-                duration: 7200000,
-              }, // 2 hours in milliseconds
+                duration: 'First station',
+              },
               {
                 station: 'San Jose',
                 departureTime: '11:00',
                 arrivalTime: '10:45',
                 duration: 900000,
-              }, // 15 minutes in milliseconds
+              },
               {
                 station: 'Bakersfield',
                 departureTime: '12:45',
                 arrivalTime: '12:30',
                 duration: 900000,
-              }, // 15 minutes in milliseconds
+              },
               {
                 station: 'Los Angeles',
                 departureTime: undefined,
                 arrivalTime: '13:00',
-                duration: 0,
-              }, // last station
+                duration: 'Last station',
+              },
             ],
           },
         },
@@ -187,7 +201,7 @@ const initialState: SearchState = {
           arrivalDate: new Date('2024-08-26T19:00:00'),
           startCity: 'Seattle',
           endCity: 'Portland',
-          tripDuration: 14400000, // 4 hours in milliseconds
+          tripDuration: 14400000,
           firstRouteStation: 'Seattle',
           lastRouteStation: 'Portland',
           carriages: [
@@ -201,31 +215,41 @@ const initialState: SearchState = {
                 station: 'Seattle',
                 departureTime: '15:00',
                 arrivalTime: undefined,
-                duration: 7200000,
-              }, // 2 hours in milliseconds
+                duration: 'First station',
+              },
               {
                 station: 'Tacoma',
                 departureTime: '17:00',
                 arrivalTime: '16:45',
                 duration: 900000,
-              }, // 15 minutes in milliseconds
+              },
               {
                 station: 'Vancouver',
                 departureTime: '18:15',
                 arrivalTime: '18:00',
                 duration: 900000,
-              }, // 15 minutes in milliseconds
+              },
               {
                 station: 'Portland',
                 departureTime: undefined,
                 arrivalTime: '19:00',
-                duration: 0,
-              }, // last station
+                duration: 'Last station',
+              },
             ],
           },
         },
       ],
     },
+    { date: '2024-08-27', tickets: [] },
+    { date: '2024-08-28', tickets: [] },
+    { date: '2024-08-29', tickets: [] },
+    { date: '2024-08-30', tickets: [] },
+    { date: '2024-09-01', tickets: [] },
+    { date: '2024-09-02', tickets: [] },
+    { date: '2024-09-03', tickets: [] },
+    { date: '2024-09-04', tickets: [] },
+    { date: '2024-09-05', tickets: [] },
+    { date: '2024-09-06', tickets: [] },
   ],
   error: null,
   status: 'loading',

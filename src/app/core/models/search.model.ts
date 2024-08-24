@@ -65,7 +65,7 @@ export type StopInfo = {
   station: string;
   departureTime: string | undefined;
   arrivalTime: string | undefined;
-  duration: number | 'first station' | 'last station';
+  duration: number | 'First station' | 'Last station';
 };
 
 export type DayTickets = {

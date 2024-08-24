@@ -24,7 +24,7 @@ export class SearchService {
     );
   }
 
-  getTicketsData(response: SearchResponse) {
+  private getTicketsData(response: SearchResponse) {
     const { routes, from, to } = response;
     const { stationId: fromStationId, city: startCity } = from;
     const { stationId: toStationId, city: endCity } = to;
@@ -61,7 +61,7 @@ export class SearchService {
     return ticketsData;
   }
 
-  filterTicketsByDate(tickets: Ticket[]): FilteredTickets {
+  private filterTicketsByDate(tickets: Ticket[]): FilteredTickets {
     const ticketsMap = new Map<string, Ticket[]>();
 
     if (tickets.length === 0) return [];

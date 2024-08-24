@@ -16,7 +16,6 @@ import { SearchFacadeService } from '../../services/search-facade/search-facade.
 export class ResultsComponent {
   private searcFacadeService: SearchFacadeService = inject(SearchFacadeService);
 
-  tickets$: Observable<FilteredTickets> = this.searcFacadeService.tickets$;
-
-  tabs: { title: string; content: string }[] = [];
+  public tickets$: Observable<FilteredTickets> =
+    this.searcFacadeService.tickets$;
 }
