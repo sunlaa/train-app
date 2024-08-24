@@ -1,7 +1,6 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import {
   ReactiveFormsModule,
-  FormGroup,
   FormBuilder,
   FormArray,
   AbstractControl,
@@ -50,19 +49,14 @@ export class RouteFormComponent implements OnInit {
 
   private carriagesService = inject(CarriagesSectionService);
 
-  public routeForm!: FormGroup;
+  public routeForm = this.fb.group({
+    stations: this.fb.array([]),
+    carriages: this.fb.array([]),
+  });
 
   ngOnInit(): void {
-    this.initializeForm();
     this.loadInitialData();
     this.initializeRoute();
-  }
-
-  private initializeForm() {
-    this.routeForm = this.fb.group({
-      stations: this.fb.array([]),
-      carriages: this.fb.array([]),
-    });
   }
 
   private loadInitialData() {
@@ -99,11 +93,11 @@ export class RouteFormComponent implements OnInit {
   }
 
   get stations(): FormArray {
-    return this.routeForm.get('stations') as FormArray;
+    return this.routeForm.controls.stations;
   }
 
   get carriages(): FormArray {
-    return this.routeForm.get('carriages') as FormArray;
+    return this.routeForm.controls.carriages;
   }
 
   public addEmptyStation(index?: number) {
