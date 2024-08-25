@@ -1,7 +1,6 @@
 import { TStationListed } from '@/core/models/stations.model';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { inject, Injectable } from '@angular/core';
-import { map } from 'rxjs';
 import { DropdownOptions } from '../types';
 import { formatStation } from '../utils';
 
@@ -21,12 +20,10 @@ export class StationsSectionService {
 
   loadStations(): void {
     this.stationsFacade.load();
-    this.stationsFacade.state$
-      .pipe(map(({ stations }) => stations))
-      .subscribe((stations) => {
-        this.stations = stations;
-        this.updateStationOptions([]);
-      });
+    this.stationsFacade.stations$.subscribe((stations) => {
+      this.stations = stations;
+      this.updateStationOptions([]);
+    });
   }
 
   getStationOptions(): DropdownOptions {

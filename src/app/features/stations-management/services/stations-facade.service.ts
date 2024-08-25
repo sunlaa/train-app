@@ -13,6 +13,10 @@ export class StationsFacadeService {
     return this.store.select(stationsFeature.selectStationsState);
   }
 
+  get stations$() {
+    return this.store.select(stationsFeature.selectStations);
+  }
+
   public load() {
     this.store.dispatch(stationsActions.load());
   }

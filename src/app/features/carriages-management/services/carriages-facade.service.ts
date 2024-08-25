@@ -13,6 +13,10 @@ export class CarriagesFacadeService {
     return this.store.select(carriagesFeature.selectCarriagesState);
   }
 
+  get carriages$() {
+    return this.store.select(carriagesFeature.selectCarriages);
+  }
+
   public load() {
     this.store.dispatch(carriagesActions.load());
   }

@@ -1,6 +1,5 @@
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
 import { inject, Injectable } from '@angular/core';
-import { map } from 'rxjs';
 import { TCarriage } from '@/core/models/carriages.model';
 import { DropdownOptions } from '../types';
 import { formatCarriage } from '../utils';
@@ -21,12 +20,10 @@ export class CarriagesSectionService {
 
   public loadCarriages(): void {
     this.carriagesFacade.load();
-    this.carriagesFacade.state$
-      .pipe(map(({ carriages }) => carriages))
-      .subscribe((carriages) => {
-        this.carriages = carriages;
-        this.updateCarriageOptions([]);
-      });
+    this.carriagesFacade.carriages$.subscribe((carriages) => {
+      this.carriages = carriages;
+      this.updateCarriageOptions([]);
+    });
   }
 
   public getCarriageOptions(): DropdownOptions {
