@@ -37,6 +37,6 @@ export class SignUpFormComponent implements OnInit {
   }
 
   handleSignup() {
-    console.log(this.signupForm.value);
+    // console.log(this.signupForm.value);
   }
 }
