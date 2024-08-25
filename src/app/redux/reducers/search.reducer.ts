@@ -5,7 +5,7 @@ import { searchActions } from '../actions/search.actions';
 
 export type SearchState = {
   tickets: FilteredTickets;
-  error: ApiError | null;
+  error: ApiError | Error | null;
   status: 'loading' | 'error' | 'success';
 };
 
@@ -29,14 +29,19 @@ const searchReducer = createReducer(
       status: 'success',
     }),
   ),
-  on(
-    searchActions.searchError,
-    (state, { error }): SearchState => ({
+  on(searchActions.searchError, (state, { error }): SearchState => {
+    let errorObj: Error | ApiError;
+    if (error instanceof Error) {
+      errorObj = error;
+    } else {
+      errorObj = error.error;
+    }
+    return {
       ...state,
-      error: error.error,
+      error: errorObj,
       status: 'error',
-    }),
-  ),
+    };
+  }),
 );
 
 export const searchFeature = createFeature({

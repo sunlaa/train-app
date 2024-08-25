@@ -2,8 +2,10 @@
   <div class="first-section">
     <div class="path">
       <div class="point">
-        <h3>{{ ticket.departureDate | date: "HH:mm" }}</h3>
-        <p class="date">{{ ticket.departureDate | date: "MMMM dd" }}</p>
+        <h3>{{ ticket.departureDate | date: "HH:mm" : "UTC" }}</h3>
+        <p class="date">
+          {{ ticket.departureDate | date: "MMMM dd" : "UTC" }}
+        </p>
         <p class="city">{{ ticket.startCity }}</p>
       </div>
 
@@ -12,8 +14,8 @@
       </p-divider>
 
       <div class="point">
-        <h3>{{ ticket.arrivalDate | date: "HH:mm" }}</h3>
-        <p class="date">{{ ticket.arrivalDate | date: "MMMM dd" }}</p>
+        <h3>{{ ticket.arrivalDate | date: "HH:mm" : "UTC" }}</h3>
+        <p class="date">{{ ticket.arrivalDate | date: "MMMM dd" : "UTC" }}</p>
         <p class="city">{{ ticket.endCity }}</p>
       </div>
     </div>
@@ -48,6 +50,7 @@
 </p-card>
 
 <p-dialog
+  [draggable]="false"
   [modal]="true"
   [dismissableMask]="true"
   [(visible)]="modalVisible"

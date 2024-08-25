@@ -10,18 +10,26 @@ import {
   AutoCompleteCompleteEvent,
   AutoCompleteModule,
 } from 'primeng/autocomplete';
+import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { TStationListed } from '@/core/models/stations.model';
+import { MessageService } from 'primeng/api';
+import { NotificationService } from '@/shared/services/notification.service';
 import { SearchRequest } from '@/core/models/search.model';
 import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
 
 @Component({
   selector: 'app-search-form',
   standalone: true,
-  providers: [DestroyService],
-  imports: [ReactiveFormsModule, AutoCompleteModule, CalendarModule],
+  providers: [DestroyService, MessageService, NotificationService],
+  imports: [
+    ReactiveFormsModule,
+    AutoCompleteModule,
+    CalendarModule,
+    ToastModule,
+  ],
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.scss',
 })
@@ -33,6 +41,8 @@ export class SearchFormComponent implements OnInit {
   private stationsFacade = inject(StationsFacadeService);
 
   private searchFacade = inject(SearchFacadeService);
+
+  private notification = inject(NotificationService);
 
   public options: TStationListed[] = [];
 
@@ -80,7 +90,6 @@ export class SearchFormComponent implements OnInit {
   }
 
   private getAllStations() {
-    this.stationsFacade.load();
     this.stationsFacade.state$
       .pipe(
         map(({ stations }) => stations),
@@ -121,6 +130,12 @@ export class SearchFormComponent implements OnInit {
       time: value.date!.toISOString(),
     };
 
-    this.searchFacade.search(params);
+    const state$ = this.searchFacade.search(params);
+
+    state$.subscribe((state) => {
+      if (state.status === 'error') {
+        this.notification.messageError(state.error?.message);
+      }
+    });
   }
 }

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { SearchFormComponent } from '../search-form/search-form.component';
 import { ResultsComponent } from '../results/results.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [SearchFormComponent, ResultsComponent],
+  imports: [SearchFormComponent, ResultsComponent, RouterLink],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
 })
