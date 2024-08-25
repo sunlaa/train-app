@@ -10,7 +10,7 @@ p {
   padding: 1em;
 }
 
-::ng-deep {
+::ng-deep .modal-body {
   .timeline {
     width: 100%;
   }
@@ -58,7 +58,7 @@ p {
   }
 }
 
-.body {
+.modal-body {
   width: 80%;
   display: flex;
 
@@ -85,11 +85,11 @@ p {
     width: 100%;
   }
 
-  .body {
+  .modal-body {
     width: 100%;
   }
 
-  ::ng-deep {
+  ::ng-deep .modal-body {
     .p-timeline-event {
       font-size: 0.9rem;
     }
@@ -106,17 +106,19 @@ p {
   }
 
   ::ng-deep {
-    .p-timeline-event {
-      font-size: 0.8rem;
-      grid-template-columns: 1fr 0.2fr 1fr 1fr;
+    .p-dialog-content:has(.modal-body) {
+      padding: 1em 0;
     }
 
-    .p-timeline-event-content {
-      grid-template-columns: 1fr 1fr;
-    }
+    .modal-body {
+      .p-timeline-event {
+        font-size: 0.8rem;
+        grid-template-columns: 1fr 0.2fr 1fr 1fr;
+      }
 
-    .p-dialog-content {
-      padding: 1em;
+      .p-timeline-event-content {
+        grid-template-columns: 1fr 1fr;
+      }
     }
   }
 }

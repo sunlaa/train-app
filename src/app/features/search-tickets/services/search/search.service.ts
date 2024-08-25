@@ -14,10 +14,10 @@ import { map, Observable } from 'rxjs';
 export class SearchService {
   private baseURL: string = '/api/search';
 
-  http: HttpClient = inject(HttpClient);
+  private http: HttpClient = inject(HttpClient);
 
-  search(params: SearchRequest): Observable<FilteredTickets> {
-    return this.http.get<SearchResponse>('/api/search', { params }).pipe(
+  public search(params: SearchRequest): Observable<FilteredTickets> {
+    return this.http.get<SearchResponse>(this.baseURL, { params }).pipe(
       map((data) => {
         return this.filterTicketsByDate(this.getTicketsData(data));
       }),
@@ -50,8 +50,8 @@ export class SearchService {
           startCity,
           endCity,
           tripDuration,
-          firstRouteStation: `${firstRouteStationId}`,
-          lastRouteStation: `${lastRouteStationId}`,
+          firstRouteStation: firstRouteStationId.toString(),
+          lastRouteStation: lastRouteStationId.toString(),
           carriages: [],
           routeDetails: { routeId: 1, stopInfo: [] },
         };

@@ -1,6 +1,6 @@
 @let filteredTickets = tickets$ | async;
 
-<p-tabView [scrollable]="true">
+<p-tabView [scrollable]="true" styleClass="results">
   @for (dayTickets of filteredTickets; track dayTickets.date) {
     <p-tabPanel>
       <ng-template pTemplate="header">

@@ -1,10 +1,11 @@
-<form [formGroup]="searchForm" (ngSubmit)="search()">
+<form [formGroup]="searchForm" (ngSubmit)="search()" class="search-form">
   <label for="from">From:</label>
   <label for="to">To:</label>
   <label for="date">Date/Time:</label>
 
   <p-autoComplete
-    class="from"
+    class="autocomplete"
+    styleClass="from"
     inputId="from"
     placeholder="Paris"
     formControlName="from"
@@ -16,7 +17,8 @@
   <i class="pi pi-arrows-h"></i>
 
   <p-autoComplete
-    class="to"
+    class="autocomplete"
+    styleClass="to"
     inputId="to"
     placeholder="Madrid"
     formControlName="to"
@@ -28,7 +30,7 @@
   <div class="date-time">
     <p-calendar
       inputId="date"
-      class="date"
+      inputStyleClass="date"
       placeholder="12 August, 2024"
       formControlName="date"
       dateFormat="dd MM, yy"
@@ -37,7 +39,7 @@
       [minDate]="minDate"
     />
     <p-calendar
-      class="time"
+      inputStyleClass="time"
       placeholder="00:00"
       formControlName="time"
       inputId="calendar-timeonly"
