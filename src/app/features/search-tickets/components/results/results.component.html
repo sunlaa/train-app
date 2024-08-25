@@ -1,0 +1,21 @@
+@let filteredTickets = tickets$ | async;
+
+<p-tabView [scrollable]="true" styleClass="results">
+  @for (dayTickets of filteredTickets; track dayTickets.date) {
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="tab">
+          <h3>{{ dayTickets.date | date: "MMMM dd" }}</h3>
+          <p>{{ dayTickets.date | date: "EEEE" }}</p>
+        </div>
+      </ng-template>
+      @if (dayTickets.tickets.length === 0) {
+        <h2 class="message">No rides available.</h2>
+      } @else {
+        @for (ticket of dayTickets.tickets; track $index) {
+          <app-ticket-card [ticket]="ticket"></app-ticket-card>
+        }
+      }
+    </p-tabPanel>
+  }
+</p-tabView>

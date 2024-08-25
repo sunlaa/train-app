@@ -11,21 +11,21 @@ import { DestroyService } from '@/core/services/destroy/destroy.service';
 @Component({
   selector: 'app-search-form',
   standalone: true,
-  providers: [],
+  providers: [DestroyService],
   imports: [ReactiveFormsModule, AutoCompleteModule, CalendarModule],
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.scss',
 })
 export class SearchFormComponent implements OnInit {
-  destroy$: Subject<void> = inject(DestroyService);
+  private destroy$: Subject<void> = inject(DestroyService);
 
-  fb: FormBuilder = inject(FormBuilder);
+  private fb: FormBuilder = inject(FormBuilder);
 
-  options: string[] = [];
+  public options: string[] = [];
 
-  minDate: Date = new Date();
+  public minDate: Date = new Date();
 
-  searchForm = this.fb.group({
+  public searchForm = this.fb.group({
     from: ['', Validators.required],
     to: ['', Validators.required],
     date: ['', [Validators.required]],
@@ -61,7 +61,7 @@ export class SearchFormComponent implements OnInit {
     this.minDate.setDate(today.getDate() + 1);
   }
 
-  getCountries(event: AutoCompleteCompleteEvent) {
+  public getCountries(event: AutoCompleteCompleteEvent) {
     const options = ['Warsaw', 'Minsk', 'Madrid', 'Paris'];
     const filtered: string[] = [];
     const { query } = event;
@@ -76,6 +76,6 @@ export class SearchFormComponent implements OnInit {
   }
 
   search() {
-    // console.log(this.searchForm.value);
+    return this.searchForm.value;
   }
 }

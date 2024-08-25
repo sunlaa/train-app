@@ -23,6 +23,7 @@ import {
   stationsFeature,
   routesFeature,
 } from './redux/reducers';
+import { searchFeature } from './redux/reducers/search.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -34,6 +35,7 @@ export const appConfig: ApplicationConfig = {
     provideState(routesFeature),
     provideState(stationsFeature),
     provideState(carriagesFeature),
+    provideState(searchFeature),
     provideEffects([RoutesEffects, StationsEffects, CarriagesEffects]),
     provideRouterStore(),
     provideStoreDevtools({
