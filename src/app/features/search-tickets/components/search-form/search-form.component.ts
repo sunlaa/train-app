@@ -1,12 +1,21 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { map, Subject, takeUntil } from 'rxjs';
 import {
   AutoCompleteCompleteEvent,
   AutoCompleteModule,
 } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
+import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
+import { TStationListed } from '@/core/models/stations.model';
+import { SearchRequest } from '@/core/models/search.model';
+import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
 
 @Component({
   selector: 'app-search-form',
@@ -21,14 +30,20 @@ export class SearchFormComponent implements OnInit {
 
   private fb: FormBuilder = inject(FormBuilder);
 
-  public options: string[] = [];
+  private stationsFacade = inject(StationsFacadeService);
+
+  private searchFacade = inject(SearchFacadeService);
+
+  public options: TStationListed[] = [];
+
+  private stations: TStationListed[] = [];
 
   public minDate: Date = new Date();
 
   public searchForm = this.fb.group({
-    from: ['', Validators.required],
-    to: ['', Validators.required],
-    date: ['', [Validators.required]],
+    from: new FormControl<TStationListed | null>(null, [Validators.required]),
+    to: new FormControl<TStationListed | null>(null, [Validators.required]),
+    date: new FormControl<Date | null>(null, [Validators.required]),
     time: [{ value: '', disabled: true }],
   });
 
@@ -49,6 +64,12 @@ export class SearchFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getAllStations();
+    this.enableTimeInputCheck();
+    this.initMinDate();
+  }
+
+  private enableTimeInputCheck() {
     this.date.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
       if (!this.date.hasError('required')) {
         this.time.enable();
@@ -56,18 +77,32 @@ export class SearchFormComponent implements OnInit {
         this.time.disable();
       }
     });
+  }
 
+  private getAllStations() {
+    this.stationsFacade.load();
+    this.stationsFacade.state$
+      .pipe(
+        map(({ stations }) => stations),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((stations) => {
+        this.stations = stations;
+      });
+  }
+
+  private initMinDate() {
     const today = new Date();
     this.minDate.setDate(today.getDate() + 1);
   }
 
-  public getCountries(event: AutoCompleteCompleteEvent) {
-    const options = ['Warsaw', 'Minsk', 'Madrid', 'Paris'];
-    const filtered: string[] = [];
+  public getStations(event: AutoCompleteCompleteEvent) {
+    const options = this.stations;
+    const filtered: TStationListed[] = [];
     const { query } = event;
 
     options.forEach((opt) => {
-      if (opt.toLowerCase().includes(query.toLowerCase())) {
+      if (opt.city.toLowerCase().includes(query.toLowerCase())) {
         filtered.push(opt);
       }
     });
@@ -76,6 +111,16 @@ export class SearchFormComponent implements OnInit {
   }
 
   search() {
-    return this.searchForm.value;
+    const { value } = this.searchForm;
+
+    const params: SearchRequest = {
+      fromLatitude: value.from!.latitude,
+      fromLongitude: value.from!.longitude,
+      toLatitude: value.to!.latitude,
+      toLongitude: value.to!.longitude,
+      time: value.date!.toISOString(),
+    };
+
+    this.searchFacade.search(params);
   }
 }

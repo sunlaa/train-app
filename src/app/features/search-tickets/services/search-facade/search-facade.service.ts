@@ -1,3 +1,5 @@
+import { SearchRequest } from '@/core/models/search.model';
+import { searchActions } from '@/redux/actions/search.actions';
 import { searchFeature } from '@/redux/reducers/search.reducer';
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -6,7 +8,7 @@ import { Store } from '@ngrx/store';
   providedIn: 'root',
 })
 export class SearchFacadeService {
-  store: Store = inject(Store);
+  private store: Store = inject(Store);
 
   get state$() {
     return this.store.select(searchFeature.selectSearchState);
@@ -14,5 +16,17 @@ export class SearchFacadeService {
 
   get tickets$() {
     return this.store.select(searchFeature.selectTickets);
+  }
+
+  get status$() {
+    return this.store.select(searchFeature.selectStatus);
+  }
+
+  get error$() {
+    return this.store.select(searchFeature.selectError);
+  }
+
+  public search(params: SearchRequest) {
+    this.store.dispatch(searchActions.search({ params }));
   }
 }

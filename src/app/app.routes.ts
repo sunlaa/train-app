@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { SearchFormComponent } from './features/search-tickets/components/search-form/search-form.component';
+import { HomePageComponent } from './features/search-tickets/components/home-page/home-page.component';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: SearchFormComponent,
+    component: HomePageComponent,
   },
 ];

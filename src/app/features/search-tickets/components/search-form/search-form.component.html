@@ -11,7 +11,8 @@
     formControlName="from"
     [suggestions]="options"
     [forceSelection]="true"
-    (completeMethod)="getCountries($event)"
+    field="city"
+    (completeMethod)="getStations($event)"
   />
 
   <i class="pi pi-arrows-h"></i>
@@ -24,7 +25,8 @@
     formControlName="to"
     [suggestions]="options"
     [forceSelection]="true"
-    (completeMethod)="getCountries($event)"
+    field="city"
+    (completeMethod)="getStations($event)"
   />
 
   <div class="date-time">
@@ -41,7 +43,7 @@
     <p-calendar
       inputStyleClass="time"
       placeholder="00:00"
-      formControlName="time"
+      formControlName="date"
       inputId="calendar-timeonly"
       [timeOnly]="true"
     />
