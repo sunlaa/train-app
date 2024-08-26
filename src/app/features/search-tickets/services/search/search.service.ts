@@ -11,7 +11,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
-import { StationsMap } from '@/core/models/stations.model';
+import { StationMap } from '@/core/models/stations.model';
+import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,8 @@ export class SearchService {
   private http: HttpClient = inject(HttpClient);
 
   private stationsFacade = inject(StationsFacadeService);
+
+  private carriageFacade = inject(CarriagesFacadeService);
 
   public search(params: SearchRequest): Observable<FilteredTickets> {
     return this.http.get<SearchResponse>(this.baseURL, { params }).pipe(
@@ -39,8 +42,10 @@ export class SearchService {
     const ticketsData: Ticket[] = routes.flatMap((route) => {
       const routeId = route.id;
       const stationMap = this.stationsFacade.stationMap();
+      const carriageMap = this.carriageFacade.carriageMap();
 
-      if (!stationMap) throw Error('No station map in store');
+      if (!stationMap) throw Error('No station map in store.');
+      if (!carriageMap) throw Error('No carriage map in store.');
 
       const firstRouteStation = stationMap[route.path[0]].city;
       const lastRouteStation =
@@ -49,7 +54,7 @@ export class SearchService {
       const startRide = route.path.indexOf(fromId);
       const endRide = route.path.indexOf(toId);
       if (startRide === -1 || endRide === -1) {
-        throw Error('The start or end point of the ride was not found');
+        throw Error('The start or end point of the ride was not found.');
       }
 
       const ridePathIds = route.path.slice(startRide, endRide + 1);
@@ -87,7 +92,7 @@ export class SearchService {
   private getRouteDetails(
     ridePath: Segment[],
     ridePathIds: number[],
-    stationsMap: StationsMap,
+    stationsMap: StationMap,
   ): StopInfo[] {
     return ridePath.map((segment, i) => {
       const station = stationsMap[ridePathIds[i]].city;
@@ -121,6 +126,53 @@ export class SearchService {
       };
     });
   }
+
+  // private getCarriageData(
+  //   trainCarriage: string[],
+  //   carriageMap: CarriageMap,
+  //   ridePath: Segment[],
+  // ): CarriageData[] {
+  //   const trainCarriages = trainCarriage.map((carriage) => ({
+  //     code: carriageMap[carriage].code,
+  //     seats: carriageMap[carriage].seats,
+  //   }));
+  //   const { occupiedSeats } = ridePath[0];
+
+  //   let startIndex = 0;
+  //   const freeSeats = trainCarriages.map((carriage) => {
+  //     let occupiedCount = 0;
+
+  //     const endIndex = startIndex + carriage.seats;
+
+  //     while (
+  //       occupiedSeats[startIndex] <= endIndex &&
+  //       startIndex < occupiedSeats.length
+  //     ) {
+  //       occupiedCount += 1;
+  //       startIndex += 1;
+  //     }
+
+  //     return {
+  //       freeSeats: carriage.seats - occupiedCount,
+  //       code: carriage.code,
+  //     };
+  //   });
+
+  //   const freeSeatsByCode = freeSeats.reduce<{ [code: string]: number }>(
+  //     (acc, carriage) => {
+  //       acc[carriage.code] = (acc[carriage.code] || 0) + carriage.freeSeats;
+  //       return acc;
+  //     },
+  //     {},
+  //   );
+
+  //   ridePath.map((segment) => {
+  //     const { price } = segment;
+  //     return [];
+  //   });
+
+  //   return [];
+  // }
 
   private getTravelDates(routes: SearchRoute[], from: number, to: number) {
     return routes.flatMap((route) => {

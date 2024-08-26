@@ -1,7 +1,7 @@
-import { StationsMap } from '@/core/models/stations.model';
+import { StationMap } from '@/core/models/stations.model';
 import { stationsActions } from '@/redux/actions';
 import { stationsFeature } from '@/redux/reducers';
-import { selectStationsMap } from '@/redux/selectors/selectors';
+import { selectStationMap } from '@/redux/selectors/selectors';
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 export class StationsFacadeService {
   private store = inject(Store);
 
-  public stationMap: Signal<StationsMap | undefined> = signal(undefined);
+  public stationMap: Signal<StationMap | undefined> = signal(undefined);
 
   constructor() {
     this.updateMap();
@@ -27,7 +27,7 @@ export class StationsFacadeService {
   }
 
   get stationsMap$() {
-    return this.store.select(selectStationsMap);
+    return this.store.select(selectStationMap);
   }
 
   updateMap() {

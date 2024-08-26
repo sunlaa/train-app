@@ -18,4 +18,4 @@ export type TStationCreation = Omit<TStationBasic, 'id'> & {
   relations: number[];
 };
 
-export type StationsMap = { [key: number]: TStationListed };
+export type StationMap = { [id: number]: TStationListed };

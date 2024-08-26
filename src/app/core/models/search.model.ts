@@ -51,7 +51,7 @@ export type Ticket = {
 };
 
 export type CarriageData = {
-  type: string;
+  name: string;
   price: number;
   freeSeats: number;
 };

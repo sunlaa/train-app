@@ -41,7 +41,7 @@
   <div class="second-section">
     @for (carriage of ticket.carriages; track $index) {
       <div class="price-tile">
-        <p class="carriage-type">Carriage type: {{ carriage.type }}</p>
+        <p class="carriage-type">Carriage type: {{ carriage.name }}</p>
         <p class="seats">{{ carriage.freeSeats }} seats</p>
         <h4>{{ carriage.price | currency }}</h4>
       </div>
