@@ -2,7 +2,7 @@ import { CarriagesFacadeService } from '@/features/carriages-management/services
 import { inject, Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { TCarriage } from '@/core/models/carriages.model';
-import { DropdownOptions } from '../types';
+import { SelectItem } from 'primeng/api';
 import { formatCarriage } from '../utils';
 
 @Injectable({
@@ -13,11 +13,7 @@ export class CarriagesSectionService {
 
   public carriages: TCarriage[] = [];
 
-  private carriageOptions: DropdownOptions = {
-    original: [],
-    secondLast: [],
-    last: [],
-  };
+  public carriageOptions: SelectItem[] = [];
 
   public loadCarriages(): void {
     this.carriagesFacade.load();
@@ -25,21 +21,7 @@ export class CarriagesSectionService {
       .pipe(map(({ carriages }) => carriages))
       .subscribe((carriages) => {
         this.carriages = carriages;
-        this.updateCarriageOptions([]);
+        this.carriageOptions = carriages.map(formatCarriage);
       });
-  }
-
-  public getCarriageOptions(): DropdownOptions {
-    return this.carriageOptions;
-  }
-
-  public updateCarriageOptions(selectedOptions: string[]): void {
-    this.carriageOptions.original = this.carriages.map(formatCarriage);
-    this.carriageOptions.last = this.carriages
-      .map(formatCarriage)
-      .filter((opt) => !selectedOptions.includes(opt.value));
-    this.carriageOptions.secondLast = this.carriages
-      .map(formatCarriage)
-      .filter((opt) => !selectedOptions.slice(0, -2).includes(opt.value));
   }
 }

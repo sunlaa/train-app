@@ -1,1 +1,34 @@
-<app-route-form></app-route-form>
+<p-toast />
+<p-confirmDialog />
+<div #pageTop class="page">
+  <p-button (onClick)="createRouteClick()">Create</p-button>
+  @if (formToggle) {
+    <app-route-form
+      (closeForm)="closeForm()"
+      [route]="formRoute"
+    ></app-route-form>
+  }
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="offset"
+    [rows]="routesPerPage"
+    [totalRecords]="totalRoutes"
+    [rowsPerPageOptions]="routesPerPageOptions"
+  />
+  <div class="items">
+    @for (route of pageRoutes; track route.id) {
+      <app-route-item
+        (editRouteClick)="editRouteClick($event)"
+        (deleteRoute)="deleteRoute($event)"
+        [route]="route"
+      ></app-route-item>
+    }
+  </div>
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="offset"
+    [rows]="routesPerPage"
+    [totalRecords]="totalRoutes"
+    [rowsPerPageOptions]="routesPerPageOptions"
+  />
+</div>

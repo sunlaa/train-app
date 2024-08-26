@@ -1,0 +1,40 @@
+<p-panel class="panel" [header]="id">
+  <ng-template pTemplate="icons">
+    <button
+      (click)="editClick()"
+      pTooltip="Edit"
+      tooltipPosition="bottom"
+      class="p-panel-header-icon"
+    >
+      <span class="pi pi-pen-to-square"></span>
+    </button>
+    <button
+      (click)="assignRideClick()"
+      pTooltip="Assign ride"
+      tooltipPosition="bottom"
+      class="p-panel-header-icon"
+    >
+      <span class="pi pi-calendar-clock"></span>
+    </button>
+    <button
+      (click)="deleteClick($event)"
+      pTooltip="Delete"
+      tooltipPosition="bottom"
+      class="p-panel-header-icon"
+    >
+      <span class="pi pi-trash"></span>
+    </button>
+  </ng-template>
+  <div class="info-section">
+    <h3>Cities</h3>
+    <p>
+      {{ stations }}
+    </p>
+  </div>
+  <div class="info-section">
+    <h3>Carriages</h3>
+    <p>
+      {{ carriages }}
+    </p>
+  </div>
+</p-panel>

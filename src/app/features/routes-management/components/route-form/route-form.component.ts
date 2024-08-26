@@ -1,43 +1,36 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
 import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormArray,
-  AbstractControl,
-} from '@angular/forms';
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, FormArray } from '@angular/forms';
 import { MessageService, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { ToastModule } from 'primeng/toast';
 import { TRoute } from '@/core/models/routes.model';
 import { RoutesFacadeService } from '../../services/routes-facade.service';
-import { disableControls } from '../../utils';
 import { StationsSectionService } from '../../services/stations-section.service';
 import { CarriagesSectionService } from '../../services/carriages-section.service';
-
-type DropdownOptions = {
-  original: SelectItem[];
-  secondLast: SelectItem[];
-  last: SelectItem[];
-};
 
 @Component({
   selector: 'app-route-form',
   standalone: true,
-  imports: [
-    ButtonModule,
-    DropdownModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    ToastModule,
-  ],
-  providers: [MessageService],
+  imports: [ButtonModule, DropdownModule, ReactiveFormsModule, InputTextModule],
   templateUrl: './route-form.component.html',
   styleUrl: './route-form.component.scss',
 })
-export class RouteFormComponent implements OnInit {
+export class RouteFormComponent implements OnInit, OnChanges {
+  @Input() collapsed: boolean | undefined;
+
   @Input() route: TRoute | undefined;
+
+  @Output() closeForm = new EventEmitter<void>();
 
   private messageService = inject(MessageService);
 
@@ -57,6 +50,14 @@ export class RouteFormComponent implements OnInit {
   ngOnInit(): void {
     this.loadInitialData();
     this.initializeRoute();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { route } = changes;
+    if (route && !route.isFirstChange()) {
+      this.resetForm();
+      this.initializeRoute();
+    }
   }
 
   private loadInitialData() {
@@ -105,7 +106,6 @@ export class RouteFormComponent implements OnInit {
     const isLast = index === undefined || index === controls.length - 1;
     if (isLast) {
       this.stations.push(this.fb.control(''));
-      disableControls(controls, controls.length - 2);
     }
     const selectedOptions = controls.map((ctrl) => ctrl.value);
     this.stationsService.updateStationOptions(selectedOptions);
@@ -116,56 +116,26 @@ export class RouteFormComponent implements OnInit {
     const isLast = index === undefined || index === controls.length - 1;
     if (isLast) {
       this.carriages.push(this.fb.control(''));
-      disableControls(controls, controls.length - 2);
     }
-    const selectedOptions = controls.map((ctrl) => ctrl.value);
-    this.carriagesService.updateCarriageOptions(selectedOptions);
   }
 
   public getStationDropdownOptions(index: number): SelectItem[] {
-    const { controls } = this.stations;
-    return this.getDropdownOptions(
-      index,
-      controls,
-      this.stationsService.getStationOptions(),
-    );
+    return this.stationsService.stationOptions[index];
   }
 
-  public getCarriageDropdownOptions(index: number): SelectItem[] {
-    const { controls } = this.carriages;
-    return this.getDropdownOptions(
-      index,
-      controls,
-      this.carriagesService.getCarriageOptions(),
-    );
-  }
-
-  private getDropdownOptions(
-    index: number,
-    controls: AbstractControl[],
-    options: DropdownOptions,
-  ): SelectItem[] {
-    const lastIndex = controls.length - 1;
-    const secondLastIndex = lastIndex - 1;
-    if (index === lastIndex) return options.last;
-    if (index === secondLastIndex) return options.secondLast;
-    return options.original;
+  public getCarriageDropdownOptions(): SelectItem[] {
+    return this.carriagesService.carriageOptions;
   }
 
   public removeStation(index: number) {
     const { controls } = this.stations;
     this.stations.removeAt(index);
     const selectedOptions = controls.map((ctrl) => ctrl.value);
-    disableControls(controls, controls.length - 2);
     this.stationsService.updateStationOptions(selectedOptions);
   }
 
   public removeCarriage(index: number) {
-    const { controls } = this.carriages;
     this.carriages.removeAt(index);
-    disableControls(controls, controls.length - 2);
-    const selectedOptions = controls.map((ctrl) => ctrl.value);
-    this.carriagesService.updateCarriageOptions(selectedOptions);
   }
 
   private messageSuccess(message: string | undefined) {
@@ -185,12 +155,13 @@ export class RouteFormComponent implements OnInit {
   }
 
   private resetForm() {
-    this.route = undefined;
     this.routeForm.reset();
     this.stations.clear();
     this.carriages.clear();
-    this.addEmptyStation();
-    this.addEmptyCarriage();
+  }
+
+  public closeFormClick() {
+    this.closeForm.emit();
   }
 
   public onSubmit() {
@@ -215,6 +186,7 @@ export class RouteFormComponent implements OnInit {
                 : 'Route successfully created',
             );
             this.resetForm();
+            this.closeForm.emit();
           } else {
             this.messageError(state.error?.message);
           }
