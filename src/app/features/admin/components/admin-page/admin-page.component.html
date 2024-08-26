@@ -1,0 +1,20 @@
+<div class="admin-layout">
+  <p-menu [model]="items" class="desktop-menu"></p-menu>
+
+  <p-button
+    (onClick)="mobileSidebarVisible = true"
+    icon="pi pi-list"
+    class="mobile-menu-button"
+  ></p-button>
+
+  <p-sidebar [(visible)]="mobileSidebarVisible">
+    <ng-template pTemplate="header">
+      <h2>Admin</h2>
+    </ng-template>
+    <p-menu [model]="routeItems" class="mobile-sidebar"></p-menu>
+  </p-sidebar>
+
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
