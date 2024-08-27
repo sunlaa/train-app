@@ -1,0 +1,23 @@
+<p-panel
+  class="panel"
+  header="Ride {{ rideId }}"
+  [toggleable]="true"
+  [collapsed]="true"
+  toggler="header"
+>
+  @for (segment of segments; track $index) {
+    @if (isStationSegmentData(segment)) {
+      <app-station-segment
+        (dateChange)="dateChangeEvent($event)"
+        class="grid-item station"
+        [segmentData]="segment"
+      ></app-station-segment>
+    } @else {
+      <app-price-segment
+        (priceChange)="priceChangeEvent($event)"
+        class="grid-item price"
+        [segmentData]="segment"
+      ></app-price-segment>
+    }
+  }
+</p-panel>

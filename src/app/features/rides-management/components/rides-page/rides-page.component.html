@@ -1,0 +1,44 @@
+@switch (storeStatus) {
+  @case ("loading") {
+    <div class="loading-wrapper">
+      <p-progressSpinner ariaLabel="loading" />
+    </div>
+  }
+  @case ("success") {
+    <p-toast />
+    <div class="page">
+      <p-button
+        label="Back"
+        icon="pi pi-chevron-left"
+        (onClick)="backClick()"
+      ></p-button>
+      <h1>
+        {{ title }}
+      </h1>
+      <p-button label="Create" (onClick)="createClick()"></p-button>
+      @if (formToggle) {
+        <app-ride-form
+          [stations]="stations"
+          [carriages]="carriages"
+          (createRide)="rideCreateEvent($event)"
+          (closeForm)="closeFormEvent()"
+        ></app-ride-form>
+      }
+      <div class="rides">
+        @for (ride of route?.schedule; track $index) {
+          <app-ride-item
+            (rideChange)="rideChangeEvent($event)"
+            [ride]="ride"
+            [stations]="stations"
+            [carriages]="carriages"
+          ></app-ride-item>
+        }
+      </div>
+    </div>
+  }
+  @case ("error") {
+    <p>
+      {{ errorMessage }}
+    </p>
+  }
+}

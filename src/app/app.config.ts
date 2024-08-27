@@ -17,11 +17,13 @@ import {
   CarriagesEffects,
   StationsEffects,
   RoutesEffects,
+  RidesEffects,
 } from './redux/effects';
 import {
   carriagesFeature,
   stationsFeature,
   routesFeature,
+  ridesFeature,
 } from './redux/reducers';
 import { searchFeature } from './redux/reducers/search.reducer';
 
@@ -36,7 +38,13 @@ export const appConfig: ApplicationConfig = {
     provideState(stationsFeature),
     provideState(carriagesFeature),
     provideState(searchFeature),
-    provideEffects([RoutesEffects, StationsEffects, CarriagesEffects]),
+    provideState(ridesFeature),
+    provideEffects([
+      RoutesEffects,
+      StationsEffects,
+      CarriagesEffects,
+      RidesEffects,
+    ]),
     provideRouterStore(),
     provideStoreDevtools({
       maxAge: 25,

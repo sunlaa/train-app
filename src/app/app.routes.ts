@@ -4,6 +4,7 @@ import { AdminPageComponent } from './features/admin/components/admin-page/admin
 import { StationsPageComponent } from './features/stations-management/components/stations-page/stations-page.component';
 import { CarriagesPageComponent } from './features/carriages-management/components/carriages-page/carriages-page.component';
 import { RoutesPageComponent } from './features/routes-management/components/routes-page/routes-page.component';
+import { RidesPageComponent } from './features/rides-management/components/rides-page/rides-page.component';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,10 @@ export const routes: Routes = [
       {
         path: 'carriages',
         component: CarriagesPageComponent,
+      },
+      {
+        path: 'routes/:routeId',
+        component: RidesPageComponent,
       },
       {
         path: 'routes',

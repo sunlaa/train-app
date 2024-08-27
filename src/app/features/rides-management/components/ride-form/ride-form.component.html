@@ -1,0 +1,74 @@
+<form [formGroup]="rideForm">
+  <div class="ride">
+    @for (station of stations; let stationIndex = $index; track station) {
+      <div class="grid-item station" formArrayName="dates">
+        <div class="heading">
+          <p>{{ station }}</p>
+        </div>
+        <div class="dates">
+          @if (!$first) {
+            <div class="date-wrapper">
+              <span>Arrival: </span>
+              <p-calendar
+                [formControlName]="stationIndex * 2 - 1"
+                inputId="calendar-12h"
+                [showTime]="true"
+                hourFormat="12"
+              />
+            </div>
+          }
+          @if (!$last) {
+            <div class="date-wrapper">
+              <span>Departure: </span>
+              <p-calendar
+                [formControlName]="$first ? 0 : stationIndex * 2"
+                inputId="calendar-12h"
+                [showTime]="true"
+                hourFormat="12"
+              />
+            </div>
+          }
+        </div>
+      </div>
+      @if (!$last) {
+        <div class="grid-item price" formArrayName="prices">
+          <div class="heading">
+            <p>Price</p>
+          </div>
+          <div class="prices">
+            @for (
+              carriage of carriages;
+              let carriageIndex = $index;
+              track carriage
+            ) {
+              <div class="price-data">
+                <span class="carriage">{{ carriage }}</span>
+                <p-inputNumber
+                  [formControlName]="
+                    stationIndex * carriages.length + carriageIndex
+                  "
+                  inputId="currency-us"
+                  mode="currency"
+                  currency="USD"
+                  locale="en-US"
+                  [min]="0"
+                  class="price-input"
+                />
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+  <div class="buttons">
+    <p-button
+      label="Close"
+      icon="pi pi-times"
+      (onClick)="closeFormClick()"
+      [outlined]="true"
+      severity="danger"
+    ></p-button>
+    <p-button label="Save" icon="pi pi-check" (onClick)="onSubmit()"></p-button>
+  </div>
+</form>
