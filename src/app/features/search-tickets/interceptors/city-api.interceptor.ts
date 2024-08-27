@@ -1,6 +1,6 @@
 import { HttpHandlerFn, HttpRequest } from '@angular/common/http';
 
-export function searchInterceptor(
+export function cityApiInterceptor(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn,
 ) {

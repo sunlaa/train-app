@@ -5,11 +5,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { map, Subject, takeUntil } from 'rxjs';
+import { map, Subject, take, takeUntil } from 'rxjs';
 import {
   AutoCompleteCompleteEvent,
   AutoCompleteModule,
 } from 'primeng/autocomplete';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
@@ -19,6 +21,7 @@ import { NotificationService } from '@/shared/services/notification.service';
 import { SearchRequest, SearchStation } from '@/core/models/search.model';
 import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
 import { CityApiService } from '../../services/city-api/city-api.service';
+import { uniqueStations } from '../../utils';
 
 @Component({
   selector: 'app-search-form',
@@ -29,6 +32,8 @@ import { CityApiService } from '../../services/city-api/city-api.service';
     AutoCompleteModule,
     CalendarModule,
     ToastModule,
+    InputIconModule,
+    IconFieldModule,
   ],
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.scss',
@@ -44,7 +49,7 @@ export class SearchFormComponent implements OnInit {
 
   private notification = inject(NotificationService);
 
-  private cityApiService = inject(CityApiService);
+  public cityApiService = inject(CityApiService);
 
   public options: SearchStation[] = [];
 
@@ -79,29 +84,7 @@ export class SearchFormComponent implements OnInit {
     this.getAllStations();
     this.enableTimeInputCheck();
     this.initMinDate();
-
-    // this.from.valueChanges
-    //   .pipe(
-    //     tap((value) => {
-    //       console.log(value);
-    //     }),
-    //   )
-    //   .subscribe();
   }
-
-  // ngAfterViewInit() {
-  //   fromEvent(this.searchInput.nativeElement, 'input').pipe(
-  //     map((event: Event) => (event.target as HTMLInputElement).value),
-  //     filter((value) => value.length >= 3),
-  //     debounceTime(500),
-  //     distinctUntilChanged(),
-  //     switchMap((query) => {
-  //       console.log('Hello!');
-  //       this.cityApiService.searchCity(query);
-  //       return of(query);
-  //     }),
-  //   );
-  // }
 
   private enableTimeInputCheck() {
     this.date.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -134,22 +117,27 @@ export class SearchFormComponent implements OnInit {
   }
 
   public getStations(event: AutoCompleteCompleteEvent) {
-    const options = this.stations;
-    const filtered: SearchStation[] = [];
     const { query } = event;
 
-    this.cityApiService.searchCity(query);
+    this.cityApiService
+      .searchCity(query)
+      .pipe(take(1))
+      .subscribe((apiStations) => {
+        const options = [...this.stations, ...apiStations];
 
-    options.forEach((opt) => {
-      if (opt.city.toLowerCase().includes(query.toLowerCase())) {
-        filtered.push(opt);
-      }
-    });
+        const filtered: SearchStation[] = [];
 
-    this.options = filtered;
+        options.forEach((opt) => {
+          if (opt.city.toLowerCase().includes(query.toLowerCase())) {
+            filtered.push(opt);
+          }
+        });
+
+        this.options = uniqueStations(...filtered);
+      });
   }
 
-  search() {
+  public search() {
     const { value } = this.searchForm;
 
     const params: SearchRequest = {
@@ -160,12 +148,6 @@ export class SearchFormComponent implements OnInit {
       time: value.date!.toISOString(),
     };
 
-    const state$ = this.searchFacade.search(params);
-
-    state$.subscribe((state) => {
-      if (state.status === 'error') {
-        this.notification.messageError(state.error?.message);
-      }
-    });
+    this.searchFacade.search(params);
   }
 }

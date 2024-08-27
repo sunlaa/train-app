@@ -43,6 +43,7 @@ const searchReducer = createReducer(
       ...state,
       error: errorObj,
       status: 'error',
+      isLoading: false,
     };
   }),
 );

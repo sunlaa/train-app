@@ -3,7 +3,6 @@ import { searchActions } from '@/redux/actions/search.actions';
 import { searchFeature } from '@/redux/reducers/search.reducer';
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { filter, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -33,9 +32,5 @@ export class SearchFacadeService {
 
   public search(params: SearchRequest) {
     this.store.dispatch(searchActions.search({ params }));
-    return this.store.select(searchFeature.selectSearchState).pipe(
-      filter(({ isLoading }) => !isLoading),
-      take(1),
-    );
   }
 }
