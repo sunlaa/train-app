@@ -1,5 +1,12 @@
 ::ng-deep {
-  .results {
+  .badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0.8em;
+  }
+
+  .search-results {
     max-width: 1100px;
     width: 100%;
 
@@ -11,6 +18,12 @@
 }
 
 .tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2em;
+
   h3 {
     white-space: nowrap;
     margin: 0;
@@ -23,9 +36,4 @@
     font-size: 0.8em;
     font-weight: 300;
   }
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2em;
 }

@@ -27,10 +27,14 @@ export class SearchFacadeService {
     return this.store.select(searchFeature.selectError);
   }
 
+  get isLoading$() {
+    return this.store.select(searchFeature.selectIsLoading);
+  }
+
   public search(params: SearchRequest) {
     this.store.dispatch(searchActions.search({ params }));
     return this.store.select(searchFeature.selectSearchState).pipe(
-      filter(({ status }) => status !== 'loading'),
+      filter(({ isLoading }) => !isLoading),
       take(1),
     );
   }

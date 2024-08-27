@@ -1,8 +1,8 @@
 import {
+  CarriageData,
   FilteredTickets,
   SearchRequest,
   SearchResponse,
-  SearchRoute,
   Segment,
   StopInfo,
   Ticket,
@@ -13,6 +13,7 @@ import { map, Observable } from 'rxjs';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { StationMap } from '@/core/models/stations.model';
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
+import { CarriageMap } from '@/core/models/carriages.model';
 
 @Injectable({
   providedIn: 'root',
@@ -72,6 +73,12 @@ export class SearchService {
           stationMap,
         );
 
+        const carriages = this.getCarriageData(
+          route.carriages,
+          carriageMap,
+          ridePath,
+        );
+
         return {
           departureDate,
           arrivalDate,
@@ -80,7 +87,7 @@ export class SearchService {
           tripDuration,
           firstRouteStation,
           lastRouteStation,
-          carriages: [],
+          carriages,
           routeDetails: { routeId, stopInfo },
         };
       });
@@ -127,66 +134,63 @@ export class SearchService {
     });
   }
 
-  // private getCarriageData(
-  //   trainCarriage: string[],
-  //   carriageMap: CarriageMap,
-  //   ridePath: Segment[],
-  // ): CarriageData[] {
-  //   const trainCarriages = trainCarriage.map((carriage) => ({
-  //     code: carriageMap[carriage].code,
-  //     seats: carriageMap[carriage].seats,
-  //   }));
-  //   const { occupiedSeats } = ridePath[0];
+  private countEmptySeats(
+    trainCarriages: string[],
+    occupiedSeats: number[],
+    carriageMap: CarriageMap,
+  ) {
+    const trainSeats = trainCarriages.map((code) => carriageMap[code].seats);
+    const freeSeats: number[] = [];
+    let firstCarriageSeat = 1;
 
-  //   let startIndex = 0;
-  //   const freeSeats = trainCarriages.map((carriage) => {
-  //     let occupiedCount = 0;
+    trainSeats.forEach((maxSeats) => {
+      const lastCarriageSeat = firstCarriageSeat + maxSeats - 1;
 
-  //     const endIndex = startIndex + carriage.seats;
+      const occupiedInCarriage = occupiedSeats.filter(
+        (seat) => seat >= firstCarriageSeat && seat <= lastCarriageSeat,
+      ).length;
 
-  //     while (
-  //       occupiedSeats[startIndex] <= endIndex &&
-  //       startIndex < occupiedSeats.length
-  //     ) {
-  //       occupiedCount += 1;
-  //       startIndex += 1;
-  //     }
+      const emptyInCarriage = maxSeats - occupiedInCarriage;
+      freeSeats.push(emptyInCarriage);
 
-  //     return {
-  //       freeSeats: carriage.seats - occupiedCount,
-  //       code: carriage.code,
-  //     };
-  //   });
+      firstCarriageSeat = lastCarriageSeat + 1;
+    });
 
-  //   const freeSeatsByCode = freeSeats.reduce<{ [code: string]: number }>(
-  //     (acc, carriage) => {
-  //       acc[carriage.code] = (acc[carriage.code] || 0) + carriage.freeSeats;
-  //       return acc;
-  //     },
-  //     {},
-  //   );
+    return freeSeats.reduce<{ [code: string]: number }>((acc, value, i) => {
+      const code = trainCarriages[i];
+      acc[code] = (acc[code] || 0) + value;
+      return acc;
+    }, {});
+  }
 
-  //   ridePath.map((segment) => {
-  //     const { price } = segment;
-  //     return [];
-  //   });
+  private getCarriageData(
+    trainCarriages: string[],
+    carriageMap: CarriageMap,
+    ridePath: Segment[],
+  ): CarriageData[] {
+    const freeSeats = this.countEmptySeats(
+      trainCarriages,
+      ridePath[0].occupiedSeats.sort((a, b) => a - b),
+      carriageMap,
+    );
 
-  //   return [];
-  // }
+    const ridePriceForCarriages = ridePath.reduce<{ [code: string]: number }>(
+      (acc, { price }) => {
+        Object.entries(price).forEach(([code, cost]) => {
+          acc[code] = (acc[code] || 0) + cost;
+        });
+        return acc;
+      },
+      {},
+    );
 
-  private getTravelDates(routes: SearchRoute[], from: number, to: number) {
-    return routes.flatMap((route) => {
-      const startRide = route.path.indexOf(from);
-      const endRide = route.path.indexOf(to);
-
-      return route.schedule.map((ride) => {
-        const wholePath = ride.segments.slice(startRide, endRide + 1);
-
-        const arrivalDate = new Date(wholePath[wholePath.length - 1].time[1]);
-        const departureDate = new Date(wholePath[0].time[0]);
-        const tripDuration = arrivalDate.getTime() - departureDate.getTime();
-        return { departureDate, arrivalDate, tripDuration };
-      });
+    const uniqueTrainCarriages = Object.keys(ridePriceForCarriages);
+    return uniqueTrainCarriages.map((code) => {
+      return {
+        name: carriageMap[code].name,
+        price: ridePriceForCarriages[code],
+        freeSeats: freeSeats[code],
+      };
     });
   }
 

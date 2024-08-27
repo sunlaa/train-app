@@ -6,20 +6,22 @@ import { searchActions } from '../actions/search.actions';
 export type SearchState = {
   tickets: FilteredTickets;
   error: ApiError | Error | null;
-  status: 'loading' | 'error' | 'success';
+  status: null | 'error' | 'success';
+  isLoading: boolean;
 };
 
 const initialState: SearchState = {
   tickets: [],
   error: null,
-  status: 'loading',
+  status: null,
+  isLoading: false,
 };
 
 const searchReducer = createReducer(
   initialState,
   on(
     searchActions.search,
-    (state): SearchState => ({ ...state, status: 'loading' }),
+    (state): SearchState => ({ ...state, isLoading: true }),
   ),
   on(
     searchActions.searchSuccess,
@@ -27,6 +29,7 @@ const searchReducer = createReducer(
       tickets,
       error: null,
       status: 'success',
+      isLoading: false,
     }),
   ),
   on(searchActions.searchError, (state, { error }): SearchState => {
