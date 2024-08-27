@@ -1,8 +1,9 @@
 @let filteredTickets = tickets$ | async;
 @let isLoading = isLoading$ | async;
+@let status = status$ | async;
 
 @if (isLoading) {
-  <p>Loading...</p>
+  <p-progressSpinner ariaLabel="loading" strokeWidth="3" styleClass="loader" />
 } @else {
   @if (filteredTickets && filteredTickets.length > 0) {
     <p-tabView
@@ -36,5 +37,12 @@
         </p-tabPanel>
       }
     </p-tabView>
+  } @else {
+    @if (status) {
+      <div class="no-routes">
+        <h3>Unfortunately, we didn't find any routes.</h3>
+        <p>Try another date or city.</p>
+      </div>
+    }
   }
 }

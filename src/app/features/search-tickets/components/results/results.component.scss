@@ -1,3 +1,11 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
 ::ng-deep {
   .badge {
     position: absolute;
@@ -13,6 +21,14 @@
     .message {
       width: 100%;
       text-align: center;
+    }
+  }
+
+  .loader {
+    width: 4em;
+    height: 4em;
+    .p-progress-spinner-circle {
+      stroke: var(--primary-color) !important;
     }
   }
 }
@@ -36,4 +52,13 @@
     font-size: 0.8em;
     font-weight: 300;
   }
+}
+
+.no-routes {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
