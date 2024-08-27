@@ -14,11 +14,11 @@ import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
-import { TStationListed } from '@/core/models/stations.model';
 import { MessageService } from 'primeng/api';
 import { NotificationService } from '@/shared/services/notification.service';
-import { SearchRequest } from '@/core/models/search.model';
+import { SearchRequest, SearchStation } from '@/core/models/search.model';
 import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
+import { CityApiService } from '../../services/city-api/city-api.service';
 
 @Component({
   selector: 'app-search-form',
@@ -44,15 +44,17 @@ export class SearchFormComponent implements OnInit {
 
   private notification = inject(NotificationService);
 
-  public options: TStationListed[] = [];
+  private cityApiService = inject(CityApiService);
 
-  private stations: TStationListed[] = [];
+  public options: SearchStation[] = [];
+
+  private stations: SearchStation[] = [];
 
   public minDate: Date = new Date();
 
   public searchForm = this.fb.group({
-    from: new FormControl<TStationListed | null>(null, [Validators.required]),
-    to: new FormControl<TStationListed | null>(null, [Validators.required]),
+    from: new FormControl<SearchStation | null>(null, [Validators.required]),
+    to: new FormControl<SearchStation | null>(null, [Validators.required]),
     date: new FormControl<Date | null>(null, [Validators.required]),
     time: [{ value: '', disabled: true }],
   });
@@ -77,7 +79,29 @@ export class SearchFormComponent implements OnInit {
     this.getAllStations();
     this.enableTimeInputCheck();
     this.initMinDate();
+
+    // this.from.valueChanges
+    //   .pipe(
+    //     tap((value) => {
+    //       console.log(value);
+    //     }),
+    //   )
+    //   .subscribe();
   }
+
+  // ngAfterViewInit() {
+  //   fromEvent(this.searchInput.nativeElement, 'input').pipe(
+  //     map((event: Event) => (event.target as HTMLInputElement).value),
+  //     filter((value) => value.length >= 3),
+  //     debounceTime(500),
+  //     distinctUntilChanged(),
+  //     switchMap((query) => {
+  //       console.log('Hello!');
+  //       this.cityApiService.searchCity(query);
+  //       return of(query);
+  //     }),
+  //   );
+  // }
 
   private enableTimeInputCheck() {
     this.date.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -96,7 +120,11 @@ export class SearchFormComponent implements OnInit {
         takeUntil(this.destroy$),
       )
       .subscribe((stations) => {
-        this.stations = stations;
+        this.stations = stations.map((s) => ({
+          city: s.city,
+          latitude: s.latitude,
+          longitude: s.longitude,
+        }));
       });
   }
 
@@ -107,8 +135,10 @@ export class SearchFormComponent implements OnInit {
 
   public getStations(event: AutoCompleteCompleteEvent) {
     const options = this.stations;
-    const filtered: TStationListed[] = [];
+    const filtered: SearchStation[] = [];
     const { query } = event;
+
+    this.cityApiService.searchCity(query);
 
     options.forEach((opt) => {
       if (opt.city.toLowerCase().includes(query.toLowerCase())) {

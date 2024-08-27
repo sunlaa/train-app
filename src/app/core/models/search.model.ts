@@ -1,5 +1,11 @@
 import { TRoute } from './routes.model';
 
+export type SearchStation = {
+  city: string;
+  latitude: number;
+  longitude: number;
+};
+
 export type SearchRequest = {
   fromLatitude: number;
   fromLongitude: number;
