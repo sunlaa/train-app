@@ -7,6 +7,6 @@ export const searchActions = createActionGroup({
   events: {
     Search: props<{ params: SearchRequest }>(),
     'Search success': props<{ tickets: FilteredTickets }>(),
-    'Search error': props<{ error: HttpErrorResponse }>(),
+    'Search error': props<{ error: HttpErrorResponse | Error }>(),
   },
 });

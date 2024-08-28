@@ -12,20 +12,20 @@
       </span>
     </ng-template>
     <ng-template pTemplate="opposite" let-info>
-      @if (info.arrivalTime) {
-        <p class="time">{{ info.arrivalTime }}</p>
+      @if (info.arrivalOnStation) {
+        <p class="time">{{ info.arrivalOnStation }}</p>
       }
-      @if (info.departureTime) {
-        <p class="time">{{ info.departureTime }}</p>
+      @if (info.departureFromStation) {
+        <p class="time">{{ info.departureFromStation }}</p>
       }
     </ng-template>
     <ng-template pTemplate="content" let-info>
       <p class="station">{{ info.station }}</p>
 
-      @if (isString(info.duration)) {
-        <p class="duration">{{ info.duration }}</p>
+      @if (isString(info.stopDuration)) {
+        <p class="duration">{{ info.stopDuration }}</p>
       } @else {
-        <p class="duration">{{ info.duration | duration: true }}</p>
+        <p class="duration">{{ info.stopDuration | duration: true }}</p>
       }
     </ng-template>
   </p-timeline>

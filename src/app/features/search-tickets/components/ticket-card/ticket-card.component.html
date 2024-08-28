@@ -2,8 +2,10 @@
   <div class="first-section">
     <div class="path">
       <div class="point">
-        <h3>{{ ticket.departureDate | date: "HH:mm" }}</h3>
-        <p class="date">{{ ticket.departureDate | date: "MMMM dd" }}</p>
+        <h3>{{ ticket.departureDate | date: "HH:mm" : "UTC" }}</h3>
+        <p class="date">
+          {{ ticket.departureDate | date: "MMMM dd" : "UTC" }}
+        </p>
         <p class="city">{{ ticket.startCity }}</p>
       </div>
 
@@ -12,8 +14,8 @@
       </p-divider>
 
       <div class="point">
-        <h3>{{ ticket.arrivalDate | date: "HH:mm" }}</h3>
-        <p class="date">{{ ticket.arrivalDate | date: "MMMM dd" }}</p>
+        <h3>{{ ticket.arrivalDate | date: "HH:mm" : "UTC" }}</h3>
+        <p class="date">{{ ticket.arrivalDate | date: "MMMM dd" : "UTC" }}</p>
         <p class="city">{{ ticket.endCity }}</p>
       </div>
     </div>
@@ -39,7 +41,7 @@
   <div class="second-section">
     @for (carriage of ticket.carriages; track $index) {
       <div class="price-tile">
-        <p class="carriage-type">Carriage type: {{ carriage.type }}</p>
+        <p class="carriage-type">Carriage type: {{ carriage.name }}</p>
         <p class="seats">{{ carriage.freeSeats }} seats</p>
         <h4>{{ carriage.price | currency }}</h4>
       </div>
@@ -48,6 +50,7 @@
 </p-card>
 
 <p-dialog
+  [draggable]="false"
   [modal]="true"
   [dismissableMask]="true"
   [(visible)]="modalVisible"

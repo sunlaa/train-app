@@ -1,5 +1,11 @@
 import { TRoute } from './routes.model';
 
+export type SearchStation = {
+  city: string;
+  latitude: number;
+  longitude: number;
+};
+
 export type SearchRequest = {
   fromLatitude: number;
   fromLongitude: number;
@@ -51,7 +57,7 @@ export type Ticket = {
 };
 
 export type CarriageData = {
-  type: string;
+  name: string;
   price: number;
   freeSeats: number;
 };
@@ -63,9 +69,9 @@ export type RouteDetails = {
 
 export type StopInfo = {
   station: string;
-  departureTime: string | undefined;
-  arrivalTime: string | undefined;
-  duration: number | 'First station' | 'Last station';
+  arrivalOnStation: string | undefined;
+  departureFromStation: string | undefined;
+  stopDuration: number | 'First station' | 'Last station';
 };
 
 export type DayTickets = {
