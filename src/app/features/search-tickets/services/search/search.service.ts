@@ -207,7 +207,7 @@ export class SearchService {
 
     for (let i = 0; i < 10; i += 1) {
       const date = new Date(minDate);
-      date.setDate(minDate.getDate() + i);
+      date.setUTCDate(minDate.getDate() + i);
       dates.push(date.toISOString().split('T')[0]);
     }
 

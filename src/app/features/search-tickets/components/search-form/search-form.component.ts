@@ -16,17 +16,15 @@ import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
-import { MessageService } from 'primeng/api';
-import { NotificationService } from '@/shared/services/notification.service';
 import { SearchRequest, SearchStation } from '@/core/models/search.model';
 import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
 import { CityApiService } from '../../services/city-api/city-api.service';
-import { uniqueStations } from '../../utils';
+import { localISOString, uniqueStations } from '../../utils';
 
 @Component({
   selector: 'app-search-form',
   standalone: true,
-  providers: [DestroyService, MessageService, NotificationService],
+  providers: [DestroyService],
   imports: [
     ReactiveFormsModule,
     AutoCompleteModule,
@@ -47,8 +45,6 @@ export class SearchFormComponent implements OnInit {
 
   private searchFacade = inject(SearchFacadeService);
 
-  private notification = inject(NotificationService);
-
   public cityApiService = inject(CityApiService);
 
   public options: SearchStation[] = [];
@@ -61,7 +57,7 @@ export class SearchFormComponent implements OnInit {
     from: new FormControl<SearchStation | null>(null, [Validators.required]),
     to: new FormControl<SearchStation | null>(null, [Validators.required]),
     date: new FormControl<Date | null>(null, [Validators.required]),
-    time: [{ value: '', disabled: true }],
+    time: new FormControl<Date | null>({ value: null, disabled: true }),
   });
 
   get from() {
@@ -140,12 +136,15 @@ export class SearchFormComponent implements OnInit {
   public search() {
     const { value } = this.searchForm;
 
+    const date = localISOString(value.date!).split('T')[0];
+    const time = value.time ? localISOString(value.time).split('T')[1] : null;
+
     const params: SearchRequest = {
       fromLatitude: value.from!.latitude,
       fromLongitude: value.from!.longitude,
       toLatitude: value.to!.latitude,
       toLongitude: value.to!.longitude,
-      time: value.date!.toISOString(),
+      time: time ? `${date}T${time}Z` : `${date}T00:00:00.000Z`,
     };
 
     this.searchFacade.search(params);

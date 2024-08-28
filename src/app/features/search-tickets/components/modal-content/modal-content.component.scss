@@ -10,35 +10,41 @@ p {
   padding: 1em;
 }
 
-::ng-deep .modal-body {
-  .timeline {
-    width: 100%;
+::ng-deep {
+  .p-dialog:has(.modal-body) {
+    max-width: 800px;
   }
 
-  .p-timeline-event {
-    display: grid;
-    grid-template-columns: 1fr 0.5fr 1fr 2fr;
-    justify-items: center;
-  }
+  .modal-body {
+    .timeline {
+      width: 100%;
+    }
 
-  .p-timeline-event-opposite {
-    width: 100%;
-    padding: 0;
-    text-align: center;
-    min-width: 0;
-  }
+    .p-timeline-event {
+      display: grid;
+      grid-template-columns: 1fr 0.5fr 1fr 2fr;
+      justify-items: center;
+    }
 
-  .p-timeline-event-content {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    justify-items: center;
-    width: 100%;
-    padding: 0;
-    grid-column: 3 / span 2;
-  }
-  .marker {
-    .pi {
-      font-size: 1.3em;
+    .p-timeline-event-opposite {
+      width: 100%;
+      padding: 0;
+      text-align: center;
+      min-width: 0;
+    }
+
+    .p-timeline-event-content {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      justify-items: center;
+      width: 100%;
+      padding: 0;
+      grid-column: 3 / span 2;
+    }
+    .marker {
+      .pi {
+        font-size: 1.3em;
+      }
     }
   }
 }

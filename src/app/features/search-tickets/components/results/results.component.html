@@ -3,14 +3,14 @@
 @let status = status$ | async;
 
 @if (isLoading) {
-  <p-progressSpinner ariaLabel="loading" strokeWidth="3" styleClass="loader" />
+  <p-progressSpinner
+    ariaLabel="loading"
+    strokeWidth="3"
+    styleClass="results-loader"
+  />
 } @else {
   @if (filteredTickets && filteredTickets.length > 0) {
-    <p-tabView
-      [scrollable]="true"
-      [activeIndex]="0"
-      styleClass="search-results"
-    >
+    <p-tabView [scrollable]="true" [activeIndex]="0" class="search-results">
       @for (dayTickets of filteredTickets; track dayTickets.date) {
         @let ticketsCount = dayTickets.tickets.length;
         <p-tabPanel>
