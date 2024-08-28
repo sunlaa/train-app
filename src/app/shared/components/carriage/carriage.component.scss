@@ -1,0 +1,38 @@
+:host {
+  padding-left: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8em;
+  border: solid 2px;
+  border-color: var(--surface-border);
+  border-radius: 1em;
+  width: 100%;
+  min-height: 20em;
+}
+
+.seat-row {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  gap: 2em;
+}
+
+.right-seats,
+.left-seats {
+  flex-direction: column-reverse;
+  display: flex;
+  gap: 0.8em;
+}
+
+.seat {
+  font-weight: 900;
+  color: var(--primary-color-text);
+  width: 2.5em;
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius);
+}

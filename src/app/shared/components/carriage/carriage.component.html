@@ -1,0 +1,16 @@
+<div></div>
+
+@for (rowIndex of [].constructor(rows); track $index; let i = $index) {
+  <div class="seat-row">
+    <div class="left-seats">
+      @for (seat of leftSeatRows[i]; track $index) {
+        <div class="seat">{{ seat }}</div>
+      }
+    </div>
+    <div class="right-seats">
+      @for (seat of rightSeatRows[i]; track $index) {
+        <div class="seat">{{ seat }}</div>
+      }
+    </div>
+  </div>
+}

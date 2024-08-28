@@ -1,2 +1,18 @@
+<form [formGroup]="form">
+  <label for="1">Rows: </label>
+  <input id="1" formControlName="rows" type="number" />
+  <label for="2">Right seats: </label>
+  <input type="number" formControlName="rightSeats" id="2" />
+  <label for="3">Left seats: </label>
+  <input type="number" formControlName="leftSeats" id="3" />
+</form>
+
+<app-carriage
+  class="carriage"
+  [rows]="rows"
+  [leftSeats]="leftSeats"
+  [rightSeats]="rightSeats"
+  [firstSeatNumber]="1"
+></app-carriage>
 <app-search-form></app-search-form>
 <app-results></app-results>
