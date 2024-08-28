@@ -1,0 +1,63 @@
+<p-toast />
+<form [formGroup]="routeForm">
+  @if (route) {
+    <h2>
+      {{ route.id }}
+    </h2>
+  }
+  <div class="dropdown-sections">
+    <div class="input-section">
+      <p>Stations</p>
+      <div formArrayName="stations" class="inputs">
+        @for (station of stations.controls; track station.value) {
+          <div class="input-box">
+            <p-dropdown
+              id="station-{{ $index }}"
+              [options]="getStationDropdownOptions($index)"
+              [formControlName]="$index"
+              placeholder="Select a station"
+              (onChange)="addEmptyStation($index)"
+              class="dropdown"
+            ></p-dropdown>
+            <p-button
+              (onClick)="removeStation($index)"
+              icon="pi pi-times"
+              class="remove-dropdown"
+              severity="danger"
+            ></p-button>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="input-section">
+      <p>Carriages</p>
+      <div formArrayName="carriages" class="inputs">
+        @for (carriage of carriages.controls; track carriage.value + $index) {
+          <div class="input-box">
+            <p-dropdown
+              id="carriage-{{ $index }}"
+              [options]="getCarriageDropdownOptions($index)"
+              [formControlName]="$index"
+              placeholder="Select a carriage"
+              (onChange)="addEmptyCarriage($index)"
+              class="dropdown"
+            ></p-dropdown>
+            <p-button
+              (onClick)="removeCarriage($index)"
+              icon="pi pi-times"
+              class="remove-dropdown"
+              severity="danger"
+            ></p-button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <p-button
+    label="Save"
+    icon="pi pi-check"
+    (onClick)="onSubmit()"
+    class="save-btn"
+  ></p-button>
+</form>
