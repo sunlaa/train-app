@@ -1,7 +1,6 @@
 import { CarriageMap } from '@/core/models/carriages.model';
 import { carriagesActions } from '@/redux/actions';
 import { carriagesFeature } from '@/redux/reducers';
-import { selectCarriageMap } from '@/redux/selectors/selectors';
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
@@ -27,7 +26,7 @@ export class CarriagesFacadeService {
   }
 
   get carriageMap$() {
-    return this.store.select(selectCarriageMap);
+    return this.store.select(carriagesFeature.selectCarriageMap);
   }
 
   updateMap() {

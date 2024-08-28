@@ -23,12 +23,13 @@ import { SearchFacadeService } from '../../services/search-facade/search-facade.
   styleUrl: './results.component.scss',
 })
 export class ResultsComponent {
-  private searcFacadeService: SearchFacadeService = inject(SearchFacadeService);
+  private searchFacadeService: SearchFacadeService =
+    inject(SearchFacadeService);
 
   public tickets$: Observable<FilteredTickets> =
-    this.searcFacadeService.tickets$;
+    this.searchFacadeService.tickets$;
 
-  public isLoading$ = this.searcFacadeService.isLoading$;
+  public isLoading$ = this.searchFacadeService.isLoading$;
 
-  public status$ = this.searcFacadeService.status$;
+  public status$ = this.searchFacadeService.status$;
 }

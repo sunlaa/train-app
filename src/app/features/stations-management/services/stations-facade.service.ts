@@ -1,7 +1,6 @@
 import { StationMap } from '@/core/models/stations.model';
 import { stationsActions } from '@/redux/actions';
 import { stationsFeature } from '@/redux/reducers';
-import { selectStationMap } from '@/redux/selectors/selectors';
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
@@ -27,7 +26,7 @@ export class StationsFacadeService {
   }
 
   get stationsMap$() {
-    return this.store.select(selectStationMap);
+    return this.store.select(stationsFeature.selectStationMap);
   }
 
   updateMap() {
