@@ -5,3 +5,7 @@ export type TCarriage = {
   leftSeats: number;
   rightSeats: number;
 };
+
+export type TCarriageWithSeats = TCarriage & { seats: number };
+
+export type CarriageMap = { [code: string]: TCarriageWithSeats };

@@ -1,6 +1,6 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { ApiError } from '@/core/models/api.model';
-import { TCarriage } from '@/core/models/carriages.model';
+import { CarriageMap, TCarriage } from '@/core/models/carriages.model';
 import { carriagesActions } from '../actions';
 
 export type CarriagesState = {
@@ -108,4 +108,15 @@ const carriagesReducer = createReducer(
 export const carriagesFeature = createFeature({
   name: 'carriages',
   reducer: carriagesReducer,
+  extraSelectors: ({ selectCarriages }) => ({
+    selectCarriageMap: createSelector(selectCarriages, (carriages) => {
+      return carriages.reduce<CarriageMap>((acc, carriage) => {
+        const { rightSeats, leftSeats, rows } = carriage;
+        const map = acc;
+        const seats = (rightSeats + leftSeats) * rows;
+        map[carriage.code] = { ...carriage, seats };
+        return map;
+      }, {});
+    }),
+  }),
 });

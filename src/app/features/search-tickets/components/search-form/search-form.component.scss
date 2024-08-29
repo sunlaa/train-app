@@ -1,32 +1,37 @@
-::ng-deep {
-  .date-time {
-    display: flex;
-    flex-wrap: nowrap;
-  }
+:host {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .date {
-    input {
+::ng-deep {
+  .search-form {
+    .date-time {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+
+    .date {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
-  }
 
-  .time {
-    .p-calendar {
-      width: 4.5em;
-    }
-    input {
+    .time {
       border-left: none;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
+      width: 4.5em;
     }
   }
 }
 
-form {
-  border: solid 0.5px gray;
-  border-radius: 3px;
+.search-form {
+  border: solid 0.5px;
+  border-color: var(--surface-border);
+  border-radius: var(--border-radius);
   max-width: 1100px;
+  width: 100%;
   padding: 1em;
   display: grid;
   grid-template-columns: repeat(5, auto);
@@ -46,8 +51,7 @@ label[for="date"] {
 }
 
 @media screen and (max-width: 900px) {
-  form {
-    max-width: 600px;
+  .search-form {
     grid-template-columns: auto 1.5em auto;
     justify-content: center;
   }
@@ -73,20 +77,23 @@ label[for="date"] {
     justify-self: center;
   }
 
-  ::ng-deep {
+  ::ng-deep .search-form {
     .date-time {
       grid-column: 1 / span 3;
       display: grid;
       grid-template-columns: 3fr 1fr;
+
+      .p-calendar {
+        width: 100%;
+      }
     }
 
-    .date .p-calendar,
-    .time .p-calendar,
-    .p-button {
+    .search button {
       width: 100%;
     }
 
-    .p-autocomplete {
+    .from,
+    .to {
       width: 100%;
       input {
         width: 100%;
@@ -96,7 +103,7 @@ label[for="date"] {
 }
 
 @media screen and (max-width: 500px) {
-  form {
+  .search-form {
     grid-template-columns: 1fr;
   }
 
@@ -113,11 +120,13 @@ label[for="date"] {
     grid-row: 5;
   }
 
-  .from {
-    grid-row: 2;
-  }
+  ::ng-deep .search-form {
+    .autocomplete:has(.from) {
+      grid-row: 2;
+    }
 
-  .to {
-    grid-row: 4;
+    .autocomplete:has(.to) {
+      grid-row: 4;
+    }
   }
 }
