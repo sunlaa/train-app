@@ -40,6 +40,7 @@ p {
   .grid-item {
     padding: 10px;
     border-bottom: 1px solid #e2e8f0;
+    border-radius: var(--border-radius);
     background-color: color-mix(
       in srgb,
       var(--primary-color) 5%,
