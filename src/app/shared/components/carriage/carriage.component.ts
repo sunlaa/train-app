@@ -1,13 +1,14 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-carriage',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './carriage.component.html',
   styleUrl: './carriage.component.scss',
 })
-export class CarriageComponent implements OnInit, OnChanges {
+export class CarriageComponent {
   @Input() rows: number = 0;
 
   @Input() leftSeats: number = 0;
@@ -16,43 +17,19 @@ export class CarriageComponent implements OnInit, OnChanges {
 
   @Input() firstSeatNumber: number = 1;
 
-  leftSeatRows: number[][] = [];
+  public seatNumbersForRow(
+    row: number,
+    seatsOnSide: number,
+    isLeftSide: boolean,
+  ): number[] {
+    const lastNumberedSeats = row * (this.leftSeats + this.rightSeats);
+    const firstRowSeatNumber = this.firstSeatNumber + lastNumberedSeats;
 
-  rightSeatRows: number[][] = [];
+    const seatOffset = isLeftSide ? 0 : this.leftSeats;
 
-  ngOnChanges(): void {
-    this.generateSeatNumbers();
-  }
-
-  ngOnInit() {
-    this.generateSeatNumbers();
-  }
-
-  generateSeatNumbers() {
-    let seatNumber = this.firstSeatNumber;
-
-    const leftSeatRows: number[][] = [];
-    const rightSeatRows: number[][] = [];
-
-    for (let row = 0; row < this.rows; row += 1) {
-      const leftRow: number[] = [];
-      const rightRow: number[] = [];
-
-      for (let i = 0; i < this.leftSeats; i += 1) {
-        leftRow.push(seatNumber);
-        seatNumber += 1;
-      }
-
-      for (let i = 0; i < this.rightSeats; i += 1) {
-        rightRow.push(seatNumber);
-        seatNumber += 1;
-      }
-
-      leftSeatRows.push(leftRow);
-      rightSeatRows.push(rightRow);
-    }
-
-    this.leftSeatRows = leftSeatRows;
-    this.rightSeatRows = rightSeatRows;
+    return Array.from(
+      { length: seatsOnSide },
+      (_, i) => firstRowSeatNumber + seatOffset + i,
+    );
   }
 }

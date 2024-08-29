@@ -1,5 +1,5 @@
 :host {
-  padding-left: 2em;
+  padding: 2em 3em 4em 2em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,6 +9,24 @@
   border-radius: 1em;
   width: 100%;
   min-height: 20em;
+}
+
+.front,
+.back {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.line {
+  height: 35%;
+  border-right: solid 1px;
+  border-color: var(--surface-border);
+}
+
+.front .line {
+  margin-right: 3em;
 }
 
 .seat-row {
@@ -26,7 +44,8 @@
 }
 
 .seat {
-  font-weight: 900;
+  cursor: pointer;
+  font-weight: 800;
   color: var(--primary-color-text);
   width: 2.5em;
   height: 2.5em;
@@ -35,4 +54,17 @@
   justify-content: center;
   background-color: var(--primary-color);
   border-radius: var(--border-radius);
+
+  &:hover {
+    background-color: var(--surface-900);
+  }
+
+  &.occupied {
+    pointer-events: none;
+    background-color: var(--surface-300);
+  }
+
+  &.selected {
+    background-color: var(--yellow-400);
+  }
 }
