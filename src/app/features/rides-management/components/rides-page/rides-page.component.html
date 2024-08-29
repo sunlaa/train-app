@@ -6,6 +6,7 @@
   }
   @case ("success") {
     <p-toast />
+    <p-confirmDialog />
     <div class="page">
       <p-button
         label="Back"
@@ -28,6 +29,7 @@
         @for (ride of route?.schedule; track $index) {
           <app-ride-item
             (rideChange)="rideChangeEvent($event)"
+            (rideDelete)="rideDeleteEvent($event)"
             [ride]="ride"
             [stations]="stations"
             [carriages]="carriages"

@@ -3,6 +3,7 @@ import { ridesActions } from '@/redux/actions/rides.actions';
 import { ridesFeature } from '@/redux/reducers/rides.reducer';
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { filter, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +29,13 @@ export class RidesFacadeService {
 
   public update(routeId: number, ride: TRide) {
     this.store.dispatch(ridesActions.update({ routeId, ride }));
+  }
+
+  public delete(routeId: number, rideId: number) {
+    this.store.dispatch(ridesActions.delete({ routeId, rideId }));
+    return this.state$.pipe(
+      filter(({ status }) => status !== 'loading'),
+      take(1),
+    );
   }
 }

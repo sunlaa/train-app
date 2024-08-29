@@ -7,12 +7,14 @@ import {
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { PanelModule } from 'primeng/panel';
+import { ConfirmationService } from 'primeng/api';
 import { StationSegmentComponent } from '../station-segment/station-segment.component';
 import { PriceSegmentComponent } from '../price-segment/price-segment.component';
 
@@ -31,6 +33,10 @@ export class RideItemComponent implements OnChanges {
   @Input({ required: true }) carriages!: string[];
 
   @Output() rideChange = new EventEmitter<TRouteRide>();
+
+  @Output() rideDelete = new EventEmitter<number>();
+
+  private confirmationService = inject(ConfirmationService);
 
   public stationSegments!: TStationSegmentData[];
 
@@ -133,6 +139,24 @@ export class RideItemComponent implements OnChanges {
   private emitRideChange(newSegments: TRideSegment[]): void {
     const newRide = { ...this.ride, segments: newSegments };
     this.rideChange.emit(newRide);
+  }
+
+  public deleteClick(event: Event) {
+    event.stopPropagation();
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this ride?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.rideDelete.emit(this.ride.rideId);
+      },
+    });
   }
 
   public isStationSegmentData(

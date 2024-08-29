@@ -48,4 +48,16 @@ export class RidesEffects {
       ),
     );
   });
+
+  deleteRide$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ridesActions.delete),
+      switchMap(({ routeId, rideId }) =>
+        this.ridesService.deleteRide(routeId, rideId).pipe(
+          map(() => ridesActions.deleteSuccess({ rideId })),
+          catchError((error) => of(ridesActions.deleteError({ error }))),
+        ),
+      ),
+    );
+  });
 }

@@ -16,5 +16,9 @@ export const ridesActions = createActionGroup({
     Update: props<{ routeId: TRouteRides['id']; ride: TRide }>(),
     'Update success': props<{ ride: TRide }>(),
     'Update error': props<{ error: HttpErrorResponse }>(),
+
+    Delete: props<{ routeId: TRouteRides['id']; rideId: TRide['id'] }>(),
+    'Delete success': props<{ rideId: TRide['id'] }>(),
+    'Delete error': props<{ error: HttpErrorResponse }>(),
   },
 });

@@ -10,9 +10,11 @@ import { CarriagesFacadeService } from '@/features/carriages-management/services
 import { ButtonModule } from 'primeng/button';
 import { TRouteRide } from '@/core/models/rides.model';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { TStationListed } from '@/core/models/stations.model';
 import { TCarriage } from '@/core/models/carriages.model';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { NotificationService } from '@/shared/services/notification.service';
 import { RidesFacadeService } from '../../services/rides-facade.service';
 import { RideItemComponent } from '../ride-item/ride-item.component';
 import { RideFormComponent } from '../ride-form/ride-form.component';
@@ -28,15 +30,16 @@ import { datesAreSequential } from '../../utils';
     ButtonModule,
     RideFormComponent,
     ToastModule,
+    ConfirmDialogModule,
   ],
-  providers: [DestroyService, MessageService],
+  providers: [DestroyService, ConfirmationService],
   templateUrl: './rides-page.component.html',
   styleUrl: './rides-page.component.scss',
 })
 export class RidesPageComponent implements OnInit {
   private destroy$ = inject(DestroyService);
 
-  private messageService = inject(MessageService);
+  private notificationService = inject(NotificationService);
 
   private router = inject(Router);
 
@@ -164,14 +167,6 @@ export class RidesPageComponent implements OnInit {
     }
   }
 
-  private messageError(message: string | undefined) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: message,
-    });
-  }
-
   public rideChangeEvent({ rideId, segments }: TRouteRide) {
     if (this.routeId) {
       const dates: Date[] = [];
@@ -180,10 +175,24 @@ export class RidesPageComponent implements OnInit {
         dates.push(new Date(time[1]));
       });
       if (!datesAreSequential(dates)) {
-        this.messageError('Dates are not sequential');
+        this.notificationService.messageError('Dates are not sequential');
         return;
       }
       this.ridesFacade.update(this.routeId, { id: rideId, segments });
+    }
+  }
+
+  public rideDeleteEvent(rideId: number) {
+    if (this.routeId) {
+      this.ridesFacade
+        .delete(this.routeId, rideId)
+        .subscribe(({ status, error }) => {
+          if (status === 'success') {
+            this.notificationService.messageConfirm('Ride deleted');
+          } else {
+            this.notificationService.messageError(error?.message);
+          }
+        });
     }
   }
 

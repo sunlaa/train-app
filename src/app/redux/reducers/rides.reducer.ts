@@ -94,6 +94,33 @@ const ridesReducer = createReducer(
       status: 'error',
     }),
   ),
+  // Delete ride
+  on(
+    ridesActions.delete,
+    (state): RidesState => ({ ...state, status: 'loading' }),
+  ),
+  on(ridesActions.deleteSuccess, (state, { rideId }): RidesState => {
+    const { route } = state;
+    if (route) {
+      return {
+        route: {
+          ...route,
+          schedule: route.schedule.filter(({ rideId: id }) => id !== rideId),
+        },
+        error: null,
+        status: 'success',
+      };
+    }
+    return state;
+  }),
+  on(
+    ridesActions.deleteError,
+    (state, { error }): RidesState => ({
+      ...state,
+      error: error.error,
+      status: 'error',
+    }),
+  ),
 );
 
 export const ridesFeature = createFeature({
