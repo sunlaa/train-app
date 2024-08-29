@@ -10,7 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { PanelModule } from 'primeng/panel';
-import { takeUntil } from 'rxjs';
+import { filter, takeUntil } from 'rxjs';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
@@ -65,21 +65,30 @@ export class RouteItemComponent implements OnInit, OnChanges {
   }
 
   private loadStationsAndCarriages(): void {
-    this.stationsFacade.state$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(({ stations }) => {
-        const stationNames = this.route.path.map(
-          (id) => stations.find((station) => station.id === id)?.city,
-        );
+    this.stationsFacade.stationsMap$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(
+          (stationsMap) => !!stationsMap && Object.keys(stationsMap).length > 0,
+        ),
+      )
+      .subscribe((stationsMap) => {
+        const stationNames = this.route.path.map((id) => stationsMap[id]?.city);
         const filteredNames = stationNames.filter((name) => name !== undefined);
         this.stations = filteredNames.join(' - ');
       });
 
-    this.carriagesFacade.state$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(({ carriages }) => {
+    this.carriagesFacade.carriageMap$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(
+          (carriagesMap) =>
+            !!carriagesMap && Object.keys(carriagesMap).length > 0,
+        ),
+      )
+      .subscribe((carriagesMap) => {
         const carriageNames = this.route.carriages.map(
-          (code) => carriages.find((carriage) => carriage.code === code)?.name,
+          (code) => carriagesMap[code]?.name,
         );
         const filteredNames = carriageNames.filter(
           (name) => name !== undefined,
