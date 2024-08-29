@@ -1,0 +1,32 @@
+:host {
+  flex: 1;
+  min-height: 300px;
+  min-width: 300px;
+
+  ::ng-deep {
+    #map {
+      // Hide marker's anomaly (White cube)
+      .leaflet-marker-icon {
+        background-color: transparent !important;
+        border: none !important;
+      }
+      // Hide map legend
+      .leaflet-top.leaflet-right {
+        display: none;
+      }
+
+      .leaflet-popup-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        font-family: var(--font-family);
+      }
+    }
+  }
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+  border-radius: var(--border-radius);
+}

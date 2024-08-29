@@ -1,0 +1,20 @@
+<p-panel>
+  <ng-template pTemplate="icons">
+    <button class="p-panel-header-icon" (click)="deleteClick($event)">
+      <span class="pi pi-trash"></span>
+    </button>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <h2>{{ station.city }}</h2>
+  </ng-template>
+  <div class="location">
+    <p>{{ station.latitude | number: ".1-4" }}</p>
+    <p>{{ station.longitude | number: ".1-4" }}</p>
+  </div>
+  <div class="connections">
+    <p>Connected to:</p>
+    <p class="stations">
+      {{ connectedStations }}
+    </p>
+  </div>
+</p-panel>

@@ -15,6 +15,10 @@ export class RoutesFacadeService {
     return this.store.select(routesFeature.selectRoutesState);
   }
 
+  get routes$() {
+    return this.store.select(routesFeature.selectRoutes);
+  }
+
   public load() {
     this.store.dispatch(routesActions.load());
   }

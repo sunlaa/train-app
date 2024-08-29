@@ -1,1 +1,24 @@
-<p>stations-page works!</p>
+<p-toast />
+<p-confirmDialog />
+<div class="page">
+  <app-station-form></app-station-form>
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="offset"
+    [rows]="stationsPerPage"
+    [totalRecords]="totalStations"
+    [rowsPerPageOptions]="stationsPerPageOptions"
+  />
+  <div class="stations">
+    @for (station of pageStations; track station.id) {
+      <app-station-item [station]="station"></app-station-item>
+    }
+  </div>
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="offset"
+    [rows]="stationsPerPage"
+    [totalRecords]="totalStations"
+    [rowsPerPageOptions]="stationsPerPageOptions"
+  />
+</div>
