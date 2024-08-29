@@ -42,10 +42,10 @@
       ) {
         <div class="connection-box">
           <p-dropdown
-            [options]="getOptions($index)"
+            [options]="options[$index]"
             [formControlName]="$index"
             placeholder="Select a station"
-            (onChange)="connectionChange($index)"
+            (onChange)="connectionChange($event.value, $index)"
             class="dropdown"
           ></p-dropdown>
           @if (connections.length > 1 && !$last) {

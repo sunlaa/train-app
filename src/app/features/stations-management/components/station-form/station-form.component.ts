@@ -104,22 +104,21 @@ export class StationFormComponent implements OnInit {
     return this.stationConnections.disconnectedStations;
   }
 
-  public getOptions(index: number) {
-    return this.stationConnections.stationOptions[index];
+  get options() {
+    return this.stationConnections.stationOptions;
   }
 
-  public connectionChange(index: number) {
+  public connectionChange(value: number, index: number) {
     const { controls } = this.connections;
-    const connectionId = controls[index].value;
     const isLast = index === undefined || index === controls.length - 1;
-    if (connectionId === null) {
+    if (controls[index].value === null) {
       return;
     }
     if (isLast) {
       this.connections.push(this.fb.control(null));
-      this.stationConnections.connectStation(connectionId);
+      this.stationConnections.connectStation(value);
     } else {
-      this.stationConnections.reconnectStation(connectionId, index);
+      this.stationConnections.reconnectStation(value, index);
     }
   }
 
@@ -143,11 +142,9 @@ export class StationFormComponent implements OnInit {
   }
 
   public connect({ id }: TStationListed) {
-    this.connections.controls[this.connections.controls.length - 1].setValue(
-      id,
-    );
-    this.connections.push(this.fb.control(null));
-    this.stationConnections.connectStation(id);
+    const lastIndex = this.connections.controls.length - 1;
+    this.connections.controls[lastIndex].setValue(id);
+    this.connectionChange(id, lastIndex);
   }
 
   public disconnect({ id }: TStationListed) {
@@ -161,7 +158,10 @@ export class StationFormComponent implements OnInit {
   }
 
   private resetForm() {
-    this.stationForm.reset();
+    const { controls } = this.stationForm;
+    controls.name.reset();
+    controls.latitude.reset();
+    controls.longitude.reset();
     this.connections.clear();
     this.connections.push(this.fb.control(null));
     this.stationConnections.resetConnections();

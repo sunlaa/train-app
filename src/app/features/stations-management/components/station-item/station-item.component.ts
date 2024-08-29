@@ -77,7 +77,7 @@ export class StationItemComponent implements OnInit {
       request$.subscribe({
         next: ({ status, error }) => {
           if (status === 'success') {
-            this.notificationService.messageSuccess('Station deleted');
+            this.notificationService.messageConfirm('Station deleted');
           } else {
             this.notificationService.messageError(error?.message);
           }
