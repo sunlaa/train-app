@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import * as Leaflet from 'leaflet';
-import 'leaflet-routing-machine';
 import { TStationBasic, TStationListed } from '@/core/models/stations.model';
 import { mapMarkerTemplate } from '../../utils';
 import {
@@ -129,10 +128,6 @@ export class MapComponent implements OnChanges {
     const { latitude, longitude } = this.mainStation;
     if (latitude && longitude) {
       this.connectedStations.forEach((s) => {
-        // const route = this.generateRoute(
-        //   Leaflet.latLng(latitude, longitude),
-        //   Leaflet.latLng(s.latitude, s.longitude),
-        // );
         const route = this.generateLine(
           Leaflet.latLng(latitude, longitude),
           Leaflet.latLng(s.latitude, s.longitude),
@@ -147,22 +142,6 @@ export class MapComponent implements OnChanges {
     const { lat, lng } = event.latlng;
     this.moveMainMarker(lat, lng);
   }
-
-  // TODO: Decide what to do with routes
-  // private generateRoute(from: Leaflet.LatLng, to: Leaflet.LatLng) {
-  //   return Leaflet.Routing.control({
-  //     waypoints: [from, to],
-  //     createMarker: () => null,
-  //     useZoomParameter: false,
-  //     addWaypoints: false,
-  //     routeWhileDragging: false,
-  //     lineOptions: {
-  //       styles: [{ color: MAP_LINE_COLOR, weight: MAP_LINE_WEIGHT }],
-  //     },
-  //     showAlternatives: false,
-  //     fitSelectedRoutes: false,
-  //   });
-  // }
 
   private generateLine(from: Leaflet.LatLng, to: Leaflet.LatLng) {
     return Leaflet.polyline([from, to], { color: MAP_LINE_COLOR });
