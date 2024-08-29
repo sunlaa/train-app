@@ -5,12 +5,20 @@ import { StationsPageComponent } from './features/stations-management/components
 import { CarriagesPageComponent } from './features/carriages-management/components/carriages-page/carriages-page.component';
 import { RoutesPageComponent } from './features/routes-management/components/routes-page/routes-page.component';
 import { RidesPageComponent } from './features/rides-management/components/rides-page/rides-page.component';
+import { TripDetailsComponent } from './features/trip-details/components/trip-details/trip-details.component';
+import { tripQueryGuard } from './core/guards/trip/trip-query.guard';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
     component: HomePageComponent,
+  },
+  {
+    path: 'trip/:rideId',
+    pathMatch: 'full',
+    component: TripDetailsComponent,
+    canActivate: [tripQueryGuard],
   },
   {
     path: 'admin',
