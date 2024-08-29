@@ -8,6 +8,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageEvent } from '@/core/models/shared.model';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { SkeletonModule } from 'primeng/skeleton';
 import { StationsFacadeService } from '../../services/stations-facade.service';
 import { StationItemComponent } from '../station-item/station-item.component';
 import { STATIONS_PER_PAGE_OPTIONS } from '../../config/consts';
@@ -22,6 +23,7 @@ import { StationFormComponent } from '../station-form/station-form.component';
     StationItemComponent,
     PaginatorModule,
     StationFormComponent,
+    SkeletonModule,
   ],
   providers: [DestroyService, ConfirmationService],
   templateUrl: './stations-page.component.html',

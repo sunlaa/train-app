@@ -10,8 +10,16 @@
     [rowsPerPageOptions]="stationsPerPageOptions"
   />
   <div class="stations">
-    @for (station of pageStations; track station.id) {
-      <app-station-item [station]="station"></app-station-item>
+    @if (pageStations.length > 0) {
+      @for (station of pageStations; track station.id) {
+        <app-station-item [station]="station"></app-station-item>
+      }
+    } @else {
+      <p-skeleton height="12rem" />
+      <p-skeleton height="12rem" />
+      <p-skeleton height="12rem" />
+      <p-skeleton height="12rem" />
+      <p-skeleton height="12rem" />
     }
   </div>
   <p-paginator
