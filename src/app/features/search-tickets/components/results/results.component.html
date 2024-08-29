@@ -23,8 +23,8 @@
               />
             }
             <div class="tab">
-              <h3>{{ dayTickets.date | date: "MMMM dd" }}</h3>
-              <p>{{ dayTickets.date | date: "EEEE" }}</p>
+              <h3>{{ dayTickets.date | date: "MMMM dd" : "UTC" }}</h3>
+              <p>{{ dayTickets.date | date: "EEEE" : "UTC" }}</p>
             </div>
           </ng-template>
           @if (ticketsCount === 0) {

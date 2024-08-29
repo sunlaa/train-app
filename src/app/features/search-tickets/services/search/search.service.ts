@@ -61,6 +61,7 @@ export class SearchService {
       const ridePathIds = route.path.slice(startRide, endRide + 1);
 
       return route.schedule.map((ride) => {
+        const { rideId } = ride;
         const ridePath = ride.segments.slice(startRide, endRide + 1);
 
         const departureDate = new Date(ridePath[0].time[0]);
@@ -80,6 +81,9 @@ export class SearchService {
         );
 
         return {
+          rideId,
+          fromId,
+          toId,
           departureDate,
           arrivalDate,
           startCity,

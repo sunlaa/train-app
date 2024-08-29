@@ -45,6 +45,9 @@ export type Segment = {
 };
 
 export type Ticket = {
+  rideId: number;
+  fromId: number;
+  toId: number;
   departureDate: Date;
   arrivalDate: Date;
   startCity: string;

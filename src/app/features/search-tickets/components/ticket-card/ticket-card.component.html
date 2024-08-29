@@ -1,4 +1,4 @@
-<p-card styleClass="ticket-card">
+<p-card styleClass="ticket-card" (click)="toTrip()">
   <div class="first-section">
     <div class="path">
       <div class="point">
@@ -34,7 +34,7 @@
         [link]="true"
         icon="pi pi-info-circle"
         iconPos="right"
-        (onClick)="showRoute()"
+        (onClick)="showRoute($event)"
       />
     </div>
   </div>
