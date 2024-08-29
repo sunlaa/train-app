@@ -19,12 +19,13 @@ import { StationsFacadeService } from '@/features/stations-management/services/s
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@/shared/services/notification.service';
+import { SkeletonModule } from 'primeng/skeleton';
 import { RoutesFacadeService } from '../../services/routes-facade.service';
 
 @Component({
   selector: 'app-route-item',
   standalone: true,
-  imports: [PanelModule, TooltipModule, ConfirmDialogModule],
+  imports: [PanelModule, TooltipModule, ConfirmDialogModule, SkeletonModule],
   providers: [DestroyService],
   templateUrl: './route-item.component.html',
   styleUrl: './route-item.component.scss',
@@ -70,7 +71,8 @@ export class RouteItemComponent implements OnInit, OnChanges {
         const stationNames = this.route.path.map(
           (id) => stations.find((station) => station.id === id)?.city,
         );
-        this.stations = stationNames.join(' - ');
+        const filteredNames = stationNames.filter((name) => name !== undefined);
+        this.stations = filteredNames.join(' - ');
       });
 
     this.carriagesFacade.state$
@@ -79,7 +81,10 @@ export class RouteItemComponent implements OnInit, OnChanges {
         const carriageNames = this.route.carriages.map(
           (code) => carriages.find((carriage) => carriage.code === code)?.name,
         );
-        this.carriages = carriageNames.join(' - ');
+        const filteredNames = carriageNames.filter(
+          (name) => name !== undefined,
+        );
+        this.carriages = filteredNames.join(' - ');
       });
   }
 

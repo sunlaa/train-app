@@ -27,14 +27,22 @@
   </ng-template>
   <div class="info-section">
     <h3>Cities</h3>
-    <p>
-      {{ stations }}
-    </p>
+    @if (stations && stations.length) {
+      <p>
+        {{ stations }}
+      </p>
+    } @else {
+      <p-skeleton height="3rem" />
+    }
   </div>
   <div class="info-section">
     <h3>Carriages</h3>
-    <p>
-      {{ carriages }}
-    </p>
+    @if (carriages && carriages.length) {
+      <p>
+        {{ carriages }}
+      </p>
+    } @else {
+      <p-skeleton height="3rem" />
+    }
   </div>
 </p-panel>
