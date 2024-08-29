@@ -4,11 +4,16 @@ p {
   margin: 0;
 }
 
+:host {
+  width: 100%;
+}
+
 ::ng-deep {
   .ticket-card {
     margin-top: 1em;
 
     .p-card-content {
+      width: 100%;
       display: flex;
       justify-content: space-between;
     }
