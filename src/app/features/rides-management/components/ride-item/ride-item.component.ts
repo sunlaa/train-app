@@ -24,11 +24,11 @@ import { PriceSegmentComponent } from '../price-segment/price-segment.component'
   styleUrl: './ride-item.component.scss',
 })
 export class RideItemComponent implements OnChanges {
-  @Input() ride!: TRouteRide;
+  @Input({ required: true }) ride!: TRouteRide;
 
-  @Input() stations!: string[];
+  @Input({ required: true }) stations!: string[];
 
-  @Input() carriages!: string[];
+  @Input({ required: true }) carriages!: string[];
 
   @Output() rideChange = new EventEmitter<TRouteRide>();
 

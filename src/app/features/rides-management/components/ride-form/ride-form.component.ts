@@ -32,9 +32,9 @@ import { datesAreSequential } from '../../utils';
   styleUrl: './ride-form.component.scss',
 })
 export class RideFormComponent implements OnChanges {
-  @Input() stations!: string[];
+  @Input({ required: true }) stations!: string[];
 
-  @Input() carriages!: string[];
+  @Input({ required: true }) carriages!: string[];
 
   @Output() createRide = new EventEmitter<Omit<TRouteRide, 'rideId'>>();
 
