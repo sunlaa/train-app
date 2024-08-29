@@ -168,9 +168,14 @@ export class SearchService {
     carriageMap: CarriageMap,
     ridePath: Segment[],
   ): CarriageData[] {
+    const allOccupiedSeats = ridePath.reduce<number[]>((acc, segment) => {
+      const { occupiedSeats } = segment;
+      return Array.from(new Set(acc.concat(occupiedSeats)));
+    }, []);
+
     const freeSeats = this.countEmptySeats(
       trainCarriages,
-      ridePath[0].occupiedSeats.sort((a, b) => a - b),
+      allOccupiedSeats.sort((a, b) => a - b),
       carriageMap,
     );
 
