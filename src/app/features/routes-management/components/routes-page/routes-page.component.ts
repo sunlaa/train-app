@@ -9,13 +9,14 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TRoute } from '@/core/models/routes.model';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { take, takeUntil } from 'rxjs';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RouteItemComponent } from '../route-item/route-item.component';
 import { ROUTES_PER_PAGE_OPTIONS } from '../../config/consts';
 import { RouteFormComponent } from '../route-form/route-form.component';
@@ -38,8 +39,9 @@ interface PageEvent {
     ToastModule,
     ButtonModule,
     ConfirmDialogModule,
+    ProgressSpinnerModule,
   ],
-  providers: [DestroyService, MessageService, ConfirmationService],
+  providers: [DestroyService, ConfirmationService],
   templateUrl: './routes-page.component.html',
   styleUrl: './routes-page.component.scss',
 })

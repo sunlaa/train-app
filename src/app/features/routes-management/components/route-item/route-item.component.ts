@@ -13,11 +13,12 @@ import { PanelModule } from 'primeng/panel';
 import { takeUntil } from 'rxjs';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotificationService } from '@/shared/services/notification.service';
 import { RoutesFacadeService } from '../../services/routes-facade.service';
 
 @Component({
@@ -41,7 +42,7 @@ export class RouteItemComponent implements OnInit, OnChanges {
 
   private activatedRoute = inject(ActivatedRoute);
 
-  private messageService = inject(MessageService);
+  private notificationService = inject(NotificationService);
 
   private confirmationService = inject(ConfirmationService);
 
@@ -116,17 +117,9 @@ export class RouteItemComponent implements OnInit, OnChanges {
           next: ({ status, error }) => {
             if (status === 'success') {
               this.deleteRoute.emit(this.route);
-              this.messageService.add({
-                severity: 'info',
-                summary: 'Confirmed',
-                detail: 'Route deleted',
-              });
+              this.notificationService.messageSuccess('Route deleted');
             } else {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: error?.message,
-              });
+              this.notificationService.messageError(error?.message);
             }
           },
         });

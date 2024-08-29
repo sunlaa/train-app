@@ -9,11 +9,12 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormArray } from '@angular/forms';
-import { MessageService, SelectItem } from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { TRoute } from '@/core/models/routes.model';
+import { NotificationService } from '@/shared/services/notification.service';
 import { RoutesFacadeService } from '../../services/routes-facade.service';
 import { StationsSectionService } from '../../services/stations-section.service';
 import { CarriagesSectionService } from '../../services/carriages-section.service';
@@ -32,7 +33,7 @@ export class RouteFormComponent implements OnInit, OnChanges {
 
   @Output() closeForm = new EventEmitter<void>();
 
-  private messageService = inject(MessageService);
+  private notificationService = inject(NotificationService);
 
   private fb = inject(FormBuilder);
 
@@ -138,22 +139,6 @@ export class RouteFormComponent implements OnInit, OnChanges {
     this.carriages.removeAt(index);
   }
 
-  private messageSuccess(message: string | undefined) {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: message,
-    });
-  }
-
-  private messageError(message: string | undefined) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: message,
-    });
-  }
-
   private resetForm() {
     this.routeForm.reset();
     this.stations.clear();
@@ -180,7 +165,7 @@ export class RouteFormComponent implements OnInit, OnChanges {
       request$.subscribe({
         next: (state) => {
           if (state.status === 'success') {
-            this.messageSuccess(
+            this.notificationService.messageSuccess(
               this.route
                 ? 'Route successfully saved'
                 : 'Route successfully created',
@@ -188,13 +173,13 @@ export class RouteFormComponent implements OnInit, OnChanges {
             this.resetForm();
             this.closeForm.emit();
           } else {
-            this.messageError(state.error?.message);
+            this.notificationService.messageError(state.error?.message);
           }
         },
       });
     } catch (e) {
       const error = e as Error;
-      this.messageError(error.message);
+      this.notificationService.messageError(error.message);
     }
   }
 }
