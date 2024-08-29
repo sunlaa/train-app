@@ -26,12 +26,14 @@ import {
   ridesFeature,
 } from './redux/reducers';
 import { searchFeature } from './redux/reducers/search.reducer';
+import { SearchEffects } from './redux/effects/search.effects';
+import { cityApiInterceptor } from './features/search-tickets/interceptors/city-api.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([tokenInterceptor])),
+    provideHttpClient(withInterceptors([tokenInterceptor, cityApiInterceptor])),
     provideAnimationsAsync(),
     provideStore(),
     provideState(routesFeature),
@@ -43,6 +45,7 @@ export const appConfig: ApplicationConfig = {
       RoutesEffects,
       StationsEffects,
       CarriagesEffects,
+      SearchEffects,
       RidesEffects,
     ]),
     provideRouterStore(),

@@ -1,0 +1,12 @@
+::ng-deep {
+  .p-panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+}
+
+h3,
+p {
+  margin: 0.25em 0;
+}

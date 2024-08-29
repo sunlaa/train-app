@@ -1,4 +1,3 @@
-<p-toast />
 <form [formGroup]="routeForm">
   @if (route) {
     <h2>
@@ -36,7 +35,7 @@
           <div class="input-box">
             <p-dropdown
               id="carriage-{{ $index }}"
-              [options]="getCarriageDropdownOptions($index)"
+              [options]="getCarriageDropdownOptions()"
               [formControlName]="$index"
               placeholder="Select a carriage"
               (onChange)="addEmptyCarriage($index)"
@@ -54,10 +53,14 @@
     </div>
   </div>
 
-  <p-button
-    label="Save"
-    icon="pi pi-check"
-    (onClick)="onSubmit()"
-    class="save-btn"
-  ></p-button>
+  <div class="buttons">
+    <p-button
+      label="Close"
+      icon="pi pi-times"
+      (onClick)="closeFormClick()"
+      [outlined]="true"
+      severity="danger"
+    ></p-button>
+    <p-button label="Save" icon="pi pi-check" (onClick)="onSubmit()"></p-button>
+  </div>
 </form>
