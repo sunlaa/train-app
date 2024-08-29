@@ -7,12 +7,13 @@ import { ConfirmationService } from 'primeng/api';
 import { RoutesFacadeService } from '@/features/routes-management/services/routes-facade.service';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '@/shared/services/notification.service';
+import { TooltipModule } from 'primeng/tooltip';
 import { StationsFacadeService } from '../../services/stations-facade.service';
 
 @Component({
   selector: 'app-station-item',
   standalone: true,
-  imports: [PanelModule, CommonModule],
+  imports: [PanelModule, CommonModule, TooltipModule],
   providers: [DestroyService],
   templateUrl: './station-item.component.html',
   styleUrl: './station-item.component.scss',

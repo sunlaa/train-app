@@ -1,6 +1,11 @@
 <p-panel>
   <ng-template pTemplate="icons">
-    <button class="p-panel-header-icon" (click)="deleteClick($event)">
+    <button
+      class="p-panel-header-icon"
+      (click)="deleteClick($event)"
+      pTooltip="Delete"
+      tooltipPosition="bottom"
+    >
       <span class="pi pi-trash"></span>
     </button>
   </ng-template>
