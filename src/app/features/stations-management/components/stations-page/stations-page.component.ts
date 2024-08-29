@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { filter, take, takeUntil } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { TStationListed } from '@/core/models/stations.model';
 import { PaginatorModule } from 'primeng/paginator';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -23,7 +23,7 @@ import { StationFormComponent } from '../station-form/station-form.component';
     PaginatorModule,
     StationFormComponent,
   ],
-  providers: [DestroyService, MessageService, ConfirmationService],
+  providers: [DestroyService, ConfirmationService],
   templateUrl: './stations-page.component.html',
   styleUrl: './stations-page.component.scss',
 })

@@ -12,7 +12,6 @@ import { TStationBasic, TStationListed } from '@/core/models/stations.model';
 import { mapMarkerTemplate } from '../../utils';
 import {
   MAP_LINE_COLOR,
-  MAP_LINE_WEIGHT,
   MARKER_CONNECTED_COLOR,
   MARKER_MAIN_COLOR,
   MARKER_REGULAR_COLOR,
@@ -150,20 +149,20 @@ export class MapComponent implements OnChanges {
   }
 
   // TODO: Decide what to do with routes
-  private generateRoute(from: Leaflet.LatLng, to: Leaflet.LatLng) {
-    return Leaflet.Routing.control({
-      waypoints: [from, to],
-      createMarker: () => null,
-      useZoomParameter: false,
-      addWaypoints: false,
-      routeWhileDragging: false,
-      lineOptions: {
-        styles: [{ color: MAP_LINE_COLOR, weight: MAP_LINE_WEIGHT }],
-      },
-      showAlternatives: false,
-      fitSelectedRoutes: false,
-    });
-  }
+  // private generateRoute(from: Leaflet.LatLng, to: Leaflet.LatLng) {
+  //   return Leaflet.Routing.control({
+  //     waypoints: [from, to],
+  //     createMarker: () => null,
+  //     useZoomParameter: false,
+  //     addWaypoints: false,
+  //     routeWhileDragging: false,
+  //     lineOptions: {
+  //       styles: [{ color: MAP_LINE_COLOR, weight: MAP_LINE_WEIGHT }],
+  //     },
+  //     showAlternatives: false,
+  //     fitSelectedRoutes: false,
+  //   });
+  // }
 
   private generateLine(from: Leaflet.LatLng, to: Leaflet.LatLng) {
     return Leaflet.polyline([from, to], { color: MAP_LINE_COLOR });

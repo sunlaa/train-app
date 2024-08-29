@@ -14,9 +14,9 @@ import {
   TStationCreation,
   TStationListed,
 } from '@/core/models/stations.model';
-import { MessageService } from 'primeng/api';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+import { NotificationService } from '@/shared/services/notification.service';
 import { StationsFacadeService } from '../../services/stations-facade.service';
 import { MapComponent } from '../map/map.component';
 import { StationConnectionsService } from '../../services/station-connections.service';
@@ -41,7 +41,7 @@ export class StationFormComponent implements OnInit {
 
   private stationsFacade = inject(StationsFacadeService);
 
-  private messageService = inject(MessageService);
+  private notificationService = inject(NotificationService);
 
   private fb = inject(FormBuilder);
 
@@ -187,26 +187,10 @@ export class StationFormComponent implements OnInit {
   private createStation(station: TStationCreation) {
     this.stationsFacade.create(station).subscribe(({ status, error }) => {
       if (status === 'success') {
-        this.messageSuccess('Station created');
+        this.notificationService.messageSuccess('Station created');
       } else if (status === 'error') {
-        this.messageError(error?.message);
+        this.notificationService.messageError(error?.message);
       }
-    });
-  }
-
-  private messageSuccess(message: string | undefined) {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: message,
-    });
-  }
-
-  private messageError(message: string | undefined) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: message,
     });
   }
 }

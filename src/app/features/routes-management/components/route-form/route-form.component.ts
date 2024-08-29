@@ -5,12 +5,13 @@ import {
   FormArray,
   AbstractControl,
 } from '@angular/forms';
-import { MessageService, SelectItem } from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { TRoute } from '@/core/models/routes.model';
+import { NotificationService } from '@/shared/services/notification.service';
 import { RoutesFacadeService } from '../../services/routes-facade.service';
 import { disableControls } from '../../utils';
 import { StationsSectionService } from '../../services/stations-section.service';
@@ -32,14 +33,14 @@ type DropdownOptions = {
     InputTextModule,
     ToastModule,
   ],
-  providers: [MessageService],
+  providers: [],
   templateUrl: './route-form.component.html',
   styleUrl: './route-form.component.scss',
 })
 export class RouteFormComponent implements OnInit {
   @Input() route: TRoute | undefined;
 
-  private messageService = inject(MessageService);
+  private notificationService = inject(NotificationService);
 
   private fb = inject(FormBuilder);
 
@@ -168,22 +169,6 @@ export class RouteFormComponent implements OnInit {
     this.carriagesService.updateCarriageOptions(selectedOptions);
   }
 
-  private messageSuccess(message: string | undefined) {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: message,
-    });
-  }
-
-  private messageError(message: string | undefined) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: message,
-    });
-  }
-
   private resetForm() {
     this.route = undefined;
     this.routeForm.reset();
@@ -209,20 +194,20 @@ export class RouteFormComponent implements OnInit {
       request$.subscribe({
         next: (state) => {
           if (state.status === 'success') {
-            this.messageSuccess(
+            this.notificationService.messageSuccess(
               this.route
                 ? 'Route successfully saved'
                 : 'Route successfully created',
             );
             this.resetForm();
           } else {
-            this.messageError(state.error?.message);
+            this.notificationService.messageError(state.error?.message);
           }
         },
       });
     } catch (e) {
       const error = e as Error;
-      this.messageError(error.message);
+      this.notificationService.messageError(error.message);
     }
   }
 }

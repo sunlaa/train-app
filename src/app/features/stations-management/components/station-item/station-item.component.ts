@@ -3,9 +3,10 @@ import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { take, takeUntil } from 'rxjs';
 import { PanelModule } from 'primeng/panel';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { RoutesFacadeService } from '@/features/routes-management/services/routes-facade.service';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '@/shared/services/notification.service';
 import { StationsFacadeService } from '../../services/stations-facade.service';
 
 @Component({
@@ -25,7 +26,7 @@ export class StationItemComponent implements OnInit {
 
   private routesFacade = inject(RoutesFacadeService);
 
-  private messageService = inject(MessageService);
+  private notificationService = inject(NotificationService);
 
   private confirmationService = inject(ConfirmationService);
 
@@ -61,34 +62,24 @@ export class StationItemComponent implements OnInit {
     });
   }
 
-  private messageError(message: string | undefined) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: message ?? 'Unknown error',
-    });
-  }
-
   private deletionConfirm() {
     this.routesFacade.routes$.pipe(take(1)).subscribe((routes) => {
       const canDeleteStation =
         routes.length !== 0 &&
         !routes.some(({ path }) => path.includes(this.station.id));
       if (!canDeleteStation) {
-        this.messageError('Cannot delete station with active rides');
+        this.notificationService.messageError(
+          'Cannot delete station with active rides',
+        );
         return;
       }
       const request$ = this.stationsFacade.delete(this.station.id);
       request$.subscribe({
         next: ({ status, error }) => {
           if (status === 'success') {
-            this.messageService.add({
-              severity: 'info',
-              summary: 'Confirmed',
-              detail: 'Station deleted',
-            });
+            this.notificationService.messageSuccess('Station deleted');
           } else {
-            this.messageError(error?.message);
+            this.notificationService.messageError(error?.message);
           }
         },
       });
