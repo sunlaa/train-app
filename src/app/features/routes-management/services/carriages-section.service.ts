@@ -2,6 +2,7 @@ import { CarriagesFacadeService } from '@/features/carriages-management/services
 import { inject, Injectable } from '@angular/core';
 import { TCarriage } from '@/core/models/carriages.model';
 import { SelectItem } from 'primeng/api';
+import { map } from 'rxjs';
 import { formatCarriage } from '../utils';
 
 @Injectable({
