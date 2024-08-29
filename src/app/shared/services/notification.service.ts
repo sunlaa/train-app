@@ -22,4 +22,12 @@ export class NotificationService {
       detail: message,
     });
   }
+
+  public messageConfirm(message: string | undefined) {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Confirmed',
+      detail: message,
+    });
+  }
 }

@@ -1,0 +1,1 @@
+export { datesAreSequential } from './datesAreSequential';

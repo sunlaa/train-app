@@ -1,0 +1,96 @@
+:host {
+  ::ng-deep {
+    .p-inputnumber {
+      width: 100%;
+      max-width: 250px;
+
+      .p-inputnumber-input {
+        width: 100%;
+      }
+    }
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  border-radius: var(--border-radius);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  padding: 1em 0.5em;
+}
+
+p {
+  margin: 0;
+}
+
+.buttons {
+  align-self: center;
+  display: flex;
+  gap: 0.5em;
+}
+
+.ride {
+  display: grid;
+  grid-template-columns: auto 1fr 0 auto;
+  gap: 10px;
+
+  .grid-item {
+    padding: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    border-radius: var(--border-radius);
+    background-color: color-mix(
+      in srgb,
+      var(--primary-color) 5%,
+      transparent 95%
+    );
+  }
+
+  .grid-item.station {
+    grid-column: 1 / span 3;
+
+    .dates {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25em;
+
+      .date-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  .grid-item.price {
+    grid-column: 3 / 5;
+
+    .prices {
+      display: flex;
+      gap: 0.5em;
+      flex-direction: column;
+
+      .price-data {
+        display: flex;
+        gap: 0.5em;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .price {
+          text-align: end;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .grid-item.price {
+      grid-column: 1 / span 3;
+    }
+  }
+}

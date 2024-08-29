@@ -1,0 +1,23 @@
+.loading-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  margin: 0;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.rides {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
