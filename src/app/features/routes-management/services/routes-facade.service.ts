@@ -34,4 +34,12 @@ export class RoutesFacadeService {
       take(1),
     );
   }
+
+  public delete(id: number) {
+    this.store.dispatch(routesActions.delete({ id }));
+    return this.store.select(routesFeature.selectRoutesState).pipe(
+      filter(({ status }) => status !== 'loading'),
+      take(1),
+    );
+  }
 }

@@ -1,0 +1,34 @@
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+::ng-deep {
+  .loading-wrapper {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .results-loader {
+      width: 4em;
+      height: 4em;
+      .p-progress-spinner-circle {
+        stroke: var(--primary-color) !important;
+      }
+    }
+  }
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
