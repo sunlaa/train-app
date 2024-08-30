@@ -1,9 +1,9 @@
-import { Segment } from './search.model';
+import { CarriageData, Segment } from './search.model';
 
 export type RideResponse = {
   rideId: number;
   path: number[];
-  carriage: string[];
+  carriages: string[];
   schedule: RideSchedule;
 };
 
@@ -13,11 +13,13 @@ export type RideSchedule = {
 
 export type TrainCarriageData = {
   code: string;
-  carNumer: number;
+  carNumber: number;
   emptySeats: number;
   occupiedSeats: number[];
 };
 
-export type SeatsDataByType = {
-  [code: string]: Omit<TrainCarriageData, 'code'>[];
+export type RideCarriageData = {
+  header: CarriageData;
+  carriages: TrainCarriageData[];
+  carriageView: { rows: number; leftSeats: number; rightSeats: number };
 };

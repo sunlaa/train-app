@@ -8,4 +8,4 @@ export type TCarriage = {
 
 export type TCarriageWithSeats = TCarriage & { seats: number };
 
-export type CarriageMap = { [code: string]: TCarriageWithSeats };
+export type CarriageMap = Record<string, TCarriageWithSeats>;

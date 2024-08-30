@@ -9,7 +9,11 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
-import { getCarriageData, getRideDates, getRouteDetails } from '@/shared/utils';
+import {
+  getGeneralCarriageData,
+  getRideDates,
+  getRouteDetails,
+} from '@/shared/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +69,7 @@ export class SearchService {
 
         const stopInfo = getRouteDetails(ridePath, ridePathIds, stationMap);
 
-        const carriages = getCarriageData(
+        const carriages = getGeneralCarriageData(
           route.carriages,
           carriageMap,
           ridePath,
