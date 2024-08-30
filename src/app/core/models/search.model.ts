@@ -40,7 +40,7 @@ export type Ride = {
 
 export type Segment = {
   time: [string, string];
-  price: { [key: string]: number };
+  price: Record<string, number>;
   occupiedSeats: number[];
 };
 
