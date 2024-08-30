@@ -18,7 +18,11 @@ export class StationConnectionsService {
 
   public stationOptions: SelectItem[][] = [];
 
-  public loadStations(): void {
+  constructor() {
+    this.loadStations();
+  }
+
+  private loadStations(): void {
     this.stationsFacade.stations$.subscribe((stations) => {
       this.stations = stations;
       this.disconnectedStations = [...this.stations];

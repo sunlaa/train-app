@@ -31,6 +31,12 @@ form {
   flex-direction: column;
   gap: 0.5em;
 
+  .map-data {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
   .input-box {
     display: flex;
     flex-direction: column;

@@ -52,11 +52,10 @@ export class StationsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getQueryParams();
-    this.initializeStations();
+    this.listenStationsState();
   }
 
-  private initializeStations() {
-    this.stationsFacade.load();
+  private listenStationsState() {
     this.stationsFacade.state$
       .pipe(
         takeUntil(this.destroy$),

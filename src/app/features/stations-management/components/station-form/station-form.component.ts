@@ -3,20 +3,16 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
-import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   TStationBasic,
   TStationCreation,
   TStationListed,
 } from '@/core/models/stations.model';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+import { map, Observable, startWith, takeUntil } from 'rxjs';
 import { NotificationService } from '@/shared/services/notification.service';
+import { CommonModule } from '@angular/common';
 import { StationsFacadeService } from '../../services/stations-facade.service';
 import { MapComponent } from '../map/map.component';
 import { StationConnectionsService } from '../../services/station-connections.service';
@@ -31,6 +27,7 @@ import { StationConnectionsService } from '../../services/station-connections.se
     ButtonModule,
     MapComponent,
     ReactiveFormsModule,
+    CommonModule,
   ],
   providers: [DestroyService],
   templateUrl: './station-form.component.html',
@@ -39,57 +36,47 @@ import { StationConnectionsService } from '../../services/station-connections.se
 export class StationFormComponent implements OnInit {
   private destroy$ = inject(DestroyService);
 
+  private notificationService = inject(NotificationService);
+
   private stationsFacade = inject(StationsFacadeService);
 
-  private notificationService = inject(NotificationService);
+  private stationConnections = inject(StationConnectionsService);
 
   private fb = inject(FormBuilder);
 
   public mainStation: Partial<Omit<TStationBasic, 'id'>> = {};
 
-  private stationConnections = inject(StationConnectionsService);
-
   public stationForm = this.fb.group({
-    name: this.fb.control('', Validators.required),
-    latitude: this.fb.control<number | null>(null, Validators.required),
-    longitude: this.fb.control<number | null>(null, Validators.required),
+    mapData: this.fb.group({
+      name: this.fb.control('', Validators.required),
+      latitude: this.fb.control<number | null>(null, Validators.required),
+      longitude: this.fb.control<number | null>(null, Validators.required),
+    }),
     connections: this.fb.array<number>([]),
   });
 
+  public buttonDisabled$!: Observable<boolean>;
+
   ngOnInit(): void {
     this.connections.push(this.fb.control(null));
-    this.stationConnections.loadStations();
-    this.listenFormChanges();
-  }
-
-  private listenFormChanges() {
-    const { controls } = this.stationForm;
-    this.changesListener(controls.name, true, (name) => {
-      this.mainStation = { ...this.mainStation, city: name ?? undefined };
-    });
-    this.changesListener(controls.latitude, false, (lat) => {
-      this.mainStation = { ...this.mainStation, latitude: lat ?? undefined };
-    });
-    this.changesListener(controls.longitude, false, (lng) => {
-      this.mainStation = { ...this.mainStation, longitude: lng ?? undefined };
-    });
-  }
-
-  private changesListener<T>(
-    control: FormControl<T>,
-    debounce: boolean,
-    callback: (data: T) => void,
-  ) {
-    const observable = control.valueChanges.pipe(
+    this.listenMapDataChanges();
+    this.buttonDisabled$ = this.stationForm.valueChanges.pipe(
+      startWith(null),
       takeUntil(this.destroy$),
-      distinctUntilChanged(),
+      map(() => !this.formIsValid()),
     );
+  }
 
-    if (debounce) {
-      observable.pipe(debounceTime(500)).subscribe(callback);
-    } else {
-      observable.subscribe(callback);
-    }
+  private listenMapDataChanges() {
+    this.stationForm.controls.mapData.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(({ name, latitude, longitude }) => {
+        this.mainStation = {
+          city: name ?? undefined,
+          latitude: latitude ?? undefined,
+          longitude: longitude ?? undefined,
+        };
+      });
   }
 
   get connections() {
@@ -110,7 +97,7 @@ export class StationFormComponent implements OnInit {
 
   public connectionChange(value: number, index: number) {
     const { controls } = this.connections;
-    const isLast = index === undefined || index === controls.length - 1;
+    const isLast = index === controls.length - 1;
     if (controls[index].value === null) {
       return;
     }
@@ -136,7 +123,7 @@ export class StationFormComponent implements OnInit {
 
   public mapClick(location: Pick<TStationBasic, 'latitude' | 'longitude'>) {
     const { latitude, longitude } = location;
-    const { controls } = this.stationForm;
+    const { controls } = this.stationForm.controls.mapData;
     controls.latitude.setValue(latitude);
     controls.longitude.setValue(longitude);
   }
@@ -158,7 +145,7 @@ export class StationFormComponent implements OnInit {
   }
 
   private resetForm() {
-    const { controls } = this.stationForm;
+    const { controls } = this.stationForm.controls.mapData;
     controls.name.reset();
     controls.latitude.reset();
     controls.longitude.reset();
@@ -167,11 +154,15 @@ export class StationFormComponent implements OnInit {
     this.stationConnections.resetConnections();
   }
 
+  private formIsValid() {
+    return this.stationForm.valid && this.connections.controls.length >= 2;
+  }
+
   public submitForm() {
-    if (this.stationForm.invalid || this.connections.controls.length <= 1) {
+    if (!this.formIsValid()) {
       return;
     }
-    const { controls } = this.stationForm;
+    const { controls } = this.stationForm.controls.mapData;
     const station: TStationCreation = {
       city: controls.name.value!,
       latitude: controls.latitude.value!,

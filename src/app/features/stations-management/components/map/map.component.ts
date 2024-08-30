@@ -51,8 +51,14 @@ export class MapComponent implements OnChanges {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }),
     ],
-    zoom: 1,
+    minZoom: 2,
+    zoom: 2,
     center: { lat: 20, lng: 90 },
+    maxBounds: Leaflet.latLngBounds(
+      Leaflet.latLng(-90, -180),
+      Leaflet.latLng(90, 180),
+    ),
+    maxBoundsViscosity: 1,
   };
 
   ngOnChanges(): void {

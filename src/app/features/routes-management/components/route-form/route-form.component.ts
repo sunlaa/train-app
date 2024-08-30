@@ -175,13 +175,11 @@ export class RouteFormComponent implements OnInit, OnChanges {
             this.closeForm.emit();
           } else {
             this.notificationService.messageError(state.error?.message);
-            this.notificationService.messageError(state.error?.message);
           }
         },
       });
     } catch (e) {
       const error = e as Error;
-      this.notificationService.messageError(error.message);
       this.notificationService.messageError(error.message);
     }
   }
