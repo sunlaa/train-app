@@ -1,10 +1,18 @@
 import { DestroyService } from '@/core/services/destroy/destroy.service';
-import { RideCarriageData } from '@/core/models/trip.model';
+import { RidePageData } from '@/core/models/trip.model';
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { combineLatest, filter, take, takeUntil, tap } from 'rxjs';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import {
+  combineLatest,
+  filter,
+  map,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { TripDetailsService } from '../../services/trip-details/trip.service';
 
 @Component({
@@ -36,51 +44,69 @@ export class TripDetailsComponent implements OnInit {
 
   public toCity: string = '';
 
-  public rideCarriagesData: RideCarriageData[] = [];
+  public pageData: RidePageData | null = null;
 
   ngOnInit() {
     combineLatest([this.route.paramMap, this.route.queryParamMap])
       .pipe(
         takeUntil(this.destroy$),
         tap(([params, query]) => {
-          this.rideId = params.get('rideId');
-          this.fromId = +query.get('from')!;
-          this.toId = +query.get('to')!;
+          this.extractParams(params, query);
         }),
+        switchMap(() => this.waitForLoading()),
+        switchMap(() => this.loadRideDetails()),
+        takeUntil(this.destroy$),
       )
-      .subscribe(() => {
-        combineLatest([this.stationsFacade.state$, this.carriagesFacade.state$])
-          .pipe(
-            filter(
-              ([stationState, carriageState]) =>
-                stationState.status !== 'loading' &&
-                carriageState.status !== 'loading',
-            ),
-            take(1),
-          )
-          .subscribe(() => {
-            const stationMap = this.stationsFacade.stationMap();
-            if (!stationMap) throw Error('No station map in store.');
-
-            const carriageMap = this.carriagesFacade.carriageMap();
-            if (!carriageMap) throw Error('No carriage map in store.');
-
-            if (!this.rideId || !this.fromId || !this.toId) {
-              throw Error(
-                'One of the following data was not received: rideId, fromId, toId.',
-              );
-            }
-
-            this.fromCity = stationMap[this.fromId].city;
-            this.toCity = stationMap[this.toId].city;
-
-            this.tripService
-              .getRideDetails(this.rideId, this.fromId, this.toId, carriageMap)
-              .pipe(takeUntil(this.destroy$))
-              .subscribe((data) => {
-                this.rideCarriagesData = data;
-              });
-          });
+      .subscribe((data) => {
+        this.pageData = data;
+        console.log(data);
       });
+  }
+
+  private extractParams(params: ParamMap, query: ParamMap) {
+    this.rideId = params.get('rideId');
+    this.fromId = Number(query.get('from'));
+    this.toId = Number(query.get('to'));
+  }
+
+  private waitForLoading() {
+    return combineLatest([
+      this.stationsFacade.state$,
+      this.carriagesFacade.state$,
+    ]).pipe(
+      filter(
+        ([stationState, carriageState]) =>
+          stationState.status !== 'loading' &&
+          carriageState.status !== 'loading',
+      ),
+      take(1),
+      map(() => {}),
+    );
+  }
+
+  private loadRideDetails() {
+    const stationMap = this.stationsFacade.stationMap();
+    const carriageMap = this.carriagesFacade.carriageMap();
+
+    if (!stationMap || !carriageMap) {
+      throw new Error('No station map or carriage map in store.');
+    }
+
+    if (!this.rideId || !this.fromId || !this.toId) {
+      throw new Error(
+        'One of the following data was not received: rideId, fromId, toId.',
+      );
+    }
+
+    this.fromCity = stationMap[this.fromId].city;
+    this.toCity = stationMap[this.toId].city;
+
+    return this.tripService.getRideDetails(
+      this.rideId,
+      this.fromId,
+      this.toId,
+      carriageMap,
+      stationMap,
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { CarriageData, Segment } from './search.model';
+import { CarriageData, Segment, StopInfo } from './search.model';
 
 export type RideResponse = {
   rideId: number;
@@ -19,7 +19,19 @@ export type TrainCarriageData = {
 };
 
 export type RideCarriageData = {
-  header: CarriageData;
+  itemHeader: CarriageData;
   carriages: TrainCarriageData[];
   carriageView: { rows: number; leftSeats: number; rightSeats: number };
+};
+
+export type RideHeader = {
+  rideId: number;
+  departureDate: Date;
+  arrivalDate: Date;
+  stopInfo: StopInfo[];
+};
+
+export type RidePageData = {
+  header: RideHeader;
+  carriageList: RideCarriageData[];
 };

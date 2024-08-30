@@ -1,6 +1,8 @@
 import { CarriageMap } from '@/core/models/carriages.model';
-import { RideResponse } from '@/core/models/trip.model';
+import { StationMap } from '@/core/models/stations.model';
+import { RidePageData, RideResponse } from '@/core/models/trip.model';
 import { getRideCarriagesData } from '@/shared/utils';
+import getRideHeaderData from '@/shared/utils/rideHeader';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map } from 'rxjs';
@@ -18,13 +20,14 @@ export class TripDetailsService {
     fromId: number,
     toId: number,
     carriageMap: CarriageMap,
+    stationMap: StationMap,
   ) {
     const url = `${this.baseUrl}/${id}`;
     return this.http
       .get<RideResponse>(url)
       .pipe(
         map((response) =>
-          this.handleRideData(response, fromId, toId, carriageMap),
+          this.handleRideData(response, fromId, toId, carriageMap, stationMap),
         ),
       );
   }
@@ -34,12 +37,20 @@ export class TripDetailsService {
     fromId: number,
     toId: number,
     carriageMap: CarriageMap,
-  ) {
-    const { path, carriages } = response;
+    stationMap: StationMap,
+  ): RidePageData {
+    const { path, carriages, rideId } = response;
     const route = response.schedule.segments;
 
-    const ridePath = route.slice(path.indexOf(fromId), path.indexOf(toId) + 1);
+    const startRide = path.indexOf(fromId);
+    const endRide = path.indexOf(toId);
 
-    return getRideCarriagesData(carriages, carriageMap, ridePath);
+    const ridePath = route.slice(startRide, endRide + 1);
+    const ridePathIds = path.slice(startRide, endRide + 1);
+
+    const header = getRideHeaderData(rideId, ridePath, ridePathIds, stationMap);
+    const carriageList = getRideCarriagesData(carriages, carriageMap, ridePath);
+
+    return { header, carriageList };
   }
 }

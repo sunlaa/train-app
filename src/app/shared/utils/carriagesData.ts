@@ -116,7 +116,7 @@ export function getRideCarriagesData(
     );
     const { rows, leftSeats, rightSeats } = carriageMap[carriages[0].code];
     return {
-      header: data,
+      itemHeader: data,
       carriages,
       carriageView: { rows, leftSeats, rightSeats },
     };
