@@ -1,0 +1,44 @@
+::ng-deep {
+  .panel > .p-panel > {
+    .p-panel-header {
+      cursor: pointer;
+    }
+    .p-toggleable-content > .p-panel-content {
+      display: grid;
+      grid-template-columns: auto 1fr 0 auto;
+      gap: 10px;
+      padding: 1em 0.5em;
+    }
+  }
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.grid-item {
+  padding: 10px;
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  background-color: color-mix(
+    in srgb,
+    var(--primary-color) 5%,
+    transparent 95%
+  );
+}
+
+.grid-item.station {
+  grid-column: 1 / span 3;
+}
+
+.grid-item.price {
+  grid-column: 3 / 5;
+}
+
+@media screen and (max-width: 768px) {
+  .grid-item.price {
+    grid-column: 1 / span 3;
+  }
+}

@@ -1,0 +1,28 @@
+<div class="front">
+  <div class="line"></div>
+  <div class="line"></div>
+</div>
+
+@for (row of [].constructor(rows); track $index; let i = $index) {
+  <div class="seat-row">
+    <div class="left-seats">
+      @for (seat of seatNumbersForRow(i, leftSeats, true); track $index) {
+        <div class="seat" [ngClass]="{ selected: seat === 6 }">
+          {{ seat }}
+        </div>
+      }
+    </div>
+    <div class="right-seats">
+      @for (seat of seatNumbersForRow(i, rightSeats, false); track $index) {
+        <div class="seat">
+          {{ seat }}
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<div class="back">
+  <div class="line"></div>
+  <div class="line"></div>
+</div>

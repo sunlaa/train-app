@@ -1,6 +1,6 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { ApiError } from '@/core/models/api.model';
-import { TStationListed } from '@/core/models/stations.model';
+import { StationMap, TStationListed } from '@/core/models/stations.model';
 import { stationsActions } from '../actions';
 
 export type StationsState = {
@@ -85,4 +85,13 @@ const stationsReducer = createReducer(
 export const stationsFeature = createFeature({
   name: 'stations',
   reducer: stationsReducer,
+  extraSelectors: ({ selectStations }) => ({
+    selectStationMap: createSelector(selectStations, (stations) => {
+      return stations.reduce<StationMap>((acc, station) => {
+        const map = acc;
+        map[station.id] = station;
+        return map;
+      }, {});
+    }),
+  }),
 });
