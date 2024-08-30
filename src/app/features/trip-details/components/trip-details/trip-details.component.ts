@@ -4,6 +4,13 @@ import { CarriagesFacadeService } from '@/features/carriages-management/services
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { CarriageComponent } from '@/shared/components/carriage/carriage.component';
+import { ButtonModule } from 'primeng/button';
+import { SkeletonModule } from 'primeng/skeleton';
+import { CardModule } from 'primeng/card';
+import { ChipModule } from 'primeng/chip';
+import { TabViewModule } from 'primeng/tabview';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import {
   combineLatest,
   filter,
@@ -18,7 +25,16 @@ import { TripDetailsService } from '../../services/trip-details/trip.service';
 @Component({
   selector: 'app-trip-details',
   standalone: true,
-  imports: [],
+  imports: [
+    ButtonModule,
+    SkeletonModule,
+    TabViewModule,
+    CardModule,
+    ChipModule,
+    DatePipe,
+    CarriageComponent,
+    CurrencyPipe,
+  ],
   providers: [DestroyService],
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.scss',
@@ -59,7 +75,6 @@ export class TripDetailsComponent implements OnInit {
       )
       .subscribe((data) => {
         this.pageData = data;
-        console.log(data);
       });
   }
 

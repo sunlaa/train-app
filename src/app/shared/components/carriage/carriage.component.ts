@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-carriage',
@@ -15,7 +15,11 @@ export class CarriageComponent {
 
   @Input() rightSeats: number = 0;
 
-  @Input() firstSeatNumber: number = 1;
+  // @Input() firstSeatNumber: number = 1;
+
+  @Input() occupiedSeats: number[] = [];
+
+  @Output() seatChange = new EventEmitter<number>();
 
   public seatNumbersForRow(
     row: number,
@@ -23,7 +27,7 @@ export class CarriageComponent {
     isLeftSide: boolean,
   ): number[] {
     const lastNumberedSeats = row * (this.leftSeats + this.rightSeats);
-    const firstRowSeatNumber = this.firstSeatNumber + lastNumberedSeats;
+    const firstRowSeatNumber = 1 + lastNumberedSeats;
 
     const seatOffset = isLeftSide ? 0 : this.leftSeats;
 
@@ -31,5 +35,9 @@ export class CarriageComponent {
       { length: seatsOnSide },
       (_, i) => firstRowSeatNumber + seatOffset + i,
     );
+  }
+
+  chooseSeat(seat: number) {
+    this.seatChange.emit(seat);
   }
 }

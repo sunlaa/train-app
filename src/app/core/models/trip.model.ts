@@ -14,6 +14,7 @@ export type RideSchedule = {
 export type TrainCarriageData = {
   code: string;
   carNumber: number;
+  firstSeat: number;
   emptySeats: number;
   occupiedSeats: number[];
 };

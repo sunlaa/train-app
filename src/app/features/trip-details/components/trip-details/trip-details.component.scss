@@ -1,0 +1,41 @@
+:host {
+  width: 100%;
+}
+
+::ng-deep {
+  .header-skeleton {
+    width: 100%;
+  }
+}
+
+p {
+  margin: 0;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  gap: 1em;
+  i {
+    font-size: 0.8em;
+  }
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ride-info {
+  display: flex;
+  gap: 1em;
+}
+
+.cities,
+.dates,
+.route {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}

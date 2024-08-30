@@ -1,1 +1,73 @@
-<head></head>
+<header>
+  <p-button icon="pi pi-chevron-left" severity="secondary" />
+  @if (pageData) {
+    @let header = pageData.header;
+    <div class="header-contet">
+      <div class="ride-info">
+        <div class="cities">
+          <p>{{ fromCity }}</p>
+          <i class="pi pi-arrow-right"></i>
+          <p>{{ toCity }}</p>
+        </div>
+        <div class="dates">
+          <p>{{ header.departureDate | date: "MMMM dd, HH:mm" : "UTC" }}</p>
+          <i class="pi pi-minus"></i>
+          <p>{{ header.arrivalDate | date: "MMMM dd, HH:mm" : "UTC" }}</p>
+        </div>
+      </div>
+
+      <div class="route">
+        <p>Ride {{ header.rideId }}</p>
+        <p-button
+          size="small"
+          label="Route"
+          [link]="true"
+          icon="pi pi-info-circle"
+          iconPos="right"
+        />
+      </div>
+    </div>
+  } @else {
+    <p-skeleton class="header-skeleton" height="2rem" />
+  }
+</header>
+
+<p-tabView>
+  @if (pageData) {
+    @let carriageData = pageData.carriageList;
+
+    @for (data of carriageData; track $index) {
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <p>
+            Carriage type {{ data.itemHeader.name }}:
+            {{ data.itemHeader.freeSeats }}
+          </p>
+          <p>{{ data.itemHeader.price | currency }}</p>
+        </ng-template>
+
+        <div class="carriages">
+          @for (carriage of data.carriages; track $index) {
+            @let view = data.carriageView;
+            <p-card>
+              <ng-template pTemplate="header">
+                <div>
+                  <p>Car {{ carriage.carNumber }}</p>
+                  <p-chip> {{ carriage.emptySeats }} seats </p-chip>
+                </div>
+              </ng-template>
+              <app-carriage
+                [rows]="view.rows"
+                [leftSeats]="view.leftSeats"
+                [rightSeats]="view.rightSeats"
+                [occupiedSeats]="carriage.occupiedSeats"
+              ></app-carriage>
+            </p-card>
+          }
+        </div>
+      </p-tabPanel>
+    }
+  } @else {
+    <p-skeleton class="header-skeleton" height="2rem" />
+  }
+</p-tabView>

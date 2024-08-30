@@ -21,16 +21,17 @@ function getBaseData(
       (seat) => seat >= firstCarriageSeat && seat <= lastCarriageSeat,
     );
 
-    firstCarriageSeat = lastCarriageSeat + 1;
-
     const emptySeats = maxSeats - occupiedInCarriage.length;
 
     seatsData.push({
       code,
       carNumber: i + 1,
+      firstSeat: firstCarriageSeat,
       emptySeats,
       occupiedSeats: occupiedInCarriage,
     });
+
+    firstCarriageSeat = lastCarriageSeat + 1;
 
     freeSeatsPerCarType[code] = (freeSeatsPerCarType[code] || 0) + emptySeats;
   });
