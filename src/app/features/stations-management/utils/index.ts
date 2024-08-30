@@ -1,0 +1,1 @@
+export { mapMarkerTemplate } from './mapMarkerTemplate';

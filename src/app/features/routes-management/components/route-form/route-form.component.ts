@@ -23,6 +23,7 @@ import { CarriagesSectionService } from '../../services/carriages-section.servic
   selector: 'app-route-form',
   standalone: true,
   imports: [ButtonModule, DropdownModule, ReactiveFormsModule, InputTextModule],
+  providers: [],
   templateUrl: './route-form.component.html',
   styleUrl: './route-form.component.scss',
 })
