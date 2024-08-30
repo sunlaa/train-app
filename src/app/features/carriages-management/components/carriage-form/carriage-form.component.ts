@@ -55,14 +55,17 @@ export class CarriageFormComponent implements OnChanges, OnInit {
     rows: this.fb.control<number | null>(null, [
       Validators.required,
       Validators.max(22),
+      Validators.min(1),
     ]),
     leftSeats: this.fb.control<number | null>(null, [
       Validators.required,
       Validators.max(4),
+      Validators.min(1),
     ]),
     rightSeats: this.fb.control<number | null>(null, [
       Validators.required,
       Validators.max(4),
+      Validators.min(1),
     ]),
   });
 

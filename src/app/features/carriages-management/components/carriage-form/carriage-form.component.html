@@ -12,7 +12,12 @@
       </div>
       <div class="input-box">
         <label for="rows">Rows</label>
-        <p-inputNumber inputId="rows" formControlName="rows" [max]="22" />
+        <p-inputNumber
+          inputId="rows"
+          formControlName="rows"
+          [max]="22"
+          [min]="1"
+        />
       </div>
     </div>
     <div class="input-group">
@@ -22,6 +27,7 @@
           inputId="leftSeats"
           formControlName="leftSeats"
           [max]="4"
+          [min]="1"
         />
       </div>
       <div class="input-box">
@@ -30,6 +36,7 @@
           inputId="rightSeats"
           formControlName="rightSeats"
           [max]="4"
+          [min]="1"
         />
       </div>
     </div>
