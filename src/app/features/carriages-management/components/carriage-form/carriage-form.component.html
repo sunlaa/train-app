@@ -52,7 +52,7 @@
       severity="danger"
     ></p-button>
     <p-button
-      label="Save"
+      [label]="carriage ? 'Update' : 'Save'"
       icon="pi pi-check"
       (onClick)="onSubmit()"
       [disabled]="buttonIsDisabled$ | async"
