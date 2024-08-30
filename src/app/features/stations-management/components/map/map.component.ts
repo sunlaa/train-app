@@ -51,12 +51,11 @@ export class MapComponent implements OnChanges {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }),
     ],
-    minZoom: 2,
-    zoom: 2,
+    zoom: 1,
     center: { lat: 20, lng: 90 },
     maxBounds: Leaflet.latLngBounds(
-      Leaflet.latLng(-90, -180),
-      Leaflet.latLng(90, 180),
+      Leaflet.latLng(-130, -210),
+      Leaflet.latLng(130, 210),
     ),
     maxBoundsViscosity: 1,
   };
