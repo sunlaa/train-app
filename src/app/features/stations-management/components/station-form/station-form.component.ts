@@ -68,7 +68,7 @@ export class StationFormComponent implements OnInit {
   }
 
   private listenMapDataChanges() {
-    this.stationForm.controls.mapData.valueChanges
+    this.mapData.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(({ name, latitude, longitude }) => {
         this.mainStation = {
@@ -77,6 +77,10 @@ export class StationFormComponent implements OnInit {
           longitude: longitude ?? undefined,
         };
       });
+  }
+
+  get mapData() {
+    return this.stationForm.controls.mapData;
   }
 
   get connections() {
@@ -123,7 +127,7 @@ export class StationFormComponent implements OnInit {
 
   public mapClick(location: Pick<TStationBasic, 'latitude' | 'longitude'>) {
     const { latitude, longitude } = location;
-    const { controls } = this.stationForm.controls.mapData;
+    const { controls } = this.mapData;
     controls.latitude.setValue(latitude);
     controls.longitude.setValue(longitude);
   }
@@ -145,13 +149,20 @@ export class StationFormComponent implements OnInit {
   }
 
   private resetForm() {
-    const { controls } = this.stationForm.controls.mapData;
+    const { controls } = this.mapData;
     controls.name.reset();
     controls.latitude.reset();
     controls.longitude.reset();
     this.connections.clear();
     this.connections.push(this.fb.control(null));
     this.stationConnections.resetConnections();
+  }
+
+  private nameIsAvailable() {
+    const sameNameIndex = this.stationConnections.stations.findIndex(
+      (s) => s.city === this.mapData.controls.name.value,
+    );
+    return sameNameIndex === -1;
   }
 
   private formIsValid() {
@@ -162,7 +173,11 @@ export class StationFormComponent implements OnInit {
     if (!this.formIsValid()) {
       return;
     }
-    const { controls } = this.stationForm.controls.mapData;
+    if (!this.nameIsAvailable()) {
+      this.notificationService.messageError('Station name is occupied');
+      return;
+    }
+    const { controls } = this.mapData;
     const station: TStationCreation = {
       city: controls.name.value!,
       latitude: controls.latitude.value!,
