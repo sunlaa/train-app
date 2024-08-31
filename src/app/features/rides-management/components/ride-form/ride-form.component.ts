@@ -17,6 +17,9 @@ import {
   TRideSegment,
   TRouteRide,
 } from '@/core/models/rides.model';
+import { map, startWith, takeUntil } from 'rxjs';
+import { DestroyService } from '@/core/services/destroy/destroy.service';
+import { CommonModule } from '@angular/common';
 import { datesAreSequential } from '../../utils';
 
 @Component({
@@ -27,7 +30,9 @@ import { datesAreSequential } from '../../utils';
     CalendarModule,
     InputNumberModule,
     ReactiveFormsModule,
+    CommonModule,
   ],
+  providers: [DestroyService],
   templateUrl: './ride-form.component.html',
   styleUrl: './ride-form.component.scss',
 })
@@ -40,6 +45,8 @@ export class RideFormComponent implements OnChanges {
 
   @Output() closeForm = new EventEmitter<void>();
 
+  private destroy$ = inject(DestroyService);
+
   private messageService = inject(MessageService);
 
   private fb = inject(FormBuilder);
@@ -48,6 +55,12 @@ export class RideFormComponent implements OnChanges {
     dates: this.fb.array<Date | null>([]),
     prices: this.fb.array<number | null>([]),
   });
+
+  public buttonIsDisabled$ = this.rideForm.valueChanges.pipe(
+    startWith(null),
+    takeUntil(this.destroy$),
+    map(() => this.rideForm.invalid),
+  );
 
   get dates() {
     return this.rideForm.controls.dates;

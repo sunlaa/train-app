@@ -15,6 +15,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { TRoute } from '@/core/models/routes.model';
 import { NotificationService } from '@/shared/services/notification.service';
+import { DestroyService } from '@/core/services/destroy/destroy.service';
+import { map, startWith, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
 import { RoutesFacadeService } from '../../services/routes-facade.service';
 import { StationsSectionService } from '../../services/stations-section.service';
 import { CarriagesSectionService } from '../../services/carriages-section.service';
@@ -22,8 +25,14 @@ import { CarriagesSectionService } from '../../services/carriages-section.servic
 @Component({
   selector: 'app-route-form',
   standalone: true,
-  imports: [ButtonModule, DropdownModule, ReactiveFormsModule, InputTextModule],
-  providers: [],
+  imports: [
+    ButtonModule,
+    DropdownModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    CommonModule,
+  ],
+  providers: [DestroyService],
   templateUrl: './route-form.component.html',
   styleUrl: './route-form.component.scss',
 })
@@ -33,6 +42,8 @@ export class RouteFormComponent implements OnInit, OnChanges {
   @Input() route: TRoute | undefined;
 
   @Output() closeForm = new EventEmitter<void>();
+
+  private destroy$ = inject(DestroyService);
 
   private notificationService = inject(NotificationService);
 
@@ -48,6 +59,12 @@ export class RouteFormComponent implements OnInit, OnChanges {
     stations: this.fb.array([]),
     carriages: this.fb.array([]),
   });
+
+  public buttonIsDiabled$ = this.routeForm.valueChanges.pipe(
+    startWith(null),
+    takeUntil(this.destroy$),
+    map(() => !this.formIsValid()),
+  );
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -150,37 +167,39 @@ export class RouteFormComponent implements OnInit, OnChanges {
     this.closeForm.emit();
   }
 
+  private formIsValid() {
+    return (
+      this.stations.controls.length > 3 && this.carriages.controls.length > 3
+    );
+  }
+
   public onSubmit() {
+    if (!this.formIsValid()) {
+      return;
+    }
     const path = this.stations.controls.map((ctrl) => ctrl.value);
     path.pop();
     const carriages = this.carriages.controls.map((ctrl) => ctrl.value);
     carriages.pop();
-    try {
-      if (path.length < 3) throw Error('Add at least 3 stations');
-      if (carriages.length < 3) throw Error('Add at least 3 carriages');
-      // If we updating existing or creating new
-      const request$ = this.route
-        ? this.routesFacade.update({ id: this.route.id, path, carriages })
-        : this.routesFacade.create({ path, carriages });
+    // If we updating existing or creating new
+    const request$ = this.route
+      ? this.routesFacade.update({ id: this.route.id, path, carriages })
+      : this.routesFacade.create({ path, carriages });
 
-      request$.subscribe({
-        next: (state) => {
-          if (state.status === 'success') {
-            this.notificationService.messageSuccess(
-              this.route
-                ? 'Route successfully saved'
-                : 'Route successfully created',
-            );
-            this.resetForm();
-            this.closeForm.emit();
-          } else {
-            this.notificationService.messageError(state.error?.message);
-          }
-        },
-      });
-    } catch (e) {
-      const error = e as Error;
-      this.notificationService.messageError(error.message);
-    }
+    request$.subscribe({
+      next: (state) => {
+        if (state.status === 'success') {
+          this.notificationService.messageSuccess(
+            this.route
+              ? 'Route successfully updated'
+              : 'Route successfully created',
+          );
+          this.resetForm();
+          this.closeForm.emit();
+        } else {
+          this.notificationService.messageError(state.error?.message);
+        }
+      },
+    });
   }
 }

@@ -61,6 +61,11 @@
       [outlined]="true"
       severity="danger"
     ></p-button>
-    <p-button label="Save" icon="pi pi-check" (onClick)="onSubmit()"></p-button>
+    <p-button
+      [label]="route ? 'Update' : 'Save'"
+      icon="pi pi-check"
+      (onClick)="onSubmit()"
+      [disabled]="buttonIsDiabled$ | async"
+    ></p-button>
   </div>
 </form>

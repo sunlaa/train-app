@@ -8,14 +8,13 @@ import {
 import { PaginatorModule } from 'primeng/paginator';
 import { TRoute } from '@/core/models/routes.model';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
-import { take, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { ConfirmationService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PageEvent } from '@/core/models/shared.model';
 import { RouteItemComponent } from '../route-item/route-item.component';
@@ -50,10 +49,6 @@ export class RoutesPageComponent implements OnInit {
 
   private routesFacade = inject(RoutesFacadeService);
 
-  private router = inject(Router);
-
-  private activatedRoute = inject(ActivatedRoute);
-
   public formToggle = false;
 
   public formRoute: TRoute | undefined;
@@ -71,7 +66,6 @@ export class RoutesPageComponent implements OnInit {
   public pageRoutes: TRoute[] = [];
 
   ngOnInit(): void {
-    this.getQueryParams();
     this.stationsFacade.load();
     this.carriagesFacade.load();
     this.routesFacade.load();
@@ -87,27 +81,6 @@ export class RoutesPageComponent implements OnInit {
       });
   }
 
-  private getQueryParams() {
-    this.activatedRoute.queryParamMap.pipe(take(1)).subscribe((params) => {
-      const pageStr = params.get('page');
-      let page = pageStr ? parseInt(pageStr, 10) : 1;
-      if (Number.isNaN(page) || page < 1) {
-        page = 1;
-      }
-      const routesPerPageStr = params.get('routesPerPage');
-      let routesPerPage = routesPerPageStr
-        ? parseInt(routesPerPageStr, 10)
-        : ROUTES_PER_PAGE_OPTIONS[0];
-      if (!ROUTES_PER_PAGE_OPTIONS.includes(routesPerPage)) {
-        [routesPerPage] = ROUTES_PER_PAGE_OPTIONS;
-      }
-      this.onPageChange({
-        first: (page - 1) * routesPerPage,
-        rows: routesPerPage,
-      });
-    });
-  }
-
   private updatePageRoutes() {
     this.pageRoutes = this.allRoutes.slice(
       this.offset,
@@ -118,8 +91,6 @@ export class RoutesPageComponent implements OnInit {
   public onPageChange(event: PageEvent) {
     this.offset = event.first ?? this.offset;
     this.routesPerPage = event.rows ?? this.routesPerPage;
-    const page = Math.floor(this.offset / this.routesPerPage) + 1;
-    this.setQueryParams({ page, routesPerPage: this.routesPerPage });
     this.updatePageRoutes();
   }
 
@@ -150,13 +121,5 @@ export class RoutesPageComponent implements OnInit {
     if (this.pageTop) {
       this.pageTop.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
-  }
-
-  private setQueryParams(params: Params) {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: params,
-      queryParamsHandling: 'merge',
-    });
   }
 }
