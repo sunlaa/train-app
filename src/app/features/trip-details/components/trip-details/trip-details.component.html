@@ -56,11 +56,17 @@
                   <p-chip> {{ carriage.emptySeats }} seats </p-chip>
                 </div>
               </ng-template>
+
               <app-carriage
+                (seatChange)="getSeat($event)"
+                [carNumber]="carriage.carNumber"
                 [rows]="view.rows"
                 [leftSeats]="view.leftSeats"
                 [rightSeats]="view.rightSeats"
                 [occupiedSeats]="carriage.occupiedSeats"
+                [carriageMap]="pageData.carriageMap"
+                [carriages]="pageData.carriages"
+                [selectedSeat]="selectedSeat"
               ></app-carriage>
             </p-card>
           }

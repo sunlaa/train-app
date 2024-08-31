@@ -1,5 +1,9 @@
 import { DestroyService } from '@/core/services/destroy/destroy.service';
-import { RidePageData } from '@/core/models/trip.model';
+import {
+  RidePageData,
+  SeatEventData,
+  SelectedSeat,
+} from '@/core/models/trip.model';
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { Component, inject, OnInit } from '@angular/core';
@@ -56,11 +60,15 @@ export class TripDetailsComponent implements OnInit {
 
   private toId: number | null = null;
 
+  private seatIndex: number | null = null;
+
   public fromCity: string = '';
 
   public toCity: string = '';
 
   public pageData: RidePageData | null = null;
+
+  public selectedSeat: SelectedSeat | null = null;
 
   ngOnInit() {
     combineLatest([this.route.paramMap, this.route.queryParamMap])
@@ -123,5 +131,11 @@ export class TripDetailsComponent implements OnInit {
       carriageMap,
       stationMap,
     );
+  }
+
+  public getSeat({ seat, carNumber, seatIndex }: SeatEventData) {
+    this.selectedSeat = { seat, carNumber };
+
+    this.seatIndex = seatIndex;
   }
 }

@@ -1,3 +1,4 @@
+import { CarriageMap } from './carriages.model';
 import { CarriageData, Segment, StopInfo } from './search.model';
 
 export type RideResponse = {
@@ -14,7 +15,6 @@ export type RideSchedule = {
 export type TrainCarriageData = {
   code: string;
   carNumber: number;
-  firstSeat: number;
   emptySeats: number;
   occupiedSeats: number[];
 };
@@ -33,6 +33,19 @@ export type RideHeader = {
 };
 
 export type RidePageData = {
+  carriages: string[];
+  carriageMap: CarriageMap;
   header: RideHeader;
   carriageList: RideCarriageData[];
+};
+
+export type SeatEventData = {
+  seat: number;
+  carNumber: number;
+  seatIndex: number;
+};
+
+export type SelectedSeat = {
+  seat: number;
+  carNumber: number;
 };

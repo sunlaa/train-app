@@ -1,3 +1,6 @@
+import { CarriageMap } from '@/core/models/carriages.model';
+import { SeatEventData, SelectedSeat } from '@/core/models/trip.model';
+import { getSeatIndex } from '@/shared/utils/seatIndex';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
@@ -15,11 +18,17 @@ export class CarriageComponent {
 
   @Input() rightSeats: number = 0;
 
-  // @Input() firstSeatNumber: number = 1;
-
   @Input() occupiedSeats: number[] = [];
 
-  @Output() seatChange = new EventEmitter<number>();
+  @Input() carNumber: number = 0;
+
+  @Input() carriageMap: CarriageMap | null = null;
+
+  @Input() carriages: string[] = [];
+
+  @Input() selectedSeat: SelectedSeat | null = null;
+
+  @Output() seatChange = new EventEmitter<SeatEventData>();
 
   public seatNumbersForRow(
     row: number,
@@ -37,7 +46,37 @@ export class CarriageComponent {
     );
   }
 
-  chooseSeat(seat: number) {
-    this.seatChange.emit(seat);
+  public chooseSeat(seat: number) {
+    if (!this.carriageMap) {
+      return;
+    }
+    const seatIndex = getSeatIndex(
+      this.carNumber,
+      seat,
+      this.carriages,
+      this.carriageMap,
+    );
+
+    this.seatChange.emit({ seat, carNumber: this.carNumber, seatIndex });
+  }
+
+  public isOccupied(seat: number) {
+    if (!this.carriageMap) return false;
+
+    const index = getSeatIndex(
+      this.carNumber,
+      seat,
+      this.carriages,
+      this.carriageMap,
+    );
+
+    return this.occupiedSeats.includes(index);
+  }
+
+  public isSelected(seat: number): boolean {
+    return (
+      this.selectedSeat?.seat === seat &&
+      this.selectedSeat.carNumber === this.carNumber
+    );
   }
 }

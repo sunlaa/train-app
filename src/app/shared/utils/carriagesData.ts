@@ -26,7 +26,6 @@ function getBaseData(
     seatsData.push({
       code,
       carNumber: i + 1,
-      firstSeat: firstCarriageSeat,
       emptySeats,
       occupiedSeats: occupiedInCarriage,
     });

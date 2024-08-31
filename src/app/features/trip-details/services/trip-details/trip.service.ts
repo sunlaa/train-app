@@ -51,6 +51,6 @@ export class TripDetailsService {
     const header = getRideHeaderData(rideId, ridePath, ridePathIds, stationMap);
     const carriageList = getRideCarriagesData(carriages, carriageMap, ridePath);
 
-    return { header, carriageList };
+    return { header, carriageList, carriages, carriageMap };
   }
 }
