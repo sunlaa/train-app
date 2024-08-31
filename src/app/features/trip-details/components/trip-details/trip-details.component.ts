@@ -70,6 +70,10 @@ export class TripDetailsComponent implements OnInit {
 
   public selectedSeat: SelectedSeat | null = null;
 
+  public selectedPrice: number | null = null;
+
+  public tabIndex: number = 0;
+
   ngOnInit() {
     combineLatest([this.route.paramMap, this.route.queryParamMap])
       .pipe(
@@ -135,6 +139,9 @@ export class TripDetailsComponent implements OnInit {
 
   public getSeat({ seat, carNumber, seatIndex }: SeatEventData) {
     this.selectedSeat = { seat, carNumber };
+
+    this.selectedPrice =
+      this.pageData?.carriageList[this.tabIndex].itemHeader.price ?? null;
 
     this.seatIndex = seatIndex;
   }

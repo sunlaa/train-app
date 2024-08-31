@@ -32,7 +32,7 @@
   }
 </header>
 
-<p-tabView>
+<p-tabView [(activeIndex)]="tabIndex">
   @if (pageData) {
     @let carriageData = pageData.carriageList;
 
@@ -77,3 +77,13 @@
     <p-skeleton class="header-skeleton" height="2rem" />
   }
 </p-tabView>
+
+@if (selectedSeat) {
+  <p-card>
+    <div>
+      <p>Car {{ selectedSeat.carNumber }}, Seat {{ selectedSeat.seat }}</p>
+      <p>{{ selectedPrice | currency }}</p>
+      <p-button label="Book seat" />
+    </div>
+  </p-card>
+}
