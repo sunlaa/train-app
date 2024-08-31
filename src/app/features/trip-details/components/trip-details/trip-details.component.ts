@@ -8,9 +8,10 @@ import { CarriagesFacadeService } from '@/features/carriages-management/services
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { OrdersFacadeService } from '@/features/orders/services/facade/orders-facade.service';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { CarriageComponent } from '@/shared/components/carriage/carriage.component';
 import { ModalContentComponent } from '@/features/search-tickets/components/modal-content/modal-content.component';
+import { LoginFormComponent } from '@/features/auth/components/login-form/login-form.component';
 import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -19,6 +20,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ChipModule } from 'primeng/chip';
 import { TabViewModule } from 'primeng/tabview';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { AuthService } from '@/features/auth/services/auth.service';
 import {
   combineLatest,
   filter,
@@ -47,6 +49,7 @@ import { TripDetailsService } from '../../services/trip-details/trip.service';
     ModalContentComponent,
     CurrencyPipe,
     RouterLink,
+    LoginFormComponent,
   ],
   providers: [DestroyService],
   templateUrl: './trip-details.component.html',
@@ -66,6 +69,8 @@ export class TripDetailsComponent implements OnInit {
   private notification = inject(NotificationService);
 
   private ordersFacade = inject(OrdersFacadeService);
+
+  private authService = inject(AuthService);
 
   private rideId: number | null = null;
 
@@ -88,6 +93,10 @@ export class TripDetailsComponent implements OnInit {
   public tabIndex: number = 0;
 
   public modalVisible: boolean = false;
+
+  public authModalVisible: boolean = false;
+
+  private router: Router = inject(Router);
 
   ngOnInit() {
     combineLatest([this.route.paramMap, this.route.queryParamMap])
@@ -169,6 +178,13 @@ export class TripDetailsComponent implements OnInit {
   public makeOrder() {
     if (!this.rideId || !this.seatIndex || !this.fromId || !this.toId) {
       throw Error('No order information.');
+    }
+
+    const role = this.authService.userRole;
+
+    if (role === 'guest') {
+      this.authModalVisible = true;
+      return;
     }
 
     this.ordersFacade.makeOrder({

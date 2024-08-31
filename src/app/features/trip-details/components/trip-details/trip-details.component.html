@@ -131,3 +131,15 @@
     />
   </p-panel>
 }
+
+<p-dialog
+  [draggable]="false"
+  [modal]="true"
+  [dismissableMask]="true"
+  [(visible)]="authModalVisible"
+  [breakpoints]="{ '1000px': '60vw', '575px': '90vw' }"
+  [style]="{ width: '45vw' }"
+  header="First you need to log in."
+>
+  <app-login-form></app-login-form>
+</p-dialog>
