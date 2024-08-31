@@ -1,0 +1,49 @@
+<ng-container>
+  <h1>Sign In</h1>
+  <form class="login__form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="login__form-field">
+      <input pInputText placeholder="Email" [formControl]="email" />
+      @if (email.invalid) {
+        @if (isControlHasError(email, "required")) {
+          <small class="error-message">Email is required</small>
+        }
+
+        @if (isControlHasError(email, "pattern")) {
+          <small class="error-message">Email is incorrect</small>
+        }
+
+        @if (isControlHasError(email, "incorrectEmailOrPassword")) {
+          <span class="error-message">Incorrect email or password</span>
+        }
+      }
+    </div>
+
+    <div class="login__form-field">
+      <p-password
+        [feedback]="false"
+        placeholder="Password"
+        [formControl]="password"
+      />
+      @if (password.invalid) {
+        @if (isControlHasError(password, "required")) {
+          <small class="error-message">Password is required</small>
+        }
+
+        @if (isControlHasError(password, "incorrectEmailOrPassword")) {
+          <span class="error-message">Incorrect email or password</span>
+        }
+      }
+    </div>
+
+    <div class="login__actions">
+      <p-button
+        type="submit"
+        [disabled]="isFormInvalid"
+        [iconPos]="'left'"
+        [loading]="isLoading"
+        >Sign In</p-button
+      >
+      <p-button [link]="true" [routerLink]="'/signup'">Sign Up</p-button>
+    </div>
+  </form>
+</ng-container>

@@ -1,0 +1,65 @@
+<ng-container>
+  <h1>Sign Up</h1>
+  <form class="signup__form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <div class="signup__form-field">
+      <input pInputText placeholder="Email" [formControl]="email" />
+      @if (email.invalid) {
+        @if (isControlHasError(email, "required")) {
+          <small class="error-message">Email is required</small>
+        }
+
+        @if (isControlHasError(email, "pattern")) {
+          <small class="error-message">Email is incorrect</small>
+        }
+
+        @if (isControlHasError(email, "notUnique")) {
+          <small class="error-message"
+            >Account with this email already exists</small
+          >
+        }
+      }
+    </div>
+
+    <div class="signup__form-field">
+      <p-password
+        [feedback]="false"
+        placeholder="Password"
+        [formControl]="password"
+      />
+      @if (password.invalid) {
+        @if (isControlHasError(password, "required")) {
+          <small class="error-message">Password is required</small>
+        }
+
+        @if (isControlHasError(password, "minlength")) {
+          <small class="error-message"
+            >Password must be at least 8 characters long</small
+          >
+        }
+      }
+    </div>
+
+    <div class="signup__form-field">
+      <p-password
+        [feedback]="false"
+        placeholder="Confirm password"
+        [formControl]="confirmPassword"
+      />
+      @if (confirmPassword.invalid) {
+        @if (isControlHasError(confirmPassword, "passwordsDoNotMatch")) {
+          <small class="error-message">Passwords do not match</small>
+        }
+      }
+    </div>
+    <div class="signup__actions">
+      <p-button
+        type="submit"
+        [disabled]="isFormInvalid"
+        iconPos="left"
+        [loading]="isLoading"
+        >Register</p-button
+      >
+      <p-button [link]="true" [routerLink]="'/signin'">Sign In</p-button>
+    </div>
+  </form>
+</ng-container>
