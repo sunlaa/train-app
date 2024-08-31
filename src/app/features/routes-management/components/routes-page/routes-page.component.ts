@@ -17,17 +17,11 @@ import { StationsFacadeService } from '@/features/stations-management/services/s
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PageEvent } from '@/core/models/shared.model';
 import { RouteItemComponent } from '../route-item/route-item.component';
 import { ROUTES_PER_PAGE_OPTIONS } from '../../config/consts';
 import { RouteFormComponent } from '../route-form/route-form.component';
 import { RoutesFacadeService } from '../../services/routes-facade.service';
-
-interface PageEvent {
-  first?: number;
-  rows?: number;
-  page?: number;
-  pageCount?: number;
-}
 
 @Component({
   selector: 'app-routes-page',

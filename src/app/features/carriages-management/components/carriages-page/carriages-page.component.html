@@ -1,1 +1,44 @@
-<p>carriages-page works!</p>
+<p-toast />
+<p-confirmDialog />
+@if (totalCarriages === 0) {
+  <div class="loading-wrapper">
+    <p-progressSpinner
+      ariaLabel="loading"
+      strokeWidth="3"
+      styleClass="results-loader"
+    />
+  </div>
+} @else {
+  <div #pageTop class="page">
+    <p-button (onClick)="createCarriageClick()">Create</p-button>
+    @if (formToggle) {
+      <app-carriage-form
+        (closeForm)="closeForm()"
+        [carriage]="formCarriage"
+      ></app-carriage-form>
+    }
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="offset"
+      [rows]="carriagesPerPage"
+      [totalRecords]="totalCarriages"
+      [rowsPerPageOptions]="carriagesPerPageOptions"
+    />
+    <div class="items">
+      @for (carriage of pageCarriages; track carriage.code) {
+        <app-carriage-item
+          (editCarriageClick)="editCarriageClick($event)"
+          (deleteCarriage)="deleteCarriage($event)"
+          [carriage]="carriage"
+        ></app-carriage-item>
+      }
+    </div>
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="offset"
+      [rows]="carriagesPerPage"
+      [totalRecords]="totalCarriages"
+      [rowsPerPageOptions]="carriagesPerPageOptions"
+    />
+  </div>
+}

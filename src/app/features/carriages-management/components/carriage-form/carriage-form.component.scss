@@ -1,0 +1,52 @@
+:host {
+  ::ng-deep {
+    .p-inputnumber {
+      flex: 1;
+    }
+  }
+}
+
+h3 {
+  margin: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  border-radius: var(--border-radius);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  padding: 1em;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  .input-group {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+
+    .input-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25em;
+    }
+  }
+}
+
+.preview {
+  pointer-events: none;
+}
+
+.buttons {
+  align-self: center;
+  display: flex;
+  gap: 0.5em;
+}
