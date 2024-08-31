@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
@@ -33,7 +33,7 @@ import { StationConnectionsService } from '../../services/station-connections.se
   templateUrl: './station-form.component.html',
   styleUrl: './station-form.component.scss',
 })
-export class StationFormComponent implements OnInit {
+export class StationFormComponent implements OnInit, OnDestroy {
   private destroy$ = inject(DestroyService);
 
   private notificationService = inject(NotificationService);
@@ -65,6 +65,10 @@ export class StationFormComponent implements OnInit {
       takeUntil(this.destroy$),
       map(() => !this.formIsValid()),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.stationConnections.resetConnections();
   }
 
   private listenMapDataChanges() {
