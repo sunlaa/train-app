@@ -1,5 +1,8 @@
+import { CarriageMap } from '@/core/models/carriages.model';
+import { SeatEventData, SelectedSeat } from '@/core/models/trip.model';
+import { getSeatIndex } from '@/shared/utils/seatIndex';
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-carriage',
@@ -15,7 +18,17 @@ export class CarriageComponent {
 
   @Input() rightSeats: number = 0;
 
-  @Input() firstSeatNumber: number = 1;
+  @Input() occupiedSeats: number[] = [];
+
+  @Input() carNumber: number = 0;
+
+  @Input() carriageMap: CarriageMap | null = null;
+
+  @Input() carriages: string[] = [];
+
+  @Input() selectedSeat: SelectedSeat | null = null;
+
+  @Output() seatChange = new EventEmitter<SeatEventData>();
 
   public seatNumbersForRow(
     row: number,
@@ -23,13 +36,47 @@ export class CarriageComponent {
     isLeftSide: boolean,
   ): number[] {
     const lastNumberedSeats = row * (this.leftSeats + this.rightSeats);
-    const firstRowSeatNumber = this.firstSeatNumber + lastNumberedSeats;
+    const firstRowSeatNumber = 1 + lastNumberedSeats;
 
     const seatOffset = isLeftSide ? 0 : this.leftSeats;
 
     return Array.from(
       { length: seatsOnSide },
       (_, i) => firstRowSeatNumber + seatOffset + i,
+    );
+  }
+
+  public chooseSeat(seat: number) {
+    if (!this.carriageMap) {
+      return;
+    }
+    const seatIndex = getSeatIndex(
+      this.carNumber,
+      seat,
+      this.carriages,
+      this.carriageMap,
+    );
+
+    this.seatChange.emit({ seat, carNumber: this.carNumber, seatIndex });
+  }
+
+  public isOccupied(seat: number) {
+    if (!this.carriageMap) return false;
+
+    const index = getSeatIndex(
+      this.carNumber,
+      seat,
+      this.carriages,
+      this.carriageMap,
+    );
+
+    return this.occupiedSeats.includes(index);
+  }
+
+  public isSelected(seat: number): boolean {
+    return (
+      this.selectedSeat?.seat === seat &&
+      this.selectedSeat.carNumber === this.carNumber
     );
   }
 }

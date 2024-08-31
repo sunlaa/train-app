@@ -1,0 +1,133 @@
+<p-toast />
+
+<header>
+  <p-button icon="pi pi-chevron-left" [routerLink]="['/']" />
+  @if (pageData) {
+    @let header = pageData.header;
+    <div class="header-contet">
+      <div class="ride-info">
+        <div class="cities">
+          <p>{{ fromCity }}</p>
+          <i class="pi pi-arrow-right"></i>
+          <p>{{ toCity }}</p>
+        </div>
+        <div class="dates">
+          <p>{{ header.departureDate | date: "MMMM dd, HH:mm" : "UTC" }}</p>
+          <i class="pi pi-minus"></i>
+          <p>{{ header.arrivalDate | date: "MMMM dd, HH:mm" : "UTC" }}</p>
+        </div>
+      </div>
+
+      <div class="route">
+        <p>Ride {{ header.rideId }}</p>
+        <p-button
+          size="small"
+          label="Route"
+          [link]="true"
+          icon="pi pi-info-circle"
+          iconPos="right"
+          (onClick)="openModal()"
+        />
+      </div>
+    </div>
+  } @else {
+    <p-skeleton class="header-skeleton" height="3rem" />
+  }
+</header>
+
+@if (pageData) {
+  <p-dialog
+    [draggable]="false"
+    [modal]="true"
+    [dismissableMask]="true"
+    [(visible)]="modalVisible"
+    [breakpoints]="{ '1000px': '85vw', '575px': '90vw' }"
+    [style]="{ width: '70vw' }"
+  >
+    <ng-template pTemplate="header">
+      <div class="cities">
+        <p>{{ fromCity }}</p>
+        <i class="pi pi-arrow-right"></i>
+        <p>{{ toCity }}</p>
+      </div>
+    </ng-template>
+    <app-modal-content [details]="pageData.header.stopInfo"></app-modal-content>
+  </p-dialog>
+}
+
+<p-tabView [scrollable]="true" styleClass="carriage-list">
+  @if (pageData) {
+    @let carriageData = pageData.carriageList;
+
+    @for (data of carriageData; track $index) {
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <div class="tab-header">
+            <p class="car">
+              Carriage type {{ data.itemHeader.name }}:
+              {{ data.itemHeader.freeSeats }}
+            </p>
+            <p class="price">{{ data.itemHeader.price | currency }}</p>
+          </div>
+        </ng-template>
+
+        <div class="carriages">
+          @for (carriage of data.carriages; track $index) {
+            @let view = data.carriageView;
+            <p-panel class="panel">
+              <ng-template pTemplate="header">
+                <div class="car-header">
+                  <p>Car {{ carriage.carNumber }}</p>
+                  <p-chip> {{ carriage.emptySeats }} seats </p-chip>
+                </div>
+              </ng-template>
+
+              <app-carriage
+                class="carriage"
+                (seatChange)="getSeat($event)"
+                [carNumber]="carriage.carNumber"
+                [rows]="view.rows"
+                [leftSeats]="view.leftSeats"
+                [rightSeats]="view.rightSeats"
+                [occupiedSeats]="carriage.occupiedSeats"
+                [carriageMap]="pageData.carriageMap"
+                [carriages]="pageData.carriages"
+                [selectedSeat]="selectedSeat"
+              ></app-carriage>
+            </p-panel>
+          }
+        </div>
+      </p-tabPanel>
+    }
+  } @else {
+    @let tabs = [null, null, null];
+    @for (tab of tabs; track $index) {
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <p-skeleton class="header-skeleton" height="3rem" width="7rem" />
+        </ng-template>
+
+        <div class="tabs-skeleton">
+          <p-skeleton class="header-skeleton" height="20rem" />
+          <p-skeleton class="header-skeleton" height="20rem" />
+        </div>
+      </p-tabPanel>
+    }
+  }
+</p-tabView>
+
+@if (selectedSeat) {
+  <p-panel class="total">
+    <ng-template pTemplate="header">
+      <div class="total-header">
+        <p>Car {{ selectedSeat.carNumber }}, Seat {{ selectedSeat.seat }}</p>
+        <p>{{ selectedPrice | currency }}</p>
+      </div>
+    </ng-template>
+    <p-button
+      styleClass="book-button"
+      (click)="makeOrder()"
+      label="Book seat"
+    />
+  </p-panel>
+}

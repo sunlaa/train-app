@@ -1,6 +1,7 @@
 import { Ticket } from '@/core/models/search.model';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { ChipModule } from 'primeng/chip';
@@ -22,6 +23,7 @@ import { ModalContentComponent } from '../modal-content/modal-content.component'
     ChipModule,
     ButtonModule,
     DialogModule,
+    RouterLink,
   ],
   templateUrl: './ticket-card.component.html',
   styleUrl: './ticket-card.component.scss',
@@ -29,9 +31,18 @@ import { ModalContentComponent } from '../modal-content/modal-content.component'
 export class TicketCardComponent {
   @Input({ required: true }) ticket!: Ticket;
 
+  private router = inject(Router);
+
   public modalVisible: boolean = false;
 
-  public showRoute() {
+  public showRoute(event: Event) {
+    event.stopPropagation();
     this.modalVisible = true;
+  }
+
+  toTrip() {
+    this.router.navigate(['/trip', this.ticket.rideId], {
+      queryParams: { from: this.ticket.fromId, to: this.ticket.toId },
+    });
   }
 }

@@ -40,11 +40,14 @@ export type Ride = {
 
 export type Segment = {
   time: [string, string];
-  price: { [key: string]: number };
+  price: Record<string, number>;
   occupiedSeats: number[];
 };
 
 export type Ticket = {
+  rideId: number;
+  fromId: number;
+  toId: number;
   departureDate: Date;
   arrivalDate: Date;
   startCity: string;
