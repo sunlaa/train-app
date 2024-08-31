@@ -1,4 +1,4 @@
-import { RouteDetails } from '@/core/models/search.model';
+import { StopInfo } from '@/core/models/search.model';
 import { Component, Input } from '@angular/core';
 import { TimelineModule } from 'primeng/timeline';
 import { DurationPipe } from '../../pipes/duration.pipe';
@@ -11,7 +11,7 @@ import { DurationPipe } from '../../pipes/duration.pipe';
   styleUrl: './modal-content.component.scss',
 })
 export class ModalContentComponent {
-  @Input({ required: true }) details!: RouteDetails;
+  @Input({ required: true }) details!: StopInfo[];
 
   public isString = (val: unknown) => typeof val === 'string';
 }

@@ -81,7 +81,7 @@ const orderReducer = createReducer(
   ),
 );
 
-export const orderFeature = createFeature({
+export const ordersFeature = createFeature({
   name: 'orders',
   reducer: orderReducer,
 });

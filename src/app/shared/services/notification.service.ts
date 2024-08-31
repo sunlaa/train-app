@@ -5,7 +5,7 @@ import { MessageService } from 'primeng/api';
   providedIn: 'root',
 })
 export class NotificationService {
-  messageService = inject(MessageService);
+  private messageService = inject(MessageService);
 
   public messageSuccess(message: string | undefined) {
     this.messageService.add({

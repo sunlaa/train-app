@@ -1,6 +1,6 @@
 import { MakeOrderBody } from '@/core/models/orders.model';
 import { ordersActions } from '@/redux/actions/orders.actions';
-import { orderFeature } from '@/redux/reducers/orders.reducer';
+import { ordersFeature } from '@/redux/reducers/orders.reducer';
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
@@ -11,19 +11,19 @@ export class OrdersFacadeService {
   private store: Store = inject(Store);
 
   get state$() {
-    return this.store.select(orderFeature.selectOrdersState);
+    return this.store.select(ordersFeature.selectOrdersState);
   }
 
   get orders$() {
-    return this.store.select(orderFeature.selectOrders);
+    return this.store.select(ordersFeature.selectOrders);
   }
 
   get status$() {
-    return this.store.select(orderFeature.selectStatus);
+    return this.store.select(ordersFeature.selectStatus);
   }
 
   get error$() {
-    return this.store.select(orderFeature.selectError);
+    return this.store.select(ordersFeature.selectError);
   }
 
   load() {

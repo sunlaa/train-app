@@ -1,14 +1,14 @@
 :host {
-  padding: 2em 3em 4em 2em;
+  padding: 0.8em 1.5em 0.8em 2.5em;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.8em;
+  gap: 0.5em;
   border: solid 2px;
   border-color: var(--surface-border);
   border-radius: 1em;
-  width: 100%;
-  min-height: 20em;
+  width: fit-content;
+  min-height: 15em;
 }
 
 .front,
@@ -25,30 +25,26 @@
   border-color: var(--surface-border);
 }
 
-.front .line {
-  margin-right: 3em;
-}
-
 .seat-row {
   display: flex;
   flex-direction: column-reverse;
   justify-content: space-between;
-  gap: 2em;
+  gap: 1.5em;
 }
 
 .right-seats,
 .left-seats {
   flex-direction: column-reverse;
   display: flex;
-  gap: 0.8em;
+  gap: 0.5em;
 }
 
 .seat {
   cursor: pointer;
   font-weight: 800;
   color: var(--primary-color-text);
-  width: 2.5em;
-  height: 2.5em;
+  width: 2em;
+  height: 2em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,5 +62,18 @@
 
   &.selected {
     background-color: var(--yellow-400);
+  }
+}
+
+@media screen and (max-width: 900px) {
+  :host {
+    padding: 0.2em 0.5em 0.2em 1em;
+    font-size: 0.9rem;
+    gap: 0.3em;
+  }
+
+  .right-seats,
+  .left-seats {
+    gap: 0.3em;
   }
 }

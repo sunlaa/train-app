@@ -6,12 +6,16 @@ import {
 } from '@/core/models/trip.model';
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
+import { OrdersFacadeService } from '@/features/orders/services/facade/orders-facade.service';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { CarriageComponent } from '@/shared/components/carriage/carriage.component';
+import { ModalContentComponent } from '@/features/search-tickets/components/modal-content/modal-content.component';
+import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
-import { CardModule } from 'primeng/card';
+import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
 import { ChipModule } from 'primeng/chip';
 import { TabViewModule } from 'primeng/tabview';
 import { CurrencyPipe, DatePipe } from '@angular/common';
@@ -24,6 +28,7 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
+import { NotificationService } from '@/shared/services/notification.service';
 import { TripDetailsService } from '../../services/trip-details/trip.service';
 
 @Component({
@@ -33,11 +38,15 @@ import { TripDetailsService } from '../../services/trip-details/trip.service';
     ButtonModule,
     SkeletonModule,
     TabViewModule,
-    CardModule,
+    PanelModule,
     ChipModule,
+    ToastModule,
+    DialogModule,
     DatePipe,
     CarriageComponent,
+    ModalContentComponent,
     CurrencyPipe,
+    RouterLink,
   ],
   providers: [DestroyService],
   templateUrl: './trip-details.component.html',
@@ -54,7 +63,11 @@ export class TripDetailsComponent implements OnInit {
 
   private tripService = inject(TripDetailsService);
 
-  private rideId: string | null = null;
+  private notification = inject(NotificationService);
+
+  private ordersFacade = inject(OrdersFacadeService);
+
+  private rideId: number | null = null;
 
   private fromId: number | null = null;
 
@@ -74,6 +87,8 @@ export class TripDetailsComponent implements OnInit {
 
   public tabIndex: number = 0;
 
+  public modalVisible: boolean = false;
+
   ngOnInit() {
     combineLatest([this.route.paramMap, this.route.queryParamMap])
       .pipe(
@@ -83,7 +98,6 @@ export class TripDetailsComponent implements OnInit {
         }),
         switchMap(() => this.waitForLoading()),
         switchMap(() => this.loadRideDetails()),
-        takeUntil(this.destroy$),
       )
       .subscribe((data) => {
         this.pageData = data;
@@ -91,7 +105,7 @@ export class TripDetailsComponent implements OnInit {
   }
 
   private extractParams(params: ParamMap, query: ParamMap) {
-    this.rideId = params.get('rideId');
+    this.rideId = Number(params.get('rideId'));
     this.fromId = Number(query.get('from'));
     this.toId = Number(query.get('to'));
   }
@@ -137,6 +151,10 @@ export class TripDetailsComponent implements OnInit {
     );
   }
 
+  public openModal() {
+    this.modalVisible = true;
+  }
+
   public getSeat({ seat, carNumber, seatIndex }: SeatEventData) {
     this.selectedSeat = { seat, carNumber };
 
@@ -144,5 +162,34 @@ export class TripDetailsComponent implements OnInit {
       this.pageData?.carriageList[this.tabIndex].itemHeader.price ?? null;
 
     this.seatIndex = seatIndex;
+  }
+
+  // TODO: check the authorization status, change the color of the seat
+
+  public makeOrder() {
+    if (!this.rideId || !this.seatIndex || !this.fromId || !this.toId) {
+      throw Error('No order information.');
+    }
+
+    this.ordersFacade.makeOrder({
+      rideId: this.rideId,
+      seat: this.seatIndex,
+      stationStart: this.fromId,
+      stationEnd: this.toId,
+    });
+
+    this.ordersFacade.state$
+      .pipe(
+        filter((state) => state.status !== 'loading'),
+        take(1),
+      )
+      .subscribe((state) => {
+        if (state.status === 'success') {
+          this.notification.messageSuccess('The seat was successfully booked.');
+        }
+        if (state.status === 'error') {
+          this.notification.messageError(state.error?.message);
+        }
+      });
   }
 }

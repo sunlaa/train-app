@@ -16,7 +16,7 @@ export class TripDetailsService {
   private baseUrl = '/api/search';
 
   getRideDetails(
-    id: string,
+    id: number,
     fromId: number,
     toId: number,
     carriageMap: CarriageMap,

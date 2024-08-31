@@ -28,6 +28,8 @@ import {
 import { searchFeature } from './redux/reducers/search.reducer';
 import { SearchEffects } from './redux/effects/search.effects';
 import { cityApiInterceptor } from './features/search-tickets/interceptors/city-api.interceptor';
+import { ordersFeature } from './redux/reducers/orders.reducer';
+import { OrdersEffects } from './redux/effects/orders.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -41,12 +43,14 @@ export const appConfig: ApplicationConfig = {
     provideState(carriagesFeature),
     provideState(searchFeature),
     provideState(ridesFeature),
+    provideState(ordersFeature),
     provideEffects([
       RoutesEffects,
       StationsEffects,
       CarriagesEffects,
       SearchEffects,
       RidesEffects,
+      OrdersEffects,
     ]),
     provideRouterStore(),
     provideStoreDevtools({
