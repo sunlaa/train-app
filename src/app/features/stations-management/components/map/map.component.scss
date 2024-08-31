@@ -5,6 +5,7 @@
 
   ::ng-deep {
     #map {
+      z-index: 1;
       // Hide marker's anomaly (White cube)
       .leaflet-marker-icon {
         background-color: transparent !important;

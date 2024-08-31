@@ -1,0 +1,27 @@
+:host {
+  width: 100%;
+  ::ng-deep {
+    .p-menuitem-link {
+      display: flex;
+      gap: 0.5em;
+    }
+    .p-menubar-end {
+      display: flex;
+      align-items: center;
+      gap: 0.25em;
+    }
+  }
+}
+
+.email {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.p-button {
+  display: flex;
+  gap: 0.5em;
+  text-decoration: none;
+}
