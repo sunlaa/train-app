@@ -34,30 +34,14 @@
   display: flex;
 }
 
-.mobile-menu-button {
-  display: none;
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 2;
-}
-
 .content {
   flex: 1;
   padding: 0 1em;
   overflow-y: auto;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 960px) {
   .desktop-menu {
     display: none;
-  }
-
-  .mobile-menu-button {
-    display: block;
-  }
-
-  .content {
-    margin-top: 50px;
   }
 }

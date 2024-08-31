@@ -7,6 +7,7 @@ import { RoutesPageComponent } from './features/routes-management/components/rou
 import { RidesPageComponent } from './features/rides-management/components/rides-page/rides-page.component';
 import { TripDetailsComponent } from './features/trip-details/components/trip-details/trip-details.component';
 import { tripQueryGuard } from './core/guards/trip/trip-query.guard';
+import { signupGuard } from './features/auth/guards/signup.guard';
 
 export const routes: Routes = [
   {
@@ -42,5 +43,21 @@ export const routes: Routes = [
         component: RoutesPageComponent,
       },
     ],
+  },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import(
+        '@/features/auth/components/register-form/register-form.component'
+      ).then((m) => m.RegisterFormComponent),
+    canActivate: [signupGuard],
+  },
+  {
+    path: 'signin',
+    loadComponent: () =>
+      import('@/features/auth/components/login-form/login-form.component').then(
+        (m) => m.LoginFormComponent,
+      ),
+    canActivate: [signupGuard],
   },
 ];

@@ -1,0 +1,2 @@
+// PAGES
+export const CARRIAGES_PER_PAGE_OPTIONS = [10, 20, 30];

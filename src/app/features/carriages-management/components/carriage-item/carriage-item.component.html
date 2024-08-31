@@ -1,0 +1,26 @@
+<p-panel class="panel" [header]="name">
+  <ng-template pTemplate="icons">
+    <button
+      (click)="editClick()"
+      pTooltip="Edit"
+      tooltipPosition="bottom"
+      class="p-panel-header-icon"
+    >
+      <span class="pi pi-pen-to-square"></span>
+    </button>
+    <button
+      (click)="deleteClick($event)"
+      pTooltip="Delete"
+      tooltipPosition="bottom"
+      class="p-panel-header-icon"
+    >
+      <span class="pi pi-trash"></span>
+    </button>
+  </ng-template>
+  <app-carriage
+    class="preview"
+    [rows]="rows"
+    [leftSeats]="leftSeats"
+    [rightSeats]="rightSeats"
+  ></app-carriage>
+</p-panel>

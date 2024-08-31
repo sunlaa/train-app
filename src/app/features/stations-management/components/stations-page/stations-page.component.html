@@ -1,1 +1,32 @@
-<p>stations-page works!</p>
+<p-toast />
+<p-confirmDialog />
+<div class="page">
+  <app-station-form></app-station-form>
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="offset"
+    [rows]="stationsPerPage"
+    [totalRecords]="totalStations"
+    [rowsPerPageOptions]="stationsPerPageOptions"
+  />
+  <div class="stations">
+    @if (pageStations.length > 0) {
+      @for (station of pageStations; track station.id) {
+        <app-station-item [station]="station"></app-station-item>
+      }
+    } @else {
+      <p-skeleton height="12rem" />
+      <p-skeleton height="12rem" />
+      <p-skeleton height="12rem" />
+      <p-skeleton height="12rem" />
+      <p-skeleton height="12rem" />
+    }
+  </div>
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="offset"
+    [rows]="stationsPerPage"
+    [totalRecords]="totalStations"
+    [rowsPerPageOptions]="stationsPerPageOptions"
+  />
+</div>
