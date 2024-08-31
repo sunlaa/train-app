@@ -5,6 +5,7 @@ import { StationsPageComponent } from './features/stations-management/components
 import { CarriagesPageComponent } from './features/carriages-management/components/carriages-page/carriages-page.component';
 import { RoutesPageComponent } from './features/routes-management/components/routes-page/routes-page.component';
 import { RidesPageComponent } from './features/rides-management/components/rides-page/rides-page.component';
+import { signupGuard } from './features/auth/guards/signup.guard';
 
 export const routes: Routes = [
   {
@@ -34,5 +35,21 @@ export const routes: Routes = [
         component: RoutesPageComponent,
       },
     ],
+  },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import(
+        '@/features/auth/components/register-form/register-form.component'
+      ).then((m) => m.RegisterFormComponent),
+    canActivate: [signupGuard],
+  },
+  {
+    path: 'signin',
+    loadComponent: () =>
+      import('@/features/auth/components/login-form/login-form.component').then(
+        (m) => m.LoginFormComponent,
+      ),
+    canActivate: [signupGuard],
   },
 ];

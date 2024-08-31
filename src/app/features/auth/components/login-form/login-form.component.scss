@@ -1,0 +1,28 @@
+.login {
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__actions {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+
+    & > * {
+      flex: 1;
+    }
+  }
+}
+
+.error-message {
+  color: red;
+}
