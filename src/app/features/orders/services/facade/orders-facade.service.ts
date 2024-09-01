@@ -35,8 +35,8 @@ export class OrdersFacadeService {
     this.store.dispatch(ordersActions.makeOrder({ order }));
   }
 
-  cancelOrder(id: number, isAdmin?: boolean) {
-    this.store.dispatch(ordersActions.cancelOrder({ id, isAdmin }));
+  cancelOrder(id: number) {
+    this.store.dispatch(ordersActions.cancelOrder({ id }));
     return this.state$.pipe(
       filter((st) => st.status !== 'loading'),
       take(1),

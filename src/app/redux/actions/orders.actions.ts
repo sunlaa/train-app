@@ -13,8 +13,8 @@ export const ordersActions = createActionGroup({
     'Order success': props<{ orders: Order[] }>(),
     'Order error': props<{ error: HttpErrorResponse }>(),
 
-    'Cancel order': props<{ id: number; isAdmin?: boolean }>(),
-    'Cancel order success': props<{ id: number; isAdmin?: boolean }>(),
+    'Cancel order': props<{ id: number }>(),
+    'Cancel order success': props<{ id: number }>(),
     'Cancel order error': props<{ error: HttpErrorResponse }>(),
   },
 });

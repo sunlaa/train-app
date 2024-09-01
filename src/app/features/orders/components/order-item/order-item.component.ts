@@ -55,15 +55,13 @@ export class OrderItemComponent implements OnChanges {
       rejectIcon: 'none',
 
       accept: () => {
-        this.ordersFacade
-          .cancelOrder(this.order.orderId, this.isAdmin)
-          .subscribe((err) => {
-            if (!err) {
-              this.notificationService.messageSuccess('Order canceled');
-            } else {
-              this.notificationService.messageError(err.message);
-            }
-          });
+        this.ordersFacade.cancelOrder(this.order.orderId).subscribe((err) => {
+          if (!err) {
+            this.notificationService.messageSuccess('Order canceled');
+          } else {
+            this.notificationService.messageError(err.message);
+          }
+        });
       },
     });
   }
