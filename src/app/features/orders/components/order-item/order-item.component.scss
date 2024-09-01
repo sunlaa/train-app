@@ -1,0 +1,40 @@
+:host {
+  ::ng-deep {
+    .p-card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+    }
+  }
+}
+
+p {
+  margin: 0;
+}
+
+.info-box {
+  display: flex;
+  gap: 0.5em;
+}
+
+.info-box.highlighted {
+  flex-direction: column;
+  gap: 0.25em;
+  padding: 0.25em;
+  background-color: color-mix(
+    in srgb,
+    var(--primary-color) 5%,
+    transparent 95%
+  );
+  border-radius: var(--border-radius);
+}
+
+.cancel-btn {
+  align-self: center;
+}
+
+.limit-width {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
