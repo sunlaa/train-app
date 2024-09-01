@@ -8,6 +8,7 @@ import { RidesPageComponent } from './features/rides-management/components/rides
 import { TripDetailsComponent } from './features/trip-details/components/trip-details/trip-details.component';
 import { tripQueryGuard } from './core/guards/trip/trip-query.guard';
 import { signupGuard } from './features/auth/guards/signup.guard';
+import { profileGuard } from './features/profile/guards/profile.guard';
 import { OrdersPageComponent } from './features/orders/components/orders-page/orders-page.component';
 import { notGuestGuard } from './features/auth/guards/not-guest.guard';
 
@@ -67,5 +68,13 @@ export const routes: Routes = [
         (m) => m.LoginFormComponent,
       ),
     canActivate: [signupGuard],
+  },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import(
+        '@/features/profile/components/profile-page/profile-page.component'
+      ).then((m) => m.ProfilePageComponent),
+    canActivate: [profileGuard],
   },
 ];
