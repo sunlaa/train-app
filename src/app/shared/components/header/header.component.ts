@@ -17,14 +17,14 @@ export class HeaderComponent implements OnInit {
   // TODO: Add actual data from the store
   public email = 'email@gmail.com';
 
-  public role: 'guest' | 'user' | 'admin' = 'admin';
+  public role: 'guest' | 'user' | 'admin' = 'guest';
 
   ngOnInit() {
     this.initItems();
   }
 
   public signOut() {
-    console.log('logout');
+    // console.log('logout');
   }
 
   private initItems() {

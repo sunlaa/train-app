@@ -7,7 +7,7 @@ export const signupGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (authService.userToken) {
-    return router.navigateByUrl('/');
+    return router.navigate(['/']);
   }
 
   return true;

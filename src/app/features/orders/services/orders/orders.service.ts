@@ -10,8 +10,12 @@ export class OrdersService {
 
   private httpClient = inject(HttpClient);
 
-  public getOrders() {
-    return this.httpClient.get<Order[]>(this.baseURL);
+  public getOrders(all?: boolean) {
+    return this.httpClient.get<Order[]>(this.baseURL, {
+      params: {
+        all: !!all,
+      },
+    });
   }
 
   public makeOrder(body: MakeOrderBody) {
