@@ -1,5 +1,6 @@
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import {
+  OccupiedSeat,
   RidePageData,
   SeatEventData,
   SelectedSeat,
@@ -11,6 +12,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { CarriageComponent } from '@/shared/components/carriage/carriage.component';
 import { ModalContentComponent } from '@/features/search-tickets/components/modal-content/modal-content.component';
+import { LoginFormComponent } from '@/features/auth/components/login-form/login-form.component';
 import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -19,6 +21,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ChipModule } from 'primeng/chip';
 import { TabViewModule } from 'primeng/tabview';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { AuthService } from '@/features/auth/services/auth.service';
 import {
   combineLatest,
   filter,
@@ -47,6 +50,7 @@ import { TripDetailsService } from '../../services/trip-details/trip.service';
     ModalContentComponent,
     CurrencyPipe,
     RouterLink,
+    LoginFormComponent,
   ],
   providers: [DestroyService],
   templateUrl: './trip-details.component.html',
@@ -67,6 +71,8 @@ export class TripDetailsComponent implements OnInit {
 
   private ordersFacade = inject(OrdersFacadeService);
 
+  private authService = inject(AuthService);
+
   private rideId: number | null = null;
 
   private fromId: number | null = null;
@@ -83,11 +89,17 @@ export class TripDetailsComponent implements OnInit {
 
   public selectedSeat: SelectedSeat | null = null;
 
+  public occupiedSeat: OccupiedSeat | null = null;
+
   public selectedPrice: number | null = null;
 
   public tabIndex: number = 0;
 
   public modalVisible: boolean = false;
+
+  public authModalVisible: boolean = false;
+
+  public bookedModalVisible: boolean = false;
 
   ngOnInit() {
     combineLatest([this.route.paramMap, this.route.queryParamMap])
@@ -164,11 +176,16 @@ export class TripDetailsComponent implements OnInit {
     this.seatIndex = seatIndex;
   }
 
-  // TODO: check the authorization status, change the color of the seat
-
   public makeOrder() {
     if (!this.rideId || !this.seatIndex || !this.fromId || !this.toId) {
       throw Error('No order information.');
+    }
+
+    const role = this.authService.userRole;
+
+    if (role === 'guest') {
+      this.authModalVisible = true;
+      return;
     }
 
     this.ordersFacade.makeOrder({
@@ -186,8 +203,14 @@ export class TripDetailsComponent implements OnInit {
       .subscribe((state) => {
         if (state.status === 'success') {
           this.notification.messageSuccess('The seat was successfully booked.');
+
+          this.occupiedSeat = { ...this.selectedSeat! };
         }
         if (state.status === 'error') {
+          if (state.error?.message === 'Ride is already booked') {
+            this.bookedModalVisible = true;
+            return;
+          }
           this.notification.messageError(state.error?.message);
         }
       });

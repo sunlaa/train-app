@@ -14,8 +14,9 @@
 }
 
 header {
-  background-color: var(--blue-50);
-  padding: 1em 0.5em;
+  border-bottom: solid 1px;
+  border-color: var(--surface-border);
+  padding: 0.7em 0.5em;
   width: 100%;
   display: flex;
   align-items: center;
@@ -137,6 +138,14 @@ header {
   margin-top: 1em;
   display: grid;
   gap: 1em;
+}
+
+.booked-modal ::ng-deep {
+  .p-dialog-content {
+    display: grid;
+    justify-items: center;
+    gap: 1em;
+  }
 }
 
 @media screen and (max-width: 900px) {

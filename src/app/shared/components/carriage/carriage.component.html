@@ -12,7 +12,10 @@
           (keydown.enter)="chooseSeat(seat)"
           (click)="chooseSeat(seat)"
           class="seat"
-          [ngClass]="{ occupied: isOccupied(seat), selected: isSelected(seat) }"
+          [ngClass]="{
+            occupied: isOccupied(seat),
+            selected: isSelected(seat) && !isOccupied(seat),
+          }"
         >
           {{ seat }}
         </div>
@@ -25,7 +28,10 @@
           (keydown.enter)="chooseSeat(seat)"
           (click)="chooseSeat(seat)"
           class="seat"
-          [ngClass]="{ occupied: isOccupied(seat), selected: isSelected(seat) }"
+          [ngClass]="{
+            occupied: isOccupied(seat),
+            selected: isSelected(seat) && !isOccupied(seat),
+          }"
         >
           {{ seat }}
         </div>
