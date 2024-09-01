@@ -3,12 +3,17 @@ import { ordersActions } from '@/redux/actions/orders.actions';
 import { ordersFeature } from '@/redux/reducers/orders.reducer';
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { filter, map, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrdersFacadeService {
   private store: Store = inject(Store);
+
+  constructor() {
+    this.load();
+  }
 
   get state$() {
     return this.store.select(ordersFeature.selectOrdersState);
@@ -34,7 +39,12 @@ export class OrdersFacadeService {
     this.store.dispatch(ordersActions.makeOrder({ order }));
   }
 
-  deleteOrder(id: number) {
-    this.store.dispatch(ordersActions.deleteOrder({ id }));
+  cancelOrder(id: number) {
+    this.store.dispatch(ordersActions.cancelOrder({ id }));
+    return this.state$.pipe(
+      filter((st) => st.status !== 'loading'),
+      take(1),
+      map((st) => st.error),
+    );
   }
 }

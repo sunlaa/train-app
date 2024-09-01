@@ -1,0 +1,43 @@
+<p-card>
+  <p-tag [severity]="tagSeverity" [value]="order.status | titlecase"></p-tag>
+  @if (order.owner) {
+    <div>
+      <p>Owner</p>
+      <p>{{ order.owner }}</p>
+    </div>
+  }
+  <div>
+    <p>Departure</p>
+    <p>{{ order.startCity }}</p>
+    <p>{{ order.startTripTime | date: "MMMM dd hh:mm" : "UTC" }}</p>
+  </div>
+  <div>
+    <p>Arrival</p>
+    <p>{{ order.endCity }}</p>
+    <p>{{ order.endTripTime | date: "MMMM dd hh:mm" : "UTC" }}</p>
+  </div>
+  <div>
+    <p>Duration</p>
+    <p>{{ order.tripDuration | duration }}</p>
+  </div>
+  <div>
+    <p>Carriage</p>
+    <p>{{ order.carriageType }}</p>
+    <p>{{ order.carNumber }}</p>
+  </div>
+  <div>
+    <p>Seat</p>
+    <p>{{ order.seatNumber }}</p>
+  </div>
+  <div>
+    <p>Price</p>
+    <p>{{ order.price | currency: "USD" }}</p>
+  </div>
+  @if (order.status === "active") {
+    <p-button
+      severity="danger"
+      (onClick)="cancel($event)"
+      label="Cancel"
+    ></p-button>
+  }
+</p-card>

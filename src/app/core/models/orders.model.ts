@@ -9,6 +9,8 @@ export type Order = {
   status: 'active' | 'completed' | 'rejected' | 'canceled';
   path: number[];
   carriages: string[];
+  stationStart: number;
+  stationEnd: number;
   schedule: Schedule;
 };
 

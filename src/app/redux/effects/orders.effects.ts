@@ -40,13 +40,13 @@ export class OrdersEffects {
     );
   });
 
-  deleteOrder$ = createEffect(() => {
+  cancelOrder$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(ordersActions.deleteOrder),
+      ofType(ordersActions.cancelOrder),
       switchMap(({ id }) =>
         this.ordersService.deleteOrder(id).pipe(
-          map(() => ordersActions.deleteOrderSuccess({ id })),
-          catchError((error) => of(ordersActions.deleteOrderError({ error }))),
+          map(() => ordersActions.cancelOrderSuccess({ id })),
+          catchError((error) => of(ordersActions.cancelOrderError({ error }))),
         ),
       ),
     );

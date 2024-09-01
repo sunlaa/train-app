@@ -1,0 +1,15 @@
+<p-toast />
+<p-confirmDialog />
+<div class="list">
+  @if (isLoading) {
+    <p-skeleton width="10rem" height="4rem" />
+    <p-skeleton width="10rem" height="4rem" />
+    <p-skeleton width="10rem" height="4rem" />
+    <p-skeleton width="10rem" height="4rem" />
+    <p-skeleton width="10rem" height="4rem" />
+  } @else {
+    @for (order of orders; track $index) {
+      <app-order-item [order]="order"></app-order-item>
+    }
+  }
+</div>
