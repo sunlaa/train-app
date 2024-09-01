@@ -1,20 +1,29 @@
 <p-toast />
 <p-confirmDialog />
-<div class="list">
-  @if (isLoading) {
+@if (isLoading) {
+  <div class="list">
     <p-skeleton width="13rem" height="27rem" />
     <p-skeleton width="13rem" height="27rem" />
     <p-skeleton width="13rem" height="27rem" />
     <p-skeleton width="13rem" height="27rem" />
     <p-skeleton width="13rem" height="27rem" />
     <p-skeleton width="13rem" height="27rem" />
-  } @else if (orders.length > 0) {
-    @for (order of orders; track $index) {
+  </div>
+} @else if (totalOrders > 0) {
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="offset"
+    [rows]="ordersPerPage"
+    [totalRecords]="totalOrders"
+    [rowsPerPageOptions]="ordersPerPageOptions"
+  />
+  <div class="list">
+    @for (order of pageOrders; track $index) {
       <app-order-item [order]="order" [isAdmin]="isAdmin"></app-order-item>
     }
-  } @else {
-    <div class="empty-wrapper">
-      <p class="empty-message">So empty...</p>
-    </div>
-  }
-</div>
+  </div>
+} @else {
+  <div class="empty-wrapper">
+    <p class="empty-message">So empty...</p>
+  </div>
+}

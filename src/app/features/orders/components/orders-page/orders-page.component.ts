@@ -15,11 +15,14 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { PaginatorModule } from 'primeng/paginator';
+import { PageEvent } from '@/core/models/shared.model';
 import { OrdersFacadeService } from '../../services/facade/orders-facade.service';
 import handleOrderData from '../../utils/handleOrderData';
 import { UsersService } from '../../services/users/users.service';
 import { OrderItemComponent } from '../order-item/order-item.component';
 import sortOrders from '../../utils/sortOrders';
+import { ORDERS_PER_PAGE_OPTIONS } from '../../config/consts';
 
 @Component({
   selector: 'app-orders-page',
@@ -29,6 +32,7 @@ import sortOrders from '../../utils/sortOrders';
     SkeletonModule,
     ToastModule,
     ConfirmDialogModule,
+    PaginatorModule,
   ],
   providers: [DestroyService, ConfirmationService],
   templateUrl: './orders-page.component.html',
@@ -45,12 +49,22 @@ export class OrdersPageComponent implements OnInit {
 
   private carriagesFacade = inject(CarriagesFacadeService);
 
+  public ordersPerPageOptions = ORDERS_PER_PAGE_OPTIONS;
+
+  public offset: number = 0;
+
+  public ordersPerPage: number = this.ordersPerPageOptions[0];
+
+  public totalOrders: number = 0;
+
+  private allOrders: ReturnType<typeof handleOrderData>[] = [];
+
+  public pageOrders: ReturnType<typeof handleOrderData>[] = [];
+
   // TODO: Handle admin state
   public isAdmin = true;
 
   public isLoading = true;
-
-  public orders: ReturnType<typeof handleOrderData>[] = [];
 
   ngOnInit(): void {
     this.initOrders();
@@ -94,7 +108,23 @@ export class OrdersPageComponent implements OnInit {
             users,
           ),
         );
-        this.orders = sortOrders(unsortedOrders);
+        const ords = sortOrders(unsortedOrders);
+        this.allOrders = ords;
+        this.totalOrders = ords.length;
+        this.updatePageRoutes();
       });
+  }
+
+  private updatePageRoutes() {
+    this.pageOrders = this.allOrders.slice(
+      this.offset,
+      this.ordersPerPage + this.offset,
+    );
+  }
+
+  public onPageChange(event: PageEvent) {
+    this.offset = event.first ?? this.offset;
+    this.ordersPerPage = event.rows ?? this.ordersPerPage;
+    this.updatePageRoutes();
   }
 }
