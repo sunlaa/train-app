@@ -42,12 +42,29 @@
           <div class="field__data">
             <span class="new-password">New password</span>
             <p-password
+              id="password"
               styleClass="password-cont"
               feedback="false"
               [formControl]="password"
             />
+            @if (password.invalid && (password.touched || password.dirty)) {
+              @if (password.hasError("required")) {
+                <small class="error" id="password">
+                  You need to enter the password.
+                </small>
+              }
+
+              @if (password.hasError("minlength")) {
+                <small class="error" id="password">
+                  The minimum password length is 8 characters.
+                </small>
+              }
+            }
           </div>
-          <p-button class="dialog__save" (onClick)="updatePassword()"
+          <p-button
+            class="dialog__save"
+            (onClick)="updatePassword()"
+            [disabled]="!password.valid"
             >Save</p-button
           >
         </div>

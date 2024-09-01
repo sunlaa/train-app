@@ -1,6 +1,6 @@
 import { ProfileService } from '@/features/profile/services/profile.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { profileActions } from '../actions';
@@ -37,14 +37,14 @@ export class ProfileEffects {
   updatePassword$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(profileActions.updatePassword),
-      tap(() => {
-        console.log('unside');
+      switchMap(({ password }) => {
+        return this.profileService.updatePassword(password).pipe(
+          map(() => profileActions.updatePasswordSuccess()),
+          catchError((error: HttpErrorResponse) =>
+            of(profileActions.updatePasswordError({ error })),
+          ),
+        );
       }),
-      switchMap(({ password }) => this.profileService.updatePassword(password)),
-      map(() => profileActions.updatePasswordSuccess()),
-      catchError((error: HttpErrorResponse) =>
-        of(profileActions.updatePasswordError({ error })),
-      ),
     );
   });
 

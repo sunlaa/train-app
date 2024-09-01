@@ -7,6 +7,7 @@ import {
   FormControl,
   ReactiveFormsModule,
   UntypedFormControl,
+  Validators,
 } from '@angular/forms';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ProfileModel } from '@/core/models/profile.model';
@@ -62,7 +63,10 @@ export class ProfilePageComponent implements OnInit {
 
   status$ = this.profileFacade.status$.pipe(take(2));
 
-  password: FormControl = new FormControl('');
+  password: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(8),
+  ]);
 
   isModalVisible: boolean = false;
 
@@ -91,11 +95,6 @@ export class ProfilePageComponent implements OnInit {
   }
 
   public updatePassword(): void {
-    if (!this.password.value) {
-      this.notificationService.messageError('You need to enter the password!');
-      return;
-    }
-
     this.profileFacade
       .updatePassword(this.password.value)
       .subscribe(({ isSuccess }) => {
