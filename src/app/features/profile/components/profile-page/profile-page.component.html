@@ -1,0 +1,92 @@
+@switch (status$ | async) {
+  @case ("loading") {
+    <p-progressSpinner styleClass="profile-loader"></p-progressSpinner>
+  }
+  @case ("not-loaded") {
+    <p>Cannot Load Profile</p>
+    <p-button [routerLink]="'/'">Main Page</p-button>
+  }
+  @default {
+    <p-toast />
+    <div class="container">
+      <h1>Profile</h1>
+      <div class="profile__info">
+        @if (isManager) {
+          <span>Manager</span>
+        }
+        <p-button (onClick)="showModalDialog()">Change Password</p-button>
+      </div>
+
+      @for (editableField of ["name", "email"]; track editableField) {
+        <ng-container
+          *ngTemplateOutlet="
+            formField;
+            context: { $implicit: getContext(editableField) }
+          "
+        ></ng-container>
+      }
+
+      <p-button severity="danger" class="profile__logout" (onClick)="logout()"
+        >Logout</p-button
+      >
+      <p-dialog
+        [breakpoints]="{ '685px': '80vw' }"
+        [style]="{ width: '40vw' }"
+        header="Change Password"
+        [(visible)]="isModalVisible"
+        [modal]="true"
+        [draggable]="false"
+        [dismissableMask]="true"
+      >
+        <div class="dialog__body">
+          <div class="field__data">
+            <span class="new-password">New password</span>
+            <p-password
+              styleClass="password-cont"
+              feedback="false"
+              [formControl]="password"
+            />
+          </div>
+          <p-button class="dialog__save" (onClick)="updatePassword()"
+            >Save</p-button
+          >
+        </div>
+      </p-dialog>
+    </div>
+  }
+}
+
+<ng-template #field let-context>
+  @if (context?.isEditMode) {
+    <input pInputText id="name" [formControl]="context.control" />
+  } @else {
+    <span class="identifiers">{{ context?.field || "-" }}</span>
+  }
+</ng-template>
+
+<ng-template #formField let-context>
+  <div class="profile__field">
+    <div class="field__data">
+      <span class="identifiers-title">{{ context.title }}:</span>
+      <ng-container
+        *ngTemplateOutlet="
+          field;
+          context: {
+            $implicit: {
+              field: context.field,
+              control: context.control,
+              isEditMode: context.isEditMode,
+            },
+          }
+        "
+      ></ng-container>
+    </div>
+    <div class="field__action">
+      @if (!context.isEditMode) {
+        <p-button icon="pi pi-pencil" (onClick)="context.onEdit()"></p-button>
+      } @else {
+        <p-button icon="pi pi-save" (onClick)="onSave()"></p-button>
+      }
+    </div>
+  </div>
+</ng-template>

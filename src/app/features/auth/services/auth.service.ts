@@ -65,6 +65,10 @@ export class AuthService {
       );
   }
 
+  public removeUserToken(): void {
+    localStorage.removeItem(this.localStorageKey);
+  }
+
   private setUserToken(token: string): void {
     localStorage.setItem(this.localStorageKey, token);
   }
