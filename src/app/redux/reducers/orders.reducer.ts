@@ -60,19 +60,21 @@ const orderReducer = createReducer(
   ),
 
   on(
-    ordersActions.deleteOrder,
+    ordersActions.cancelOrder,
     (state): OrderState => ({ ...state, status: 'loading' }),
   ),
   on(
-    ordersActions.deleteOrderSuccess,
+    ordersActions.cancelOrderSuccess,
     (state, { id }): OrderState => ({
-      orders: state.orders.filter((order) => order.id !== id),
+      orders: state.orders.map((order) =>
+        order.id === id ? { ...order, status: 'canceled' } : order,
+      ),
       error: null,
       status: 'success',
     }),
   ),
   on(
-    ordersActions.deleteOrderError,
+    ordersActions.cancelOrderError,
     (state, { error }): OrderState => ({
       ...state,
       error: error.error,
