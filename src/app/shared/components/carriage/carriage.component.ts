@@ -1,5 +1,9 @@
 import { CarriageMap } from '@/core/models/carriages.model';
-import { SeatEventData, SelectedSeat } from '@/core/models/trip.model';
+import {
+  OccupiedSeat,
+  SeatEventData,
+  SelectedSeat,
+} from '@/core/models/trip.model';
 import { getSeatIndex } from '@/shared/utils/seatIndex';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
@@ -27,6 +31,8 @@ export class CarriageComponent {
   @Input() carriages: string[] = [];
 
   @Input() selectedSeat: SelectedSeat | null = null;
+
+  @Input() occupiedSeat: OccupiedSeat | null = null;
 
   @Output() seatChange = new EventEmitter<SeatEventData>();
 
@@ -62,6 +68,13 @@ export class CarriageComponent {
 
   public isOccupied(seat: number) {
     if (!this.carriageMap) return false;
+
+    if (
+      this.occupiedSeat?.seat === seat &&
+      this.occupiedSeat.carNumber === this.carNumber
+    ) {
+      return true;
+    }
 
     const index = getSeatIndex(
       this.carNumber,

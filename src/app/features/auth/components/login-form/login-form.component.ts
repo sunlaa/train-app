@@ -1,5 +1,5 @@
 import { DestroyService } from '@/core/services/destroy/destroy.service';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -28,6 +28,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login-form.component.scss',
 })
 export class LoginFormComponent {
+  @Input() isRedirect: boolean = true;
+
   private fb = inject(FormBuilder);
 
   private authService = inject(AuthService);
@@ -100,7 +102,7 @@ export class LoginFormComponent {
           return;
         }
 
-        this.router.navigateByUrl('/');
+        if (this.isRedirect) this.router.navigateByUrl('/');
       });
   }
 

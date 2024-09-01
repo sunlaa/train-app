@@ -49,3 +49,8 @@ export type SelectedSeat = {
   seat: number;
   carNumber: number;
 };
+
+export type OccupiedSeat = {
+  seat: number;
+  carNumber: number;
+};

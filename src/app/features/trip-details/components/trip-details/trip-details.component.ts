@@ -1,5 +1,6 @@
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import {
+  OccupiedSeat,
   RidePageData,
   SeatEventData,
   SelectedSeat,
@@ -8,7 +9,7 @@ import { CarriagesFacadeService } from '@/features/carriages-management/services
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { OrdersFacadeService } from '@/features/orders/services/facade/orders-facade.service';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { CarriageComponent } from '@/shared/components/carriage/carriage.component';
 import { ModalContentComponent } from '@/features/search-tickets/components/modal-content/modal-content.component';
 import { LoginFormComponent } from '@/features/auth/components/login-form/login-form.component';
@@ -88,6 +89,8 @@ export class TripDetailsComponent implements OnInit {
 
   public selectedSeat: SelectedSeat | null = null;
 
+  public occupiedSeat: OccupiedSeat | null = null;
+
   public selectedPrice: number | null = null;
 
   public tabIndex: number = 0;
@@ -96,7 +99,7 @@ export class TripDetailsComponent implements OnInit {
 
   public authModalVisible: boolean = false;
 
-  private router: Router = inject(Router);
+  public bookedModalVisible: boolean = false;
 
   ngOnInit() {
     combineLatest([this.route.paramMap, this.route.queryParamMap])
@@ -173,8 +176,6 @@ export class TripDetailsComponent implements OnInit {
     this.seatIndex = seatIndex;
   }
 
-  // TODO: check the authorization status, change the color of the seat
-
   public makeOrder() {
     if (!this.rideId || !this.seatIndex || !this.fromId || !this.toId) {
       throw Error('No order information.');
@@ -202,8 +203,14 @@ export class TripDetailsComponent implements OnInit {
       .subscribe((state) => {
         if (state.status === 'success') {
           this.notification.messageSuccess('The seat was successfully booked.');
+
+          this.occupiedSeat = { ...this.selectedSeat! };
         }
         if (state.status === 'error') {
+          if (state.error?.message === 'Ride is already booked') {
+            this.bookedModalVisible = true;
+            return;
+          }
           this.notification.messageError(state.error?.message);
         }
       });

@@ -93,6 +93,7 @@
                 [carriageMap]="pageData.carriageMap"
                 [carriages]="pageData.carriages"
                 [selectedSeat]="selectedSeat"
+                [occupiedSeat]="occupiedSeat"
               ></app-carriage>
             </p-panel>
           }
@@ -141,5 +142,26 @@
   [style]="{ width: '45vw' }"
   header="First you need to log in."
 >
-  <app-login-form></app-login-form>
+  <app-login-form [isRedirect]="false"></app-login-form>
+</p-dialog>
+
+<p-dialog
+  class="booked-modal"
+  [draggable]="false"
+  [modal]="true"
+  [dismissableMask]="true"
+  [(visible)]="bookedModalVisible"
+  [breakpoints]="{ '1000px': '60vw', '575px': '90vw' }"
+  [style]="{ width: '45vw' }"
+  header="You've already booked a seat on this train."
+>
+  <p>
+    You cannot book more than <b>one</b> seat. If you want to choose another,
+    you must cancel the current reservation.
+  </p>
+  <p-button
+    label="Go to orders"
+    severity="secondary"
+    [routerLink]="['/orders']"
+  />
 </p-dialog>
