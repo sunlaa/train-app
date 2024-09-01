@@ -11,7 +11,7 @@ export type SearchRequest = {
   fromLongitude: number;
   toLatitude: number;
   toLongitude: number;
-  time: string;
+  time: number;
 };
 
 export type SearchResponse = {
@@ -48,8 +48,8 @@ export type Ticket = {
   rideId: number;
   fromId: number;
   toId: number;
-  departureDate: Date;
-  arrivalDate: Date;
+  departureDate: number;
+  arrivalDate: number;
   startCity: string;
   endCity: string;
   tripDuration: number;
@@ -78,7 +78,7 @@ export type StopInfo = {
 };
 
 export type DayTickets = {
-  date: string;
+  date: number;
   tickets: Ticket[];
 };
 

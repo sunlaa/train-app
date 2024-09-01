@@ -19,7 +19,7 @@ import { StationsFacadeService } from '@/features/stations-management/services/s
 import { SearchRequest, SearchStation } from '@/core/models/search.model';
 import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
 import { CityApiService } from '../../services/city-api/city-api.service';
-import { localISOString, uniqueStations } from '../../utils';
+import { setTime, uniqueStations } from '../../utils';
 
 @Component({
   selector: 'app-search-form',
@@ -136,15 +136,33 @@ export class SearchFormComponent implements OnInit {
   public search() {
     const { value } = this.searchForm;
 
-    const date = localISOString(value.date!).split('T')[0];
-    const time = value.time ? localISOString(value.time).split('T')[1] : null;
+    const date = value.date!;
+
+    const utcDate = new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+    );
+
+    const getUTCTime = (time: Date) =>
+      new Date(
+        Date.UTC(
+          time.getFullYear(),
+          time.getMonth(),
+          time.getDate(),
+          time.getHours(),
+          time.getMinutes(),
+        ),
+      );
+
+    const utcTime = value.time
+      ? setTime(utcDate, getUTCTime(value.time))
+      : null;
 
     const params: SearchRequest = {
       fromLatitude: value.from!.latitude,
       fromLongitude: value.from!.longitude,
       toLatitude: value.to!.latitude,
       toLongitude: value.to!.longitude,
-      time: time ? `${date}T${time}Z` : `${date}T00:00:00.000Z`,
+      time: utcTime ? utcTime.getTime() : utcDate.getTime(),
     };
 
     this.searchFacade.search(params);

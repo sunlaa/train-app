@@ -1,2 +1,3 @@
 export { default as uniqueStations } from './uniqueStations';
-export { default as localISOString } from './localISOString';
+export { default as setTime } from './setTime';
+export { default as isSameDays } from './isSameDays';
