@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public signOut() {
-    console.log('logout');
+    // console.log('logout');
   }
 
   private initItems() {

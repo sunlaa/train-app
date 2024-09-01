@@ -80,4 +80,8 @@ export class AuthService {
     localStorage.setItem(this.tokenStorageKey, token);
     localStorage.setItem(this.roleStorageKey, role);
   }
+  
+  public removeUserToken(): void {
+    localStorage.removeItem(this.localStorageKey);
+  }
 }
