@@ -19,6 +19,7 @@ import { OrdersFacadeService } from '../../services/facade/orders-facade.service
 import handleOrderData from '../../utils/handleOrderData';
 import { UsersService } from '../../services/users/users.service';
 import { OrderItemComponent } from '../order-item/order-item.component';
+import sortOrders from '../../utils/sortOrders';
 
 @Component({
   selector: 'app-orders-page',
@@ -44,6 +45,9 @@ export class OrdersPageComponent implements OnInit {
 
   private carriagesFacade = inject(CarriagesFacadeService);
 
+  // TODO: Handle admin state
+  public isAdmin = true;
+
   public isLoading = true;
 
   public orders: ReturnType<typeof handleOrderData>[] = [];
@@ -53,6 +57,7 @@ export class OrdersPageComponent implements OnInit {
   }
 
   private initOrders() {
+    this.ordersFacade.load(this.isAdmin);
     combineLatest([
       this.ordersFacade.state$,
       this.stationsFacade.state$,
@@ -70,6 +75,7 @@ export class OrdersPageComponent implements OnInit {
           return o;
         }),
         switchMap((o) => {
+          if (!this.isAdmin) return combineLatest([of(o.orders), of([])]);
           const users$ = this.usersService.getUsers().pipe(
             catchError(() => {
               return of([]);
@@ -80,7 +86,7 @@ export class OrdersPageComponent implements OnInit {
       )
       .subscribe(([orders, users]) => {
         this.isLoading = false;
-        this.orders = orders.map((o) =>
+        const unsortedOrders = orders.map((o) =>
           handleOrderData(
             o,
             this.stationsFacade.stationMap()!,
@@ -88,6 +94,7 @@ export class OrdersPageComponent implements OnInit {
             users,
           ),
         );
+        this.orders = sortOrders(unsortedOrders);
       });
   }
 }

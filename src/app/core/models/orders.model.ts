@@ -24,3 +24,10 @@ export type MakeOrderBody = {
   stationStart: number;
   stationEnd: number;
 };
+
+export type TTagSeverity =
+  | 'info'
+  | 'success'
+  | 'danger'
+  | 'warning'
+  | 'contrast';

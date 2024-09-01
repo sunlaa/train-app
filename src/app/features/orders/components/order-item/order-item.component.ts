@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnChanges } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { DurationPipe } from '@/features/search-tickets/pipes/duration.pipe';
 import { CommonModule } from '@angular/common';
@@ -6,9 +6,16 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService } from 'primeng/api';
 import { NotificationService } from '@/shared/services/notification.service';
+import { Order, TTagSeverity } from '@/core/models/orders.model';
 import handleOrderData from '../../utils/handleOrderData';
 import { OrdersFacadeService } from '../../services/facade/orders-facade.service';
 
+const severeties: Record<Order['status'], TTagSeverity> = {
+  active: 'info',
+  completed: 'success',
+  canceled: 'danger',
+  rejected: 'warning',
+};
 @Component({
   selector: 'app-order-item',
   standalone: true,
@@ -16,10 +23,10 @@ import { OrdersFacadeService } from '../../services/facade/orders-facade.service
   templateUrl: './order-item.component.html',
   styleUrl: './order-item.component.scss',
 })
-export class OrderItemComponent {
+export class OrderItemComponent implements OnChanges {
   @Input({ required: true }) order!: ReturnType<typeof handleOrderData>;
 
-  @Input() managerView: boolean | undefined;
+  @Input() isAdmin: boolean | undefined;
 
   private ordersFacade = inject(OrdersFacadeService);
 
@@ -27,19 +34,10 @@ export class OrderItemComponent {
 
   private notificationService = inject(NotificationService);
 
-  get tagSeverity() {
-    switch (this.order.status) {
-      case 'active':
-        return 'info';
-      case 'completed':
-        return 'success';
-      case 'canceled':
-        return 'danger';
-      case 'rejected':
-        return 'warning';
-      default:
-        return 'contrast';
-    }
+  public tagSeverity!: TTagSeverity;
+
+  ngOnChanges(): void {
+    this.tagSeverity = severeties[this.order.status];
   }
 
   public cancel(event: Event) {
@@ -57,13 +55,15 @@ export class OrderItemComponent {
       rejectIcon: 'none',
 
       accept: () => {
-        this.ordersFacade.cancelOrder(this.order.orderId).subscribe((err) => {
-          if (!err) {
-            this.notificationService.messageSuccess('Order canceled');
-          } else {
-            this.notificationService.messageError(err.message);
-          }
-        });
+        this.ordersFacade
+          .cancelOrder(this.order.orderId, this.isAdmin)
+          .subscribe((err) => {
+            if (!err) {
+              this.notificationService.messageSuccess('Order canceled');
+            } else {
+              this.notificationService.messageError(err.message);
+            }
+          });
       },
     });
   }

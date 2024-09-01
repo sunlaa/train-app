@@ -2,14 +2,19 @@
 <p-confirmDialog />
 <div class="list">
   @if (isLoading) {
-    <p-skeleton width="10rem" height="4rem" />
-    <p-skeleton width="10rem" height="4rem" />
-    <p-skeleton width="10rem" height="4rem" />
-    <p-skeleton width="10rem" height="4rem" />
-    <p-skeleton width="10rem" height="4rem" />
-  } @else {
+    <p-skeleton width="13rem" height="27rem" />
+    <p-skeleton width="13rem" height="27rem" />
+    <p-skeleton width="13rem" height="27rem" />
+    <p-skeleton width="13rem" height="27rem" />
+    <p-skeleton width="13rem" height="27rem" />
+    <p-skeleton width="13rem" height="27rem" />
+  } @else if (orders.length > 0) {
     @for (order of orders; track $index) {
-      <app-order-item [order]="order"></app-order-item>
+      <app-order-item [order]="order" [isAdmin]="isAdmin"></app-order-item>
     }
+  } @else {
+    <div class="empty-wrapper">
+      <p class="empty-message">So empty...</p>
+    </div>
   }
 </div>

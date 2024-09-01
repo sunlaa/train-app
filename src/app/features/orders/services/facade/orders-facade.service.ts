@@ -11,10 +11,6 @@ import { filter, map, take } from 'rxjs';
 export class OrdersFacadeService {
   private store: Store = inject(Store);
 
-  constructor() {
-    this.load();
-  }
-
   get state$() {
     return this.store.select(ordersFeature.selectOrdersState);
   }
@@ -31,16 +27,16 @@ export class OrdersFacadeService {
     return this.store.select(ordersFeature.selectError);
   }
 
-  load() {
-    this.store.dispatch(ordersActions.load());
+  load(all?: boolean) {
+    this.store.dispatch(ordersActions.load({ all }));
   }
 
   makeOrder(order: MakeOrderBody) {
     this.store.dispatch(ordersActions.makeOrder({ order }));
   }
 
-  cancelOrder(id: number) {
-    this.store.dispatch(ordersActions.cancelOrder({ id }));
+  cancelOrder(id: number, isAdmin?: boolean) {
+    this.store.dispatch(ordersActions.cancelOrder({ id, isAdmin }));
     return this.state$.pipe(
       filter((st) => st.status !== 'loading'),
       take(1),

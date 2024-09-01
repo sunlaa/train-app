@@ -65,9 +65,11 @@ const orderReducer = createReducer(
   ),
   on(
     ordersActions.cancelOrderSuccess,
-    (state, { id }): OrderState => ({
+    (state, { id, isAdmin }): OrderState => ({
       orders: state.orders.map((order) =>
-        order.id === id ? { ...order, status: 'canceled' } : order,
+        order.id === id
+          ? { ...order, status: isAdmin ? 'rejected' : 'canceled' }
+          : order,
       ),
       error: null,
       status: 'success',

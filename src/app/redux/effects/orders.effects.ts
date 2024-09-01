@@ -14,8 +14,8 @@ export class OrdersEffects {
   loadOrders$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ordersActions.load),
-      switchMap(() =>
-        this.ordersService.getOrders().pipe(
+      switchMap(({ all }) =>
+        this.ordersService.getOrders(all).pipe(
           map((orders) => ordersActions.loadSuccess({ orders })),
           catchError((error) => of(ordersActions.loadError({ error }))),
         ),
@@ -43,9 +43,9 @@ export class OrdersEffects {
   cancelOrder$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ordersActions.cancelOrder),
-      switchMap(({ id }) =>
+      switchMap(({ id, isAdmin }) =>
         this.ordersService.deleteOrder(id).pipe(
-          map(() => ordersActions.cancelOrderSuccess({ id })),
+          map(() => ordersActions.cancelOrderSuccess({ id, isAdmin })),
           catchError((error) => of(ordersActions.cancelOrderError({ error }))),
         ),
       ),

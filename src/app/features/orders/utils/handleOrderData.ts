@@ -4,6 +4,7 @@ import { StationMap } from '@/core/models/stations.model';
 import { TUser } from '@/core/models/users.model';
 import { getRideDates } from '@/shared/utils';
 import { getCarriageAndSeat } from '@/shared/utils/seatIndex';
+import maskEmail from './maskEmail';
 
 const handleOrderData = (
   data: Order,
@@ -49,7 +50,13 @@ const handleOrderData = (
     return sum;
   }, 0);
 
-  const owner = users.find((u) => u.id === userId)?.name;
+  const ownerObj = users.find((u) => u.id === userId);
+  let owner: string | undefined;
+  if (ownerObj?.name) {
+    owner = ownerObj.name;
+  } else if (ownerObj?.email) {
+    owner = maskEmail(ownerObj.email);
+  }
 
   return {
     orderId: id,
