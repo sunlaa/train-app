@@ -76,6 +76,18 @@
 <ng-template #field let-context>
   @if (context?.isEditMode) {
     <input pInputText id="name" [formControl]="context.control" />
+    @if (
+      context.control.invalid &&
+      (context.control.touched || context.control.dirty)
+    ) {
+      @if (context.control.hasError("required")) {
+        <small class="error"> You need to fill in the field. </small>
+      }
+
+      @if (context.control.hasError("pattern")) {
+        <small class="error"> Incorrect email. </small>
+      }
+    }
   } @else {
     <span class="identifiers">{{ context?.field || "-" }}</span>
   }
@@ -102,7 +114,11 @@
       @if (!context.isEditMode) {
         <p-button icon="pi pi-pencil" (onClick)="context.onEdit()"></p-button>
       } @else {
-        <p-button icon="pi pi-save" (onClick)="onSave()"></p-button>
+        <p-button
+          [disabled]="!context.control.valid"
+          icon="pi pi-save"
+          (onClick)="onSave()"
+        ></p-button>
       }
     </div>
   </div>

@@ -6,16 +6,16 @@ import {
   FormBuilder,
   FormControl,
   ReactiveFormsModule,
-  UntypedFormControl,
   Validators,
 } from '@angular/forms';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ProfileModel } from '@/core/models/profile.model';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NotificationService } from '@/shared/services/notification.service';
+import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { ToastModule } from 'primeng/toast';
 import { Router, RouterLink } from '@angular/router';
-import { take } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { PasswordModule } from 'primeng/password';
 import { AuthService } from '@/features/auth/services/auth.service';
 import { ProfileFacadeService } from '../../services/profile-facade.service';
@@ -36,6 +36,7 @@ import { ProfileFormContext } from '../../models/profile-form-context.model';
     RouterLink,
     PasswordModule,
   ],
+  providers: [DestroyService],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss',
 })
@@ -50,53 +51,61 @@ export class ProfilePageComponent implements OnInit {
 
   private router = inject(Router);
 
+  private destroy$ = inject(DestroyService);
+
   private isNameEdit: boolean = false;
 
   private isEmailEdit: boolean = false;
 
   private profileForm = this.fb.group({
-    email: [''],
-    name: [''],
+    email: [
+      '',
+      [Validators.required, Validators.pattern(/^[\w\d_]+@[\w\d_]+.\w{2,7}$/)],
+    ],
+    name: ['', [Validators.required]],
   });
 
-  profile!: ProfileModel;
+  private profile!: ProfileModel;
 
-  status$ = this.profileFacade.status$.pipe(take(2));
+  public status$ = this.profileFacade.status$.pipe(take(2));
 
-  password: FormControl = new FormControl('', [
+  public password: FormControl = this.fb.control('', [
     Validators.required,
     Validators.minLength(8),
   ]);
 
-  isModalVisible: boolean = false;
+  public isModalVisible: boolean = false;
 
   get isManager(): boolean {
     return this.profile.role === 'manager';
   }
 
-  get emailControl(): UntypedFormControl {
-    return this.profileForm.get('email') as UntypedFormControl;
+  get emailControl() {
+    return this.profileForm.controls.email;
   }
 
-  get nameControl(): UntypedFormControl {
-    return this.profileForm.get('name') as UntypedFormControl;
+  get nameControl() {
+    return this.profileForm.controls.name;
   }
 
   public ngOnInit(): void {
     this.profileFacade.loadProfile();
 
-    this.profileFacade.profile$.subscribe((profile) => {
-      this.profile = profile;
-      this.profileForm.setValue({
-        email: profile.email,
-        name: profile.name,
+    this.profileFacade.profile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((profile) => {
+        this.profile = profile;
+        this.profileForm.setValue({
+          email: profile.email,
+          name: profile.name,
+        });
       });
-    });
   }
 
   public updatePassword(): void {
     this.profileFacade
       .updatePassword(this.password.value)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(({ isSuccess }) => {
         if (!isSuccess) {
           return this.notificationService.messageError(
@@ -113,16 +122,19 @@ export class ProfilePageComponent implements OnInit {
   }
 
   public logout(): void {
-    this.profileFacade.logout().subscribe(({ isSuccess }) => {
-      if (!isSuccess) {
-        return this.notificationService.messageError(
-          'Error occurs during logout',
-        );
-      }
+    this.profileFacade
+      .logout()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(({ isSuccess }) => {
+        if (!isSuccess) {
+          return this.notificationService.messageError(
+            'Error occurs during logout',
+          );
+        }
 
-      this.authService.removeUserToken();
-      return this.router.navigateByUrl('/');
-    });
+        this.authService.removeUserToken();
+        return this.router.navigateByUrl('/');
+      });
   }
 
   public showModalDialog(): void {
@@ -158,9 +170,10 @@ export class ProfilePageComponent implements OnInit {
   public onSave(): void {
     this.profileFacade
       .updateProfile({
-        email: this.emailControl.value,
-        name: this.nameControl.value,
+        email: this.emailControl.value ?? '',
+        name: this.nameControl.value ?? '',
       })
+      .pipe(takeUntil(this.destroy$))
       .subscribe(({ isSuccess }) => {
         if (!isSuccess) {
           return this.notificationService.messageError(
