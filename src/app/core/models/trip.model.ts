@@ -27,8 +27,8 @@ export type RideCarriageData = {
 
 export type RideHeader = {
   rideId: number;
-  departureDate: Date;
-  arrivalDate: Date;
+  departureDate: number;
+  arrivalDate: number;
   stopInfo: StopInfo[];
 };
 

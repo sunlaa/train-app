@@ -14,6 +14,7 @@ import {
   getRideDates,
   getRouteDetails,
 } from '@/shared/utils';
+import isSameDay from '../../utils/isSameDays';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,7 @@ export class SearchService {
   public search(params: SearchRequest): Observable<FilteredTickets> {
     return this.http.get<SearchResponse>(this.baseURL, { params }).pipe(
       map((data) => {
-        return this.filterTicketsByDate(this.getTicketsData(data));
+        return this.filterTicketsByDate(this.getTicketsData(data), params.time);
       }),
     );
   }
@@ -65,7 +66,7 @@ export class SearchService {
         const ridePath = ride.segments.slice(startRide, endRide + 1);
 
         const { departureDate, arrivalDate } = getRideDates(ridePath);
-        const tripDuration = arrivalDate.getTime() - departureDate.getTime();
+        const tripDuration = arrivalDate - departureDate;
 
         const stopInfo = getRouteDetails(ridePath, ridePathIds, stationMap);
 
@@ -95,29 +96,30 @@ export class SearchService {
     return ticketsData;
   }
 
-  private filterTicketsByDate(tickets: Ticket[]): FilteredTickets {
-    const ticketsMap = new Map<string, Ticket[]>();
+  private filterTicketsByDate(
+    tickets: Ticket[],
+    minDate: number,
+  ): FilteredTickets {
+    const ticketsMap = new Map<number, Ticket[]>();
 
     if (tickets.length === 0) return [];
 
-    const minDate = new Date(
-      Math.min(...tickets.map((ticket) => ticket.departureDate.getTime())),
-    );
+    const maxDate = Math.max(...tickets.map((ticket) => ticket.departureDate));
 
-    const dates: string[] = [];
+    const dates: number[] = [];
 
-    for (let i = 0; i < 10; i += 1) {
-      const date = new Date(minDate);
-      date.setUTCDate(minDate.getDate() + i);
-      dates.push(date.toISOString().split('T')[0]);
+    const currentDate: Date = new Date(minDate);
+    const endDate: Date = new Date(maxDate);
+
+    while (currentDate <= endDate) {
+      dates.push(currentDate.getTime());
+      currentDate.setDate(currentDate.getDate() + 1);
     }
 
     dates.forEach((date) => {
       ticketsMap.set(
         date,
-        tickets.filter(
-          (ticket) => date === ticket.departureDate.toISOString().split('T')[0],
-        ),
+        tickets.filter((ticket) => isSameDay(date, ticket.departureDate)),
       );
     });
 
