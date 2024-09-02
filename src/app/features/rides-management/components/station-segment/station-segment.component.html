@@ -1,11 +1,12 @@
-<div class="heading">
-  <p>{{ segmentData.name }}</p>
+<p>{{ segmentData.name }}</p>
+<form [formGroup]="dateForm">
   @if (editMode) {
     <p-button
       (onClick)="saveClick()"
       icon=" pi pi-save"
       [rounded]="true"
       [text]="true"
+      class="edit-btn"
     />
   } @else {
     <p-button
@@ -13,10 +14,9 @@
       icon=" pi pi-pen-to-square"
       [rounded]="true"
       [text]="true"
+      class="edit-btn"
     />
   }
-</div>
-<form [formGroup]="dateForm">
   <div class="dates">
     @if (segmentData.arrival) {
       <div class="date-wrapper">

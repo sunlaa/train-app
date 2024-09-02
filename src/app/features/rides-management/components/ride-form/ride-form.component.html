@@ -2,9 +2,7 @@
   <div class="ride">
     @for (station of stations; let stationIndex = $index; track station) {
       <div class="grid-item station" formArrayName="dates">
-        <div class="heading">
-          <p>{{ station.name }}</p>
-        </div>
+        <p>{{ station.name }}</p>
         <div class="dates">
           @if (!$first) {
             <div class="date-wrapper">
