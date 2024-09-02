@@ -12,6 +12,8 @@ import { profileGuard } from './features/profile/guards/profile.guard';
 import { OrdersPageComponent } from './features/orders/components/orders-page/orders-page.component';
 import { notGuestGuard } from './features/auth/guards/not-guest.guard';
 import { adminGuard } from './features/auth/guards/admin.guard';
+import { NotFoundComponent } from './core/components/not-found/not-found.component';
+import { NotAuthorizedComponent } from './core/components/not-authorized/not-authorized.component';
 
 export const routes: Routes = [
   {
@@ -78,4 +80,6 @@ export const routes: Routes = [
       ).then((m) => m.ProfilePageComponent),
     canActivate: [profileGuard],
   },
+  { path: 'unauthorized', component: NotAuthorizedComponent },
+  { path: '**', component: NotFoundComponent },
 ];
