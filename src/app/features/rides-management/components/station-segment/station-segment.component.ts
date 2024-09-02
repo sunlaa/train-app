@@ -54,7 +54,8 @@ export class StationSegmentComponent implements OnChanges {
   private setInitialDate(type: 'arrival' | 'departure') {
     const segment = this.segmentData[type];
     if (segment && segment.time) {
-      this.dateForm.controls[type].setValue(new Date(segment.time));
+      const date = this.fromISOString(segment.time);
+      this.dateForm.controls[type].setValue(date);
     }
   }
 
@@ -106,16 +107,35 @@ export class StationSegmentComponent implements OnChanges {
     const control = this.dateForm.controls[type];
     const dateValue = control.value;
 
-    if (
-      segment &&
-      dateValue !== null &&
-      segment.time !== dateValue.toISOString()
-    ) {
+    if (segment && dateValue !== null) {
       return {
         ...segment,
-        time: dateValue.toISOString(),
+        time: this.toLocalISODateString(dateValue),
       };
     }
     return undefined;
+  }
+
+  private fromISOString(isoString: string): Date {
+    const date = new Date(isoString);
+
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth();
+    const day = date.getUTCDate();
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const seconds = date.getUTCSeconds();
+
+    return new Date(year, month, day, hours, minutes, seconds);
+  }
+
+  private toLocalISODateString(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:00.000Z`;
   }
 }
