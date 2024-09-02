@@ -36,6 +36,7 @@
 </header>
 
 @if (pageData) {
+  @let title = "Route " + pageData.header.routeId;
   <p-dialog
     [draggable]="false"
     [modal]="true"
@@ -43,14 +44,8 @@
     [(visible)]="modalVisible"
     [breakpoints]="{ '1000px': '85vw', '575px': '90vw' }"
     [style]="{ width: '70vw' }"
+    [header]="title"
   >
-    <ng-template pTemplate="header">
-      <div class="cities">
-        <p>{{ fromCity }}</p>
-        <i class="pi pi-arrow-right"></i>
-        <p>{{ toCity }}</p>
-      </div>
-    </ng-template>
     <app-ride-modal [details]="pageData.header.stopInfo"></app-ride-modal>
   </p-dialog>
 }
