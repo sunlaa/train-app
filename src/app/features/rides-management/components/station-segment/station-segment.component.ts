@@ -12,6 +12,8 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import toLocalISODateString from '../../utils/toLocalISODateString';
+import dateFromISOString from '../../utils/dateFromISOString';
 
 @Component({
   selector: 'app-station-segment',
@@ -54,7 +56,7 @@ export class StationSegmentComponent implements OnChanges {
   private setInitialDate(type: 'arrival' | 'departure') {
     const segment = this.segmentData[type];
     if (segment && segment.time) {
-      const date = this.fromISOString(segment.time);
+      const date = dateFromISOString(segment.time);
       this.dateForm.controls[type].setValue(date);
     }
   }
@@ -110,32 +112,9 @@ export class StationSegmentComponent implements OnChanges {
     if (segment && dateValue !== null) {
       return {
         ...segment,
-        time: this.toLocalISODateString(dateValue),
+        time: toLocalISODateString(dateValue),
       };
     }
     return undefined;
-  }
-
-  private fromISOString(isoString: string): Date {
-    const date = new Date(isoString);
-
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth();
-    const day = date.getUTCDate();
-    const hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes();
-    const seconds = date.getUTCSeconds();
-
-    return new Date(year, month, day, hours, minutes, seconds);
-  }
-
-  private toLocalISODateString(date: Date): string {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-
-    return `${year}-${month}-${day}T${hours}:${minutes}:00.000Z`;
   }
 }

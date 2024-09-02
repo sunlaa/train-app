@@ -11,9 +11,8 @@
               <span>Arrival: </span>
               <p-calendar
                 [formControlName]="stationIndex * 2 - 1"
-                inputId="calendar-12h"
                 [showTime]="true"
-                hourFormat="12"
+                hourFormat="24"
               />
             </div>
           }
@@ -22,9 +21,8 @@
               <span>Departure: </span>
               <p-calendar
                 [formControlName]="$first ? 0 : stationIndex * 2"
-                inputId="calendar-12h"
                 [showTime]="true"
-                hourFormat="12"
+                hourFormat="24"
               />
             </div>
           }

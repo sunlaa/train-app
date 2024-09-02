@@ -22,6 +22,7 @@ import { map, startWith, takeUntil } from 'rxjs';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { CommonModule } from '@angular/common';
 import { datesAreSequential } from '../../utils';
+import toLocalISODateString from '../../utils/toLocalISODateString';
 
 @Component({
   selector: 'app-ride-form',
@@ -139,8 +140,8 @@ export class RideFormComponent implements OnChanges {
   private packDates(dates: Date[]) {
     const packedDates: [string, string][] = [];
     for (let i = 0; i < dates.length; i += 2) {
-      const departure = dates[i].toISOString();
-      const arrival = dates[i + 1].toISOString();
+      const departure = toLocalISODateString(dates[i]);
+      const arrival = toLocalISODateString(dates[i + 1]);
       const dateSegment: [string, string] = [departure, arrival];
       packedDates.push(dateSegment);
     }
