@@ -60,7 +60,5 @@
   <ng-template pTemplate="header">
     <h3>Route {{ ticket.routeDetails.routeId }}</h3>
   </ng-template>
-  <app-modal-content
-    [details]="ticket.routeDetails.stopInfo"
-  ></app-modal-content>
+  <app-ride-modal [details]="ticket.routeDetails.stopInfo"></app-ride-modal>
 </p-dialog>

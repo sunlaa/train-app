@@ -11,7 +11,7 @@ import { OrdersFacadeService } from '@/features/orders/services/facade/orders-fa
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { CarriageComponent } from '@/shared/components/carriage/carriage.component';
-import { ModalContentComponent } from '@/features/search-tickets/components/modal-content/modal-content.component';
+import { RideModalComponent } from '@/shared/components/ride-modal/ride-modal.component';
 import { LoginFormComponent } from '@/features/auth/components/login-form/login-form.component';
 import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
@@ -48,7 +48,7 @@ import { TripDetailsService } from '../../services/trip-details/trip.service';
     DialogModule,
     DatePipe,
     CarriageComponent,
-    ModalContentComponent,
+    RideModalComponent,
     CurrencyPipe,
     RouterLink,
     LoginFormComponent,
