@@ -11,7 +11,8 @@ export const adminGuard: CanActivateFn = () => {
     take(1),
     map(({ role }) => {
       if (role !== 'manager') {
-        return router.createUrlTree(['/']);
+        router.navigate(['/unauthorized'], { skipLocationChange: true });
+        return false;
       }
       return true;
     }),

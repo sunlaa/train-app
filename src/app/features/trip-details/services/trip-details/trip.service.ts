@@ -5,13 +5,16 @@ import { getRideCarriagesData } from '@/shared/utils';
 import getRideHeaderData from '@/shared/utils/rideHeader';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { Router } from '@angular/router';
+import { catchError, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TripDetailsService {
   private http = inject(HttpClient);
+
+  private router = inject(Router);
 
   private baseUrl = '/api/search';
 
@@ -23,13 +26,15 @@ export class TripDetailsService {
     stationMap: StationMap,
   ) {
     const url = `${this.baseUrl}/${id}`;
-    return this.http
-      .get<RideResponse>(url)
-      .pipe(
-        map((response) =>
-          this.handleRideData(response, fromId, toId, carriageMap, stationMap),
-        ),
-      );
+    return this.http.get<RideResponse>(url).pipe(
+      map((response) =>
+        this.handleRideData(response, fromId, toId, carriageMap, stationMap),
+      ),
+      catchError(() => {
+        this.router.navigate(['**'], { skipLocationChange: true });
+        return of({} as RidePageData);
+      }),
+    );
   }
 
   private handleRideData(

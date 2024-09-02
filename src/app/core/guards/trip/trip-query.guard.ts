@@ -8,7 +8,6 @@ export const tripQueryGuard: CanActivateFn = (route) => {
   if (queryParams.has('from') && queryParams.has('to')) {
     return true;
   }
-  // TODO: navigate to 404
-  router.navigate([''], { skipLocationChange: true });
+  router.navigate(['**'], { skipLocationChange: true });
   return false;
 };
