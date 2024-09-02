@@ -3,4 +3,4 @@ export interface UserAuthData {
   password: string;
 }
 
-export type Role = 'guest' | 'user' | 'admin';
+export type Role = 'guest' | 'user' | 'manager';

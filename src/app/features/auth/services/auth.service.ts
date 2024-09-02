@@ -6,24 +6,20 @@ import {
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
-import { Role, UserAuthData } from '../models/user-auth-data.model';
+import { ProfileFacadeService } from '@/features/profile/services/profile-facade.service';
+import { UserAuthData } from '../models/user-auth-data.model';
+import UserStorage from '../utils/userStorage';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private tokenStorageKey = 'token';
-
-  private roleStorageKey = 'role';
-
   private httpClient = inject(HttpClient);
 
-  get userToken(): string | null {
-    return localStorage.getItem(this.tokenStorageKey) ?? null;
-  }
+  private profileFacade = inject(ProfileFacadeService);
 
-  get userRole(): Role {
-    return (localStorage.getItem(this.roleStorageKey) as Role) ?? 'guest';
+  get userToken(): string | null {
+    return UserStorage.getAuthToken();
   }
 
   public signup({
@@ -58,8 +54,8 @@ export class AuthService {
       })
       .pipe(
         map(({ token }) => {
-          const role = email === 'admin@admin.com' ? 'admin' : 'user';
-          this.setCredentials(token, role);
+          UserStorage.setAuthToken(token);
+          this.profileFacade.loadProfile();
           return null;
         }),
         catchError((err: HttpErrorResponse) => {
@@ -73,15 +69,6 @@ export class AuthService {
   }
 
   public logout() {
-    localStorage.clear();
-  }
-
-  private setCredentials(token: string, role: Role): void {
-    localStorage.setItem(this.tokenStorageKey, token);
-    localStorage.setItem(this.roleStorageKey, role);
-  }
-  
-  public removeUserToken(): void {
-    localStorage.removeItem(this.localStorageKey);
+    UserStorage.clear();
   }
 }
