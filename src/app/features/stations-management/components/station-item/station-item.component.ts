@@ -1,7 +1,7 @@
 import { TStationListed } from '@/core/models/stations.model';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { take, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { PanelModule } from 'primeng/panel';
 import { ConfirmationService } from 'primeng/api';
 import { RoutesFacadeService } from '@/features/routes-management/services/routes-facade.service';
@@ -64,26 +64,15 @@ export class StationItemComponent implements OnInit {
   }
 
   private deletionConfirm() {
-    this.routesFacade.routes$.pipe(take(1)).subscribe((routes) => {
-      const canDeleteStation =
-        routes.length !== 0 &&
-        !routes.some(({ path }) => path.includes(this.station.id));
-      if (!canDeleteStation) {
-        this.notificationService.messageError(
-          'Cannot delete station with active rides',
-        );
-        return;
-      }
-      const request$ = this.stationsFacade.delete(this.station.id);
-      request$.subscribe({
-        next: ({ status, error }) => {
-          if (status === 'success') {
-            this.notificationService.messageConfirm('Station deleted');
-          } else {
-            this.notificationService.messageError(error?.message);
-          }
-        },
-      });
+    const request$ = this.stationsFacade.delete(this.station.id);
+    request$.subscribe({
+      next: ({ status, error }) => {
+        if (status === 'success') {
+          this.notificationService.messageConfirm('Station deleted');
+        } else {
+          this.notificationService.messageError(error?.message);
+        }
+      },
     });
   }
 }
