@@ -8,7 +8,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
 import { ButtonModule } from 'primeng/button';
-import { TRouteRide } from '@/core/models/rides.model';
+import { Entry, TRouteRide } from '@/core/models/rides.model';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService } from 'primeng/api';
 import { TStationListed } from '@/core/models/stations.model';
@@ -49,11 +49,11 @@ export class RidesPageComponent implements OnInit {
 
   private stationsFacade = inject(StationsFacadeService);
 
-  public stations: string[] = [];
+  public stations: Entry<number>[] = [];
 
   private carriagesFacade = inject(CarriagesFacadeService);
 
-  public carriages: string[] = [];
+  public carriages: Entry<string>[] = [];
 
   private routeId: number | undefined;
 
@@ -128,7 +128,10 @@ export class RidesPageComponent implements OnInit {
     if (this.ridesState?.route) {
       this.stations = this.ridesState.route.path.map((stationId) => {
         const foundStation = stations.find(({ id }) => id === stationId);
-        return foundStation?.city ?? 'Unknown';
+        return {
+          id: stationId,
+          name: foundStation?.city ?? 'Unknown',
+        };
       });
     }
   }
@@ -140,7 +143,10 @@ export class RidesPageComponent implements OnInit {
         const foundCarriage = carriages.find(
           ({ code }) => code === carriageCode,
         );
-        return foundCarriage?.name ?? 'Unknown';
+        return {
+          id: carriageCode,
+          name: foundCarriage?.name ?? 'Unknown',
+        };
       });
     }
   }

@@ -23,7 +23,9 @@ import { CalendarModule } from 'primeng/calendar';
 export class StationSegmentComponent implements OnChanges {
   @Input() segmentData!: TStationSegmentData;
 
-  @Output() dateChange = new EventEmitter<Omit<TStationSegmentData, 'name'>>();
+  @Output() dateChange = new EventEmitter<
+    Omit<TStationSegmentData, 'name' | 'id'>
+  >();
 
   private fb = inject(FormBuilder);
 
@@ -91,8 +93,8 @@ export class StationSegmentComponent implements OnChanges {
     return false;
   }
 
-  private constructDateData(): Omit<TStationSegmentData, 'name'> {
-    const dateData: Omit<TStationSegmentData, 'name'> = {
+  private constructDateData(): Omit<TStationSegmentData, 'name' | 'id'> {
+    const dateData: Omit<TStationSegmentData, 'name' | 'id'> = {
       arrival: this.updatedSegment('arrival'),
       departure: this.updatedSegment('departure'),
     };

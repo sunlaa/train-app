@@ -3,7 +3,7 @@
     @for (station of stations; let stationIndex = $index; track station) {
       <div class="grid-item station" formArrayName="dates">
         <div class="heading">
-          <p>{{ station }}</p>
+          <p>{{ station.name }}</p>
         </div>
         <div class="dates">
           @if (!$first) {
@@ -42,7 +42,7 @@
               track carriage
             ) {
               <div class="price-data">
-                <span class="carriage">{{ carriage }}</span>
+                <span class="carriage">{{ carriage.name }}</span>
                 <p-inputNumber
                   [formControlName]="
                     stationIndex * carriages.length + carriageIndex

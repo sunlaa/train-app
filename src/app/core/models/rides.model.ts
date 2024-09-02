@@ -27,18 +27,25 @@ export type TTimeData = {
 };
 
 export type TStationSegmentData = {
+  id: number;
   name: string;
   departure: TTimeData | undefined;
   arrival: TTimeData | undefined;
 };
 
 export type TPriceSegmentData = {
-  carriages: string[];
+  carriages: Entry<string>[];
   price: TRidePrice;
   index: number;
 };
 
 export type TCarriagePrice = {
+  id: string;
   carriage: string;
   price: number;
+};
+
+export type Entry<T extends string | number> = {
+  id: T;
+  name: string;
 };
