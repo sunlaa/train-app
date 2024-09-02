@@ -33,7 +33,7 @@ const handleOrderData = (
   const endStationName = stationMap[stationEnd].city;
 
   const { departureDate, arrivalDate } = getRideDates(ridePath);
-  const tripDuration = arrivalDate.getTime() - departureDate.getTime();
+  const tripDuration = arrivalDate - departureDate;
 
   const { carNumber, seat } = getCarriageAndSeat(
     seatId,
