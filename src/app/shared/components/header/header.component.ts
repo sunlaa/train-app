@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
+import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
 import { ProfileFacadeService } from '@/features/profile/services/profile-facade.service';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MenubarModule, CommonModule, ButtonModule],
+  imports: [MenubarModule, CommonModule, ButtonModule, ChipModule],
   providers: [DestroyService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -46,11 +47,11 @@ export class HeaderComponent implements OnInit {
 
   private initItems() {
     this.items = [
-      {
-        label: 'Home',
-        icon: 'pi pi-home',
-        route: '/',
-      },
+      // {
+      //   label: 'Home',
+      //   icon: 'pi pi-home',
+      //   route: '/',
+      // },
     ];
     if (this.role === 'guest') {
       return;

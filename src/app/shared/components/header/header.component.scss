@@ -10,7 +10,28 @@
       align-items: center;
       gap: 0.25em;
     }
+
+    .chip {
+      padding: 0.3em 1em;
+    }
   }
+
+  h3 {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.logo {
+  padding: 0 0.5em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .email {
