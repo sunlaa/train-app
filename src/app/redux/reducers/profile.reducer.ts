@@ -1,6 +1,7 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { ProfileModel } from '@/core/models/profile.model';
 import { ApiError } from '@/core/models/api.model';
+import UserStorage from '@/features/auth/utils/userStorage';
 import { profileActions } from '../actions';
 
 type ProfileState = {
@@ -10,11 +11,7 @@ type ProfileState = {
 };
 
 const initialState: ProfileState = {
-  profile: {
-    name: '',
-    email: '',
-    role: 'user',
-  },
+  profile: UserStorage.getUser() ?? { role: 'guest', email: '', name: '' },
   error: null,
   status: 'loading',
 };
@@ -111,6 +108,7 @@ const profileReducer = createReducer(
     (state): ProfileState => ({
       ...state,
       status: 'success',
+      profile: { role: 'guest', email: '', name: '' },
     }),
   ),
 );

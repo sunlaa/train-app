@@ -12,6 +12,8 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import toLocalISODateString from '../../utils/toLocalISODateString';
+import dateFromISOString from '../../utils/dateFromISOString';
 
 @Component({
   selector: 'app-station-segment',
@@ -23,7 +25,9 @@ import { CalendarModule } from 'primeng/calendar';
 export class StationSegmentComponent implements OnChanges {
   @Input() segmentData!: TStationSegmentData;
 
-  @Output() dateChange = new EventEmitter<Omit<TStationSegmentData, 'name'>>();
+  @Output() dateChange = new EventEmitter<
+    Omit<TStationSegmentData, 'name' | 'id'>
+  >();
 
   private fb = inject(FormBuilder);
 
@@ -52,7 +56,8 @@ export class StationSegmentComponent implements OnChanges {
   private setInitialDate(type: 'arrival' | 'departure') {
     const segment = this.segmentData[type];
     if (segment && segment.time) {
-      this.dateForm.controls[type].setValue(new Date(segment.time));
+      const date = dateFromISOString(segment.time);
+      this.dateForm.controls[type].setValue(date);
     }
   }
 
@@ -91,8 +96,8 @@ export class StationSegmentComponent implements OnChanges {
     return false;
   }
 
-  private constructDateData(): Omit<TStationSegmentData, 'name'> {
-    const dateData: Omit<TStationSegmentData, 'name'> = {
+  private constructDateData(): Omit<TStationSegmentData, 'name' | 'id'> {
+    const dateData: Omit<TStationSegmentData, 'name' | 'id'> = {
       arrival: this.updatedSegment('arrival'),
       departure: this.updatedSegment('departure'),
     };
@@ -104,14 +109,10 @@ export class StationSegmentComponent implements OnChanges {
     const control = this.dateForm.controls[type];
     const dateValue = control.value;
 
-    if (
-      segment &&
-      dateValue !== null &&
-      segment.time !== dateValue.toISOString()
-    ) {
+    if (segment && dateValue !== null) {
       return {
         ...segment,
-        time: dateValue.toISOString(),
+        time: toLocalISODateString(dateValue),
       };
     }
     return undefined;

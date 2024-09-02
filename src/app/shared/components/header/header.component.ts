@@ -1,30 +1,47 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
+import { ProfileFacadeService } from '@/features/profile/services/profile-facade.service';
+import { DestroyService } from '@/core/services/destroy/destroy.service';
+import { Role } from '@/features/auth/models/user-auth-data.model';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [MenubarModule, CommonModule, ButtonModule],
+  providers: [DestroyService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
+  private destroy$ = inject(DestroyService);
+
+  private profileFacade = inject(ProfileFacadeService);
+
   public items: MenuItem[] | undefined;
 
-  // TODO: Add actual data from the store
-  public email = 'email@gmail.com';
+  public role: Role = 'guest';
 
-  public role: 'guest' | 'user' | 'admin' = 'guest';
+  public name = '';
+
+  public profile$ = this.profileFacade.profile$;
 
   ngOnInit() {
     this.initItems();
-  }
-
-  public signOut() {
-    // console.log('logout');
+    this.profile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(({ name, email, role }) => {
+        this.role = role;
+        if (name) {
+          this.name = name;
+        } else {
+          this.name = email;
+        }
+        this.initItems();
+      });
   }
 
   private initItems() {
@@ -51,7 +68,7 @@ export class HeaderComponent implements OnInit {
         route: '/orders',
       },
     ];
-    if (this.role === 'admin') {
+    if (this.role === 'manager') {
       this.items = [
         ...this.items,
         {

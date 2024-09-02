@@ -55,15 +55,8 @@
         <span class="pi pi-user-plus"></span>
         Sign Up
       </a>
-    } @else {
-      @if (email) {
-        <p class="email">{{ email }}</p>
-      }
-      <p-button
-        label="Sign Out"
-        icon="pi pi-sign-out"
-        (onClick)="signOut()"
-      ></p-button>
+    } @else if (name) {
+      <p class="email">{{ name }}</p>
     }
   </ng-template>
 </p-menubar>

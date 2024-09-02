@@ -62,9 +62,9 @@ export class PriceSegmentComponent implements OnChanges {
     this.prices.clear();
     if (this.segmentData) {
       this.carriagePrices = this.segmentData.carriages.map((carriage) => {
-        const price = this.segmentData!.price[carriage];
+        const price = this.segmentData!.price[carriage.id];
         this.prices.push(this.fb.control(price, Validators.required));
-        return { carriage, price };
+        return { id: carriage.id, carriage: carriage.name, price };
       });
     }
   }
@@ -87,8 +87,8 @@ export class PriceSegmentComponent implements OnChanges {
     if (valuesDiffers && this.segmentData) {
       const prices: TRidePrice = {};
       this.prices.controls.forEach((ctrl, i) => {
-        const { carriage } = this.carriagePrices[i];
-        prices[carriage] = ctrl.value;
+        const { id } = this.carriagePrices[i];
+        prices[id] = ctrl.value;
       });
       this.priceChange.emit({ price: prices, index: this.segmentData.index });
     }

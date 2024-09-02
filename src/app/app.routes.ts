@@ -11,6 +11,7 @@ import { signupGuard } from './features/auth/guards/signup.guard';
 import { profileGuard } from './features/profile/guards/profile.guard';
 import { OrdersPageComponent } from './features/orders/components/orders-page/orders-page.component';
 import { notGuestGuard } from './features/auth/guards/not-guest.guard';
+import { adminGuard } from './features/auth/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -32,7 +33,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    canActivate: [], // TODO: Add guard
+    canActivate: [adminGuard],
     component: AdminPageComponent,
     children: [
       {

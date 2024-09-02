@@ -13,6 +13,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageService } from 'primeng/api';
 import {
+  Entry,
   TRidePrice,
   TRideSegment,
   TRouteRide,
@@ -21,6 +22,7 @@ import { map, startWith, takeUntil } from 'rxjs';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { CommonModule } from '@angular/common';
 import { datesAreSequential } from '../../utils';
+import toLocalISODateString from '../../utils/toLocalISODateString';
 
 @Component({
   selector: 'app-ride-form',
@@ -37,9 +39,9 @@ import { datesAreSequential } from '../../utils';
   styleUrl: './ride-form.component.scss',
 })
 export class RideFormComponent implements OnChanges {
-  @Input({ required: true }) stations!: string[];
+  @Input({ required: true }) stations!: Entry<number>[];
 
-  @Input({ required: true }) carriages!: string[];
+  @Input({ required: true }) carriages!: Entry<string>[];
 
   @Output() createRide = new EventEmitter<Omit<TRouteRide, 'rideId'>>();
 
@@ -138,8 +140,8 @@ export class RideFormComponent implements OnChanges {
   private packDates(dates: Date[]) {
     const packedDates: [string, string][] = [];
     for (let i = 0; i < dates.length; i += 2) {
-      const departure = dates[i].toISOString();
-      const arrival = dates[i + 1].toISOString();
+      const departure = toLocalISODateString(dates[i]);
+      const arrival = toLocalISODateString(dates[i + 1]);
       const dateSegment: [string, string] = [departure, arrival];
       packedDates.push(dateSegment);
     }
@@ -151,7 +153,7 @@ export class RideFormComponent implements OnChanges {
     for (let i = 0; i < prices.length; i += this.carriages.length) {
       const priceSegment: TRidePrice = {};
       this.carriages.forEach((carriage, j) => {
-        priceSegment[carriage] = prices[i + j];
+        priceSegment[carriage.id] = prices[i + j];
       });
       packedPrices.push(priceSegment);
     }

@@ -23,13 +23,14 @@
         <span>Arrival: </span>
         @if (editMode) {
           <p-calendar
-            inputId="calendar-12h"
             formControlName="arrival"
             [showTime]="true"
-            hourFormat="12"
+            hourFormat="24"
           />
         } @else {
-          <span>{{ segmentData.arrival.time | date: "M/d/yy h:mm a" }}</span>
+          <span>{{
+            segmentData.arrival.time | date: "M/d/yy HH:mm" : "UTC"
+          }}</span>
         }
       </div>
     }
@@ -38,13 +39,14 @@
         <span>Departure: </span>
         @if (editMode) {
           <p-calendar
-            inputId="calendar-12h"
             formControlName="departure"
             [showTime]="true"
-            hourFormat="12"
+            hourFormat="24"
           />
         } @else {
-          <span>{{ segmentData.departure.time | date: "M/d/yy h:mm a" }}</span>
+          <span>{{
+            segmentData.departure.time | date: "M/d/yy HH:mm" : "UTC"
+          }}</span>
         }
       </div>
     }

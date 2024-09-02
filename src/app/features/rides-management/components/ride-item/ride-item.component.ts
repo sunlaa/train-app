@@ -1,4 +1,5 @@
 import {
+  Entry,
   TPriceSegmentData,
   TRideSegment,
   TRouteRide,
@@ -28,9 +29,9 @@ import { PriceSegmentComponent } from '../price-segment/price-segment.component'
 export class RideItemComponent implements OnChanges {
   @Input({ required: true }) ride!: TRouteRide;
 
-  @Input({ required: true }) stations!: string[];
+  @Input({ required: true }) stations!: Entry<number>[];
 
-  @Input({ required: true }) carriages!: string[];
+  @Input({ required: true }) carriages!: Entry<string>[];
 
   @Output() rideChange = new EventEmitter<TRouteRide>();
 
@@ -52,7 +53,8 @@ export class RideItemComponent implements OnChanges {
 
   private initializeStationSegments() {
     this.stationSegments = this.stations.map((station) => ({
-      name: station,
+      id: station.id,
+      name: station.name,
       departure: undefined,
       arrival: undefined,
     }));
@@ -114,7 +116,7 @@ export class RideItemComponent implements OnChanges {
   public dateChangeEvent({
     departure,
     arrival,
-  }: Omit<TStationSegmentData, 'name'>) {
+  }: Omit<TStationSegmentData, 'name' | 'id'>) {
     const newSegments = [...this.ride.segments];
 
     const updateSegmentTime = (

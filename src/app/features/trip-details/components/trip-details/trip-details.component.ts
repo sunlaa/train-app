@@ -32,6 +32,7 @@ import {
   tap,
 } from 'rxjs';
 import { NotificationService } from '@/shared/services/notification.service';
+import { ProfileFacadeService } from '@/features/profile/services/profile-facade.service';
 import { TripDetailsService } from '../../services/trip-details/trip.service';
 
 @Component({
@@ -72,6 +73,8 @@ export class TripDetailsComponent implements OnInit {
   private ordersFacade = inject(OrdersFacadeService);
 
   private authService = inject(AuthService);
+
+  private profileFacade = inject(ProfileFacadeService);
 
   private rideId: number | null = null;
 
@@ -181,38 +184,40 @@ export class TripDetailsComponent implements OnInit {
       throw Error('No order information.');
     }
 
-    const role = this.authService.userRole;
+    this.profileFacade.profile$.pipe(take(1)).subscribe(({ role }) => {
+      if (role === 'guest') {
+        this.authModalVisible = true;
+        return;
+      }
 
-    if (role === 'guest') {
-      this.authModalVisible = true;
-      return;
-    }
-
-    this.ordersFacade.makeOrder({
-      rideId: this.rideId,
-      seat: this.seatIndex,
-      stationStart: this.fromId,
-      stationEnd: this.toId,
-    });
-
-    this.ordersFacade.state$
-      .pipe(
-        filter((state) => state.status !== 'loading'),
-        take(1),
-      )
-      .subscribe((state) => {
-        if (state.status === 'success') {
-          this.notification.messageSuccess('The seat was successfully booked.');
-
-          this.occupiedSeat = { ...this.selectedSeat! };
-        }
-        if (state.status === 'error') {
-          if (state.error?.message === 'Ride is already booked') {
-            this.bookedModalVisible = true;
-            return;
-          }
-          this.notification.messageError(state.error?.message);
-        }
+      this.ordersFacade.makeOrder({
+        rideId: this.rideId!,
+        seat: this.seatIndex!,
+        stationStart: this.fromId!,
+        stationEnd: this.toId!,
       });
+
+      this.ordersFacade.state$
+        .pipe(
+          filter((state) => state.status !== 'loading'),
+          take(1),
+        )
+        .subscribe((state) => {
+          if (state.status === 'success') {
+            this.notification.messageSuccess(
+              'The seat was successfully booked.',
+            );
+
+            this.occupiedSeat = { ...this.selectedSeat! };
+          }
+          if (state.status === 'error') {
+            if (state.error?.message === 'Ride is already booked') {
+              this.bookedModalVisible = true;
+              return;
+            }
+            this.notification.messageError(state.error?.message);
+          }
+        });
+    });
   }
 }

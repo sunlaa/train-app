@@ -131,8 +131,7 @@ export class ProfilePageComponent implements OnInit {
             'Error occurs during logout',
           );
         }
-
-        this.authService.removeUserToken();
+        this.authService.logout();
         return this.router.navigateByUrl('/');
       });
   }
