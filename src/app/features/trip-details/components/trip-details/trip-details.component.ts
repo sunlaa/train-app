@@ -97,9 +97,9 @@ export class TripDetailsComponent implements OnInit {
 
   public modalVisible: boolean = false;
 
-  public authModalVisible: boolean = true;
+  public authModalVisible: boolean = false;
 
-  public bookedModalVisible: boolean = true;
+  public bookedModalVisible: boolean = false;
 
   ngOnInit() {
     combineLatest([this.route.paramMap, this.route.queryParamMap])
