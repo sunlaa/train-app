@@ -5,6 +5,7 @@ import getRideDates from './rideDates';
 import getRouteDetails from './routeDetails';
 
 export default function getRideHeaderData(
+  routeId: number,
   rideId: number,
   ridePath: Segment[],
   ridePathIds: number[],
@@ -14,5 +15,5 @@ export default function getRideHeaderData(
 
   const stopInfo = getRouteDetails(ridePath, ridePathIds, stationMap);
 
-  return { rideId, departureDate, arrivalDate, stopInfo };
+  return { routeId, rideId, departureDate, arrivalDate, stopInfo };
 }

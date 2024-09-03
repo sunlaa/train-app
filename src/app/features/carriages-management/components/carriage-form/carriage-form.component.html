@@ -43,12 +43,14 @@
   </div>
 
   <h3>Preview</h3>
-  <app-carriage
-    [rows]="rows.value ?? 0"
-    [leftSeats]="leftSeats.value ?? 0"
-    [rightSeats]="rightSeats.value ?? 0"
-    class="preview"
-  ></app-carriage>
+  <div class="preview-wrapper">
+    <app-carriage
+      [rows]="rows.value ?? 0"
+      [leftSeats]="leftSeats.value ?? 0"
+      [rightSeats]="rightSeats.value ?? 0"
+      class="preview"
+    ></app-carriage>
+  </div>
 
   <div class="buttons">
     <p-button

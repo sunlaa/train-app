@@ -17,6 +17,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
 import { PageEvent } from '@/core/models/shared.model';
+import { ProfileFacadeService } from '@/features/profile/services/profile-facade.service';
 import { OrdersFacadeService } from '../../services/facade/orders-facade.service';
 import handleOrderData from '../../utils/handleOrderData';
 import { UsersService } from '../../services/users/users.service';
@@ -49,6 +50,8 @@ export class OrdersPageComponent implements OnInit {
 
   private carriagesFacade = inject(CarriagesFacadeService);
 
+  private profileFacade = inject(ProfileFacadeService);
+
   public ordersPerPageOptions = ORDERS_PER_PAGE_OPTIONS;
 
   public offset: number = 0;
@@ -61,8 +64,7 @@ export class OrdersPageComponent implements OnInit {
 
   public pageOrders: ReturnType<typeof handleOrderData>[] = [];
 
-  // TODO: Handle admin state
-  public isAdmin = true;
+  public isAdmin = false;
 
   public isLoading = true;
 
@@ -76,6 +78,7 @@ export class OrdersPageComponent implements OnInit {
       this.ordersFacade.state$,
       this.stationsFacade.state$,
       this.carriagesFacade.state$,
+      this.profileFacade.profile$,
     ])
       .pipe(
         takeUntil(this.destroy$),
@@ -85,7 +88,8 @@ export class OrdersPageComponent implements OnInit {
             s.status !== 'loading' &&
             c.status !== 'loading',
         ),
-        map(([o]) => {
+        map(([o, , , p]) => {
+          this.isAdmin = p.role === 'manager';
           return o;
         }),
         switchMap((o) => {

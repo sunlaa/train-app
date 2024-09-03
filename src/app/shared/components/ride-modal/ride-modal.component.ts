@@ -1,16 +1,16 @@
 import { StopInfo } from '@/core/models/search.model';
 import { Component, Input } from '@angular/core';
 import { TimelineModule } from 'primeng/timeline';
-import { DurationPipe } from '../../pipes/duration.pipe';
+import { DurationPipe } from '../../../features/search-tickets/pipes/duration.pipe';
 
 @Component({
-  selector: 'app-modal-content',
+  selector: 'app-ride-modal',
   standalone: true,
   imports: [TimelineModule, DurationPipe],
-  templateUrl: './modal-content.component.html',
-  styleUrl: './modal-content.component.scss',
+  templateUrl: './ride-modal.component.html',
+  styleUrl: './ride-modal.component.scss',
 })
-export class ModalContentComponent {
+export class RideModalComponent {
   @Input({ required: true }) details!: StopInfo[];
 
   public isString = (val: unknown) => typeof val === 'string';
