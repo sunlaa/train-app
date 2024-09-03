@@ -31,7 +31,7 @@ export class SearchService {
   public search(params: SearchRequest): Observable<FilteredTickets> {
     return this.http.get<SearchResponse>(this.baseURL, { params }).pipe(
       map((data) => {
-        return this.filterTicketsByDate(this.getTicketsData(data), params.time);
+        return this.filterTicketsByDate(this.getTicketsData(data));
       }),
     );
   }
@@ -96,27 +96,24 @@ export class SearchService {
     return ticketsData;
   }
 
-  private filterTicketsByDate(
-    tickets: Ticket[],
-    minDate: number,
-  ): FilteredTickets {
+  private filterTicketsByDate(tickets: Ticket[]): FilteredTickets {
     const ticketsMap = new Map<number, Ticket[]>();
 
     if (tickets.length === 0) return [];
 
-    const maxDate = Math.max(...tickets.map((ticket) => ticket.departureDate));
+    const allDates = tickets.map((ticket) => ticket.departureDate);
 
-    const dates: number[] = [];
+    const uniqueDates: number[] = Array.from(
+      new Set(
+        allDates.map((ms) => {
+          const date = new Date(ms);
+          date.setUTCHours(0, 0, 0, 0);
+          return date.getTime();
+        }),
+      ),
+    ).sort((a, b) => a - b);
 
-    const currentDate: Date = new Date(minDate);
-    const endDate: Date = new Date(maxDate);
-
-    while (currentDate <= endDate) {
-      dates.push(currentDate.getTime());
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-
-    dates.forEach((date) => {
+    uniqueDates.forEach((date) => {
       ticketsMap.set(
         date,
         tickets.filter((ticket) => isSameDay(date, ticket.departureDate)),
