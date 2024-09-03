@@ -21,7 +21,6 @@ import { DialogModule } from 'primeng/dialog';
 import { ChipModule } from 'primeng/chip';
 import { TabViewModule } from 'primeng/tabview';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { AuthService } from '@/features/auth/services/auth.service';
 import {
   combineLatest,
   filter,
@@ -72,8 +71,6 @@ export class TripDetailsComponent implements OnInit {
 
   private ordersFacade = inject(OrdersFacadeService);
 
-  private authService = inject(AuthService);
-
   private profileFacade = inject(ProfileFacadeService);
 
   private rideId: number | null = null;
@@ -100,7 +97,7 @@ export class TripDetailsComponent implements OnInit {
 
   public modalVisible: boolean = false;
 
-  public authModalVisible: boolean = false;
+  public authModalVisible: boolean = true;
 
   public bookedModalVisible: boolean = false;
 
