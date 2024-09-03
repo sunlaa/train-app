@@ -9,12 +9,30 @@
   @default {
     <p-toast />
     <div class="container">
-      <h1>Profile</h1>
       <div class="profile__info">
-        @if (isManager) {
-          <span>Manager</span>
-        }
-        <p-button (onClick)="showModalDialog()">Change Password</p-button>
+        <div>
+          @let name = profile.name;
+          @let email = profile.email;
+
+          <p-avatar
+            [label]="name[0] || email[0]"
+            styleClass="mr-2"
+            size="xlarge"
+            shape="circle"
+          />
+        </div>
+
+        <div class="user-info">
+          @if (isManager) {
+            <b>Manager</b>
+          }
+          <p-button
+            [link]="true"
+            severity="secondary"
+            (onClick)="showModalDialog()"
+            >Change Password</p-button
+          >
+        </div>
       </div>
 
       @for (editableField of ["name", "email"]; track editableField) {
@@ -112,9 +130,14 @@
     </div>
     <div class="field__action">
       @if (!context.isEditMode) {
-        <p-button icon="pi pi-pencil" (onClick)="context.onEdit()"></p-button>
+        <p-button
+          severity="secondary"
+          icon="pi pi-pencil"
+          (onClick)="context.onEdit()"
+        ></p-button>
       } @else {
         <p-button
+          severity="secondary"
           [disabled]="!context.control.valid"
           icon="pi pi-save"
           (onClick)="onSave()"

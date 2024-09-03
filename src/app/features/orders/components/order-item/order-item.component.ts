@@ -3,6 +3,7 @@ import { CardModule } from 'primeng/card';
 import { DurationPipe } from '@/features/search-tickets/pipes/duration.pipe';
 import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
+import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService } from 'primeng/api';
 import { NotificationService } from '@/shared/services/notification.service';
@@ -19,7 +20,14 @@ const severeties: Record<Order['status'], TTagSeverity> = {
 @Component({
   selector: 'app-order-item',
   standalone: true,
-  imports: [CardModule, CommonModule, TagModule, DurationPipe, ButtonModule],
+  imports: [
+    CardModule,
+    CommonModule,
+    TagModule,
+    DurationPipe,
+    ButtonModule,
+    DividerModule,
+  ],
   templateUrl: './order-item.component.html',
   styleUrl: './order-item.component.scss',
 })

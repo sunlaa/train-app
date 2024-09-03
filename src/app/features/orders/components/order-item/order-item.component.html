@@ -2,54 +2,52 @@
   <p-tag [severity]="tagSeverity" [value]="order.status | titlecase"></p-tag>
   @if (!!isAdmin && order.owner) {
     <div class="info-box">
-      <p>Owner:</p>
+      <b>Owner:</b>
       <span class="limit-width">{{ order.owner }}</span>
     </div>
   }
+  <div class="path">
+    <div class="point">
+      <h4>Arrival</h4>
+      <p class="date">
+        {{ order.startTripTime | date: "MMMM dd, hh:mm" : "UTC" }}
+      </p>
+      <p class="city">{{ order.startCity }}</p>
+    </div>
+
+    <p-divider align="center" type="solid" class="path-divider">
+      <b class="duration">{{ order.tripDuration | duration: "hm" }}</b>
+    </p-divider>
+
+    <div class="point">
+      <h4>Departure</h4>
+      <p class="date">
+        {{ order.endTripTime | date: "MMMM dd, hh:mm" : "UTC" }}
+      </p>
+      <p class="city">{{ order.endCity }}</p>
+    </div>
+  </div>
+
   <div class="info-box highlighted">
-    <p>Departure</p>
+    <h3>Total:</h3>
     <div class="info-box">
-      <p>Station:</p>
-      <span class="limit-width">{{ order.startCity }}</span>
+      <i>Carriage type:</i>
+      <span class="limit-width total-data">{{ order.carriageType }}</span>
     </div>
     <div class="info-box">
-      <p>Time:</p>
-      <span>{{ order.startTripTime | date: "MMMM dd, HH:mm" : "UTC" }}</span>
-    </div>
-  </div>
-  <div class="info-box highlighted">
-    <p>Arrival</p>
-    <div class="info-box">
-      <p>Station:</p>
-      <span class="limit-width">{{ order.endCity }}</span>
+      <i>Car number:</i>
+      <span class="total-data">{{ order.carNumber }}</span>
     </div>
     <div class="info-box">
-      <p>Time:</p>
-      <span>{{ order.endTripTime | date: "MMMM dd, HH:mm" : "UTC" }}</span>
-    </div>
-  </div>
-  <div class="info-box">
-    <p>Duration:</p>
-    <span>{{ order.tripDuration | duration: "hm" }}</span>
-  </div>
-  <div class="info-box highlighted">
-    <p>Carriage</p>
-    <div class="info-box">
-      <p>Type:</p>
-      <span class="limit-width">{{ order.carriageType }}</span>
+      <i>Seat number:</i>
+      <span class="total-data">{{ order.seatNumber }}</span>
     </div>
     <div class="info-box">
-      <p>Number:</p>
-      <span>{{ order.carNumber }}</span>
+      <p class="price-title">Price:</p>
+      <span class="limit-width total-price">{{
+        order.price | currency: "USD"
+      }}</span>
     </div>
-    <div class="info-box">
-      <p>Seat:</p>
-      <span>{{ order.seatNumber }}</span>
-    </div>
-  </div>
-  <div class="info-box">
-    <p>Price:</p>
-    <span class="limit-width">{{ order.price | currency: "USD" }}</span>
   </div>
   @if (order.status === "active") {
     <p-button
@@ -60,3 +58,4 @@
     ></p-button>
   }
 </p-card>
+
