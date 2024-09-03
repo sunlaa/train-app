@@ -25,7 +25,8 @@
   }
 }
 
-p {
+p,
+h4 {
   margin: 0;
 }
 
@@ -46,6 +47,10 @@ p {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+
+    .carriage {
+      font-weight: 500;
+    }
 
     .price {
       text-align: end;

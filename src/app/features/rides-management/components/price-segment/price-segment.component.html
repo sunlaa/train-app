@@ -1,5 +1,5 @@
 <div class="heading">
-  <p>Price</p>
+  <h4>Price</h4>
   @if (editMode) {
     <p-button
       (onClick)="saveClick()"
@@ -20,7 +20,7 @@
   <div formArrayName="prices" class="prices">
     @for (priceData of carriagePrices; track priceData.carriage) {
       <div class="price-data">
-        <span class="carriage">{{ priceData.carriage }}</span>
+        <i class="carriage">{{ priceData.carriage }}:</i>
         @if (editMode) {
           <p-inputNumber
             [formControlName]="$index"

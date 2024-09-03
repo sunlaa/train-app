@@ -1,4 +1,3 @@
-<p>{{ segmentData.name }}</p>
 <form [formGroup]="dateForm">
   @if (editMode) {
     <p-button
@@ -20,7 +19,7 @@
   <div class="dates">
     @if (segmentData.arrival) {
       <div class="date-wrapper">
-        <span>Arrival: </span>
+        <span class="time-text">Arrival: </span>
         @if (editMode) {
           <p-calendar
             formControlName="arrival"
@@ -36,7 +35,7 @@
     }
     @if (segmentData.departure) {
       <div class="date-wrapper">
-        <span>Departure: </span>
+        <span class="time-text">Departure: </span>
         @if (editMode) {
           <p-calendar
             formControlName="departure"
