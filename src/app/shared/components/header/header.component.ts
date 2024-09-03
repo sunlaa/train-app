@@ -47,11 +47,11 @@ export class HeaderComponent implements OnInit {
 
   private initItems() {
     this.items = [
-      // {
-      //   label: 'Home',
-      //   icon: 'pi pi-home',
-      //   route: '/',
-      // },
+      {
+        label: 'Home',
+        icon: 'pi pi-home',
+        route: '/',
+      },
     ];
     if (this.role === 'guest') {
       return;

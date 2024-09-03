@@ -38,45 +38,39 @@
             />
           </g>
         </svg> -->
-        <img width="55" src="daisy.png" alt="Daisy home button" />
-        <h3>
+        <img width="50" src="daisy.png" alt="Daisy home button" />
+        <h4>
           Chamomile <br />
           Express
-        </h3>
+        </h4>
       </div>
     </a>
   </ng-template>
   <ng-template pTemplate="item" let-item>
     <a [routerLink]="item['route']" class="p-menuitem-link">
-      <span [class]="item.icon"></span>
+      <i [class]="item.icon"></i>
       <span>{{ item.label }}</span>
     </a>
   </ng-template>
   <ng-template pTemplate="end">
     @if (role === "guest") {
-      <!-- <a routerLink="/signin" class="p-button">
-        <span class="pi pi-sign-in"></span>
-        Sign In
-      </a> -->
       <p-button
-        [link]="true"
+        size="small"
+        styleClass="auth-button"
+        severity="secondary"
         [routerLink]="['/signin']"
         label="Sign In"
         icon="pi pi-sign-in"
       />
-
-      <!-- <a routerLink="/signup" class="p-button">
-        <span class="pi pi-user-plus"></span>
-        Sign Up
-      </a> -->
       <p-button
+        size="small"
+        severity="secondary"
+        styleClass="auth-button"
         [routerLink]="['/signup']"
-        [link]="true"
         label="Sign Up"
         icon="pi pi-user-plus"
       />
     } @else if (name) {
-      <!-- <p class="email">{{ name }}</p> -->
       <p-chip styleClass="chip" [label]="name" />
     }
   </ng-template>
