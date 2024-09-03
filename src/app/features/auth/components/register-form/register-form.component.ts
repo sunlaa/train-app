@@ -140,6 +140,8 @@ export class RegisterFormComponent {
     this.password.valueChanges.subscribe(() => {
       if (!this.isPasswordsEqual()) {
         this.confirmPassword.setErrors(this.matchPasswordsError);
+      } else {
+        this.confirmPassword.setErrors(null);
       }
     });
 
