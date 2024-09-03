@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   UntypedFormControl,
@@ -28,7 +30,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.scss',
 })
-export class RegisterFormComponent {
+export class RegisterFormComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   private authService = inject(AuthService);
@@ -44,6 +46,21 @@ export class RegisterFormComponent {
     password: [''],
     confirmPassword: [''],
   });
+
+  private emailValidators = [
+    Validators.required,
+    Validators.pattern(/^[\w\d_]+@[\w\d_]+.\w{2,7}$/),
+  ];
+
+  private passwordValidators = [
+    Validators.required,
+    Validators.minLength(8),
+    this.noWhitespaceValidator,
+  ];
+
+  private confirmPasswordValidators = [
+    this.confirmPasswordValidator.bind(this),
+  ];
 
   isLoading: boolean = false;
 
@@ -72,7 +89,34 @@ export class RegisterFormComponent {
   }
 
   get isFormInvalid(): boolean {
-    return !this.isAllControlsDirty || this.signupForm.invalid;
+    return this.signupForm.invalid || this.silentIsFormInvalid();
+  }
+
+  ngOnInit(): void {
+    this.confirmPassword.addValidators(this.confirmPasswordValidators);
+    this.confirmPassword.updateValueAndValidity();
+    this.password.valueChanges.subscribe(() => {
+      if (!this.isPasswordsEqual() && this.confirmPassword.dirty) {
+        this.confirmPassword.setErrors(this.matchPasswordsError);
+      } else {
+        this.confirmPassword.setErrors(null);
+      }
+    });
+  }
+
+  private silentIsFormInvalid() {
+    return (
+      !this.controlIsValid(this.email, this.emailValidators) ||
+      !this.controlIsValid(this.password, this.passwordValidators) ||
+      !this.controlIsValid(this.confirmPassword, this.confirmPasswordValidators)
+    );
+  }
+
+  private controlIsValid(
+    control: UntypedFormControl,
+    validators: ((control: AbstractControl) => ValidationErrors | null)[],
+  ) {
+    return validators.every((v) => v(control) === null);
   }
 
   isControlHasError(control: UntypedFormControl, error: string): boolean {
@@ -126,29 +170,20 @@ export class RegisterFormComponent {
     return null;
   }
 
+  private noWhitespaceValidator(control: FormControl): ValidationErrors | null {
+    if (control.value) {
+      return control.value.trim().length ? null : { whitespace: true };
+    }
+    return null;
+  }
+
   private addValidators(): void {
-    this.email.addValidators([
-      Validators.required,
-      Validators.pattern(/^[\w\d_]+@[\w\d_]+.\w{2,7}$/),
-    ]);
+    this.email.addValidators(this.emailValidators);
     this.email.markAsDirty();
     this.email.updateValueAndValidity();
 
-    this.password.addValidators([Validators.required, Validators.minLength(8)]);
+    this.password.addValidators(this.passwordValidators);
     this.password.markAsDirty();
     this.password.updateValueAndValidity();
-    this.password.valueChanges.subscribe(() => {
-      if (!this.isPasswordsEqual()) {
-        this.confirmPassword.setErrors(this.matchPasswordsError);
-      } else {
-        this.confirmPassword.setErrors(null);
-      }
-    });
-
-    this.confirmPassword.addValidators(
-      this.confirmPasswordValidator.bind(this),
-    );
-    this.confirmPassword.markAsDirty();
-    this.confirmPassword.updateValueAndValidity();
   }
 }

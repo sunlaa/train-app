@@ -1,10 +1,12 @@
 import { DestroyService } from '@/core/services/destroy/destroy.service';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
-  FormGroup,
+  FormControl,
   ReactiveFormsModule,
   UntypedFormControl,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs';
@@ -27,7 +29,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnInit {
   @Input() isRedirect: boolean = true;
 
   private fb = inject(FormBuilder);
@@ -40,7 +42,17 @@ export class LoginFormComponent {
 
   private isFirstSubmit: boolean = true;
 
-  loginForm: FormGroup = this.fb.group({
+  private emailValidators = [
+    Validators.required,
+    Validators.pattern(/^[\w\d_]+@[\w\d_]+.\w{2,7}$/),
+  ];
+
+  private passwordValidators = [
+    Validators.required,
+    this.noWhitespaceValidator,
+  ];
+
+  loginForm = this.fb.group({
     email: [''],
     password: [''],
   });
@@ -60,7 +72,27 @@ export class LoginFormComponent {
   }
 
   get isFormInvalid(): boolean {
-    return !this.isAllControlsDirty || this.loginForm.invalid;
+    return this.loginForm.invalid || this.silentIsFormInvalid();
+  }
+
+  ngOnInit(): void {
+    this.loginForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.clearIncorrectDataError();
+    });
+  }
+
+  private silentIsFormInvalid() {
+    return (
+      !this.controlIsValid(this.email, this.emailValidators) ||
+      !this.controlIsValid(this.password, this.passwordValidators)
+    );
+  }
+
+  private controlIsValid(
+    control: UntypedFormControl,
+    validators: ((control: AbstractControl) => ValidationErrors | null)[],
+  ) {
+    return validators.every((v) => v(control) === null);
   }
 
   isControlHasError(control: UntypedFormControl, error: string): boolean {
@@ -106,15 +138,30 @@ export class LoginFormComponent {
       });
   }
 
+  private clearIncorrectDataError(): void {
+    if (this.email.hasError('incorrectEmailOrPassword')) {
+      this.email.setErrors(null);
+      this.email.updateValueAndValidity({ emitEvent: false });
+    }
+    if (this.password.hasError('incorrectEmailOrPassword')) {
+      this.password.setErrors(null);
+      this.password.updateValueAndValidity({ emitEvent: false });
+    }
+  }
+
+  private noWhitespaceValidator(control: FormControl): ValidationErrors | null {
+    if (control.value) {
+      return control.value.trim().length ? null : { whitespace: true };
+    }
+    return null;
+  }
+
   private addValidators(): void {
-    this.email.addValidators([
-      Validators.required,
-      Validators.pattern(/^[\w\d_]+@[\w\d_]+.\w{2,7}$/),
-    ]);
+    this.email.addValidators(this.emailValidators);
     this.email.markAsDirty();
     this.email.updateValueAndValidity();
 
-    this.password.addValidators(Validators.required);
+    this.password.addValidators(this.passwordValidators);
     this.password.markAsDirty();
     this.password.updateValueAndValidity();
   }
