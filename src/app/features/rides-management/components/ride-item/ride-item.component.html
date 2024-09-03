@@ -2,7 +2,7 @@
   class="panel"
   header="Ride {{ rideId }}"
   [toggleable]="true"
-  [collapsed]="true"
+  [collapsed]="false"
   toggler="header"
 >
   <ng-template pTemplate="icons">
@@ -12,6 +12,7 @@
   </ng-template>
   @for (segment of segments; track $index) {
     @if (isStationSegmentData(segment)) {
+      <h4 class="grid-item name">{{ segment.name }}</h4>
       <app-station-segment
         (dateChange)="dateChangeEvent($event)"
         class="grid-item station"

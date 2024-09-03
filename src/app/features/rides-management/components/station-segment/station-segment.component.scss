@@ -1,9 +1,4 @@
 :host {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
   ::ng-deep {
     .p-button {
       width: 25px;
@@ -20,9 +15,8 @@ p {
   margin: 0;
 }
 
-.heading {
+form {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -38,4 +32,12 @@ p {
     gap: 0.5em;
     flex-wrap: wrap;
   }
+
+  .time-text {
+    font-weight: 500;
+  }
+}
+
+.edit-btn {
+  order: 2;
 }
