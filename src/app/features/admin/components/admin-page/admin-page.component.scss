@@ -23,6 +23,7 @@
 .content {
   flex: 1;
   padding: 1em;
+  overflow: auto;
 }
 
 @media screen and (max-width: 960px) {

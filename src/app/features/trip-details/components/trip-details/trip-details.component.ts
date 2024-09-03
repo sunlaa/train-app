@@ -97,7 +97,7 @@ export class TripDetailsComponent implements OnInit {
 
   public modalVisible: boolean = false;
 
-  public authModalVisible: boolean = true;
+  public authModalVisible: boolean = false;
 
   public bookedModalVisible: boolean = false;
 
