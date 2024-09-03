@@ -44,16 +44,22 @@ export class TripDetailsService {
     carriageMap: CarriageMap,
     stationMap: StationMap,
   ): RidePageData {
-    const { path, carriages, rideId } = response;
+    const { path, carriages, rideId, routeId } = response;
     const route = response.schedule.segments;
 
     const startRide = path.indexOf(fromId);
     const endRide = path.indexOf(toId);
 
-    const ridePath = route.slice(startRide, endRide + 1);
+    const ridePath = route.slice(startRide, endRide);
     const ridePathIds = path.slice(startRide, endRide + 1);
 
-    const header = getRideHeaderData(rideId, ridePath, ridePathIds, stationMap);
+    const header = getRideHeaderData(
+      routeId,
+      rideId,
+      ridePath,
+      ridePathIds,
+      stationMap,
+    );
     const carriageList = getRideCarriagesData(carriages, carriageMap, ridePath);
 
     return { header, carriageList, carriages, carriageMap };

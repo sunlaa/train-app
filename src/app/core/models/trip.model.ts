@@ -2,6 +2,7 @@ import { CarriageMap } from './carriages.model';
 import { CarriageData, Segment, StopInfo } from './search.model';
 
 export type RideResponse = {
+  routeId: number;
   rideId: number;
   path: number[];
   carriages: string[];
@@ -26,6 +27,7 @@ export type RideCarriageData = {
 };
 
 export type RideHeader = {
+  routeId: number;
   rideId: number;
   departureDate: number;
   arrivalDate: number;

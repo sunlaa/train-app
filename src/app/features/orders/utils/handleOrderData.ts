@@ -27,7 +27,7 @@ const handleOrderData = (
   const startIndex = path.indexOf(stationStart);
   const endIndex = path.indexOf(stationEnd);
 
-  const ridePath = route.slice(startIndex, endIndex + 1);
+  const ridePath = route.slice(startIndex, endIndex);
 
   const startStationName = stationMap[stationStart].city;
   const endStationName = stationMap[stationEnd].city;
