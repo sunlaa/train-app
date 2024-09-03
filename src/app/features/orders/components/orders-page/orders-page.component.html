@@ -2,12 +2,13 @@
 <p-confirmDialog />
 @if (isLoading) {
   <div class="list">
-    <p-skeleton width="13rem" height="27rem" />
-    <p-skeleton width="13rem" height="27rem" />
-    <p-skeleton width="13rem" height="27rem" />
-    <p-skeleton width="13rem" height="27rem" />
-    <p-skeleton width="13rem" height="27rem" />
-    <p-skeleton width="13rem" height="27rem" />
+    <p-skeleton class="paginator-sleketon" width="100%" height="3rem" />
+    <p-skeleton width="100%" height="20rem" />
+    <p-skeleton width="100%" height="20rem" />
+    <p-skeleton width="100%" height="20rem" />
+    <p-skeleton width="100%" height="20rem" />
+    <p-skeleton width="100%" height="20rem" />
+    <p-skeleton width="100%" height="20rem" />
   </div>
 } @else if (totalOrders > 0) {
   <p-paginator

@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { AvatarModule } from 'primeng/avatar';
 import { InputTextModule } from 'primeng/inputtext';
 import {
   FormBuilder,
@@ -33,6 +34,7 @@ import { ProfileFormContext } from '../../models/profile-form-context.model';
     AsyncPipe,
     ProgressSpinnerModule,
     ToastModule,
+    AvatarModule,
     RouterLink,
     PasswordModule,
   ],
@@ -65,7 +67,7 @@ export class ProfilePageComponent implements OnInit {
     name: ['', [Validators.required]],
   });
 
-  private profile!: ProfileModel;
+  public profile!: ProfileModel;
 
   public status$ = this.profileFacade.status$.pipe(take(2));
 
