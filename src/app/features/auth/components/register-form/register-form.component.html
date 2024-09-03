@@ -36,6 +36,12 @@
             >Password must be at least 8 characters long</small
           >
         }
+
+        @if (isControlHasError(password, "whitespace")) {
+          <small class="error-message"
+            >Password must not be composed of whitespaces only</small
+          >
+        }
       }
     </div>
 
