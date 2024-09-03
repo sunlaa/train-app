@@ -1,10 +1,9 @@
 import { DestroyService } from '@/core/services/destroy/destroy.service';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormControl,
-  FormGroup,
   ReactiveFormsModule,
   UntypedFormControl,
   ValidationErrors,
@@ -30,7 +29,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnInit {
   @Input() isRedirect: boolean = true;
 
   private fb = inject(FormBuilder);
@@ -53,7 +52,7 @@ export class LoginFormComponent {
     this.noWhitespaceValidator,
   ];
 
-  loginForm: FormGroup = this.fb.group({
+  loginForm = this.fb.group({
     email: [''],
     password: [''],
   });
@@ -74,6 +73,12 @@ export class LoginFormComponent {
 
   get isFormInvalid(): boolean {
     return this.loginForm.invalid || this.silentIsFormInvalid();
+  }
+
+  ngOnInit(): void {
+    this.loginForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.clearIncorrectDataError();
+    });
   }
 
   private silentIsFormInvalid() {
@@ -131,6 +136,17 @@ export class LoginFormComponent {
 
         if (this.isRedirect) this.router.navigateByUrl('/');
       });
+  }
+
+  private clearIncorrectDataError(): void {
+    if (this.email.hasError('incorrectEmailOrPassword')) {
+      this.email.setErrors(null);
+      this.email.updateValueAndValidity({ emitEvent: false });
+    }
+    if (this.password.hasError('incorrectEmailOrPassword')) {
+      this.password.setErrors(null);
+      this.password.updateValueAndValidity({ emitEvent: false });
+    }
   }
 
   private noWhitespaceValidator(control: FormControl): ValidationErrors | null {
