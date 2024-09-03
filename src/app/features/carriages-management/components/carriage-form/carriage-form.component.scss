@@ -41,8 +41,13 @@ form {
   }
 }
 
-.preview {
-  pointer-events: none;
+.preview-wrapper {
+  overflow: scroll;
+  width: 100%;
+
+  .preview {
+    pointer-events: none;
+  }
 }
 
 .buttons {
