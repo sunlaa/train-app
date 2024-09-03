@@ -46,6 +46,7 @@ const searchReducer = createReducer(
       isLoading: false,
     };
   }),
+  on(searchActions.reset, (): SearchState => ({ ...initialState })),
 );
 
 export const searchFeature = createFeature({

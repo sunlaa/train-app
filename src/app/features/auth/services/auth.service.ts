@@ -6,6 +6,7 @@ import {
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
+import { SearchFacadeService } from '@/features/search-tickets/services/search-facade/search-facade.service';
 import { ProfileFacadeService } from '@/features/profile/services/profile-facade.service';
 import { UserAuthData } from '../models/user-auth-data.model';
 import UserStorage from '../utils/userStorage';
@@ -17,6 +18,8 @@ export class AuthService {
   private httpClient = inject(HttpClient);
 
   private profileFacade = inject(ProfileFacadeService);
+
+  private searchFacade = inject(SearchFacadeService);
 
   get userToken(): string | null {
     return UserStorage.getAuthToken();
@@ -70,5 +73,6 @@ export class AuthService {
 
   public logout() {
     UserStorage.clear();
+    this.searchFacade.resetResults();
   }
 }

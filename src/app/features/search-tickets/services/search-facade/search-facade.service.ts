@@ -33,4 +33,8 @@ export class SearchFacadeService {
   public search(params: SearchRequest) {
     this.store.dispatch(searchActions.search({ params }));
   }
+
+  public resetResults() {
+    this.store.dispatch(searchActions.reset());
+  }
 }
