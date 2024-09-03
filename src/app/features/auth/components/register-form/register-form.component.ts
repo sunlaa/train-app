@@ -170,7 +170,7 @@ export class RegisterFormComponent implements OnInit {
     return null;
   }
 
-  public noWhitespaceValidator(control: FormControl): ValidationErrors | null {
+  private noWhitespaceValidator(control: FormControl): ValidationErrors | null {
     if (control.value) {
       return control.value.trim().length ? null : { whitespace: true };
     }

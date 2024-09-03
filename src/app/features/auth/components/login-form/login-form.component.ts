@@ -1,10 +1,13 @@
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { Component, inject, Input } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   UntypedFormControl,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs';
@@ -40,6 +43,16 @@ export class LoginFormComponent {
 
   private isFirstSubmit: boolean = true;
 
+  private emailValidators = [
+    Validators.required,
+    Validators.pattern(/^[\w\d_]+@[\w\d_]+.\w{2,7}$/),
+  ];
+
+  private passwordValidators = [
+    Validators.required,
+    this.noWhitespaceValidator,
+  ];
+
   loginForm: FormGroup = this.fb.group({
     email: [''],
     password: [''],
@@ -60,7 +73,21 @@ export class LoginFormComponent {
   }
 
   get isFormInvalid(): boolean {
-    return !this.isAllControlsDirty || this.loginForm.invalid;
+    return this.loginForm.invalid || this.silentIsFormInvalid();
+  }
+
+  private silentIsFormInvalid() {
+    return (
+      !this.controlIsValid(this.email, this.emailValidators) ||
+      !this.controlIsValid(this.password, this.passwordValidators)
+    );
+  }
+
+  private controlIsValid(
+    control: UntypedFormControl,
+    validators: ((control: AbstractControl) => ValidationErrors | null)[],
+  ) {
+    return validators.every((v) => v(control) === null);
   }
 
   isControlHasError(control: UntypedFormControl, error: string): boolean {
@@ -106,15 +133,19 @@ export class LoginFormComponent {
       });
   }
 
+  private noWhitespaceValidator(control: FormControl): ValidationErrors | null {
+    if (control.value) {
+      return control.value.trim().length ? null : { whitespace: true };
+    }
+    return null;
+  }
+
   private addValidators(): void {
-    this.email.addValidators([
-      Validators.required,
-      Validators.pattern(/^[\w\d_]+@[\w\d_]+.\w{2,7}$/),
-    ]);
+    this.email.addValidators(this.emailValidators);
     this.email.markAsDirty();
     this.email.updateValueAndValidity();
 
-    this.password.addValidators(Validators.required);
+    this.password.addValidators(this.passwordValidators);
     this.password.markAsDirty();
     this.password.updateValueAndValidity();
   }

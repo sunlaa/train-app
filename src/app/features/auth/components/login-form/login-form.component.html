@@ -32,6 +32,12 @@
         @if (isControlHasError(password, "incorrectEmailOrPassword")) {
           <span class="error-message">Incorrect email or password</span>
         }
+
+        @if (isControlHasError(password, "whitespace")) {
+          <small class="error-message"
+            >Password must not be composed of whitespaces only</small
+          >
+        }
       }
     </div>
 
