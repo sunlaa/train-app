@@ -21,7 +21,6 @@ import {
 import { map, startWith, takeUntil } from 'rxjs';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { CommonModule } from '@angular/common';
-import { datesAreSequential } from '../../utils';
 import toLocalISODateString from '../../utils/toLocalISODateString';
 
 @Component({
@@ -117,10 +116,6 @@ export class RideFormComponent implements OnChanges {
       return;
     }
     const dates = this.dates.controls.map((ctrl) => ctrl.value) as Date[];
-    if (!datesAreSequential(dates)) {
-      this.messageError('Dates are not sequential');
-      return;
-    }
     const packedDates: [string, string][] = this.packDates(dates);
     const prices = this.prices.controls.map((ctrl) => ctrl.value) as number[];
     const packedPrices: TRidePrice[] = this.packPrices(prices);

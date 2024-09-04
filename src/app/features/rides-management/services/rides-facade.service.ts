@@ -25,10 +25,18 @@ export class RidesFacadeService {
 
   public create(routeId: number, ride: Omit<TRide, 'id'>) {
     this.store.dispatch(ridesActions.create({ routeId, ride }));
+    return this.state$.pipe(
+      filter(({ status }) => status !== 'loading'),
+      take(1),
+    );
   }
 
   public update(routeId: number, ride: TRide) {
     this.store.dispatch(ridesActions.update({ routeId, ride }));
+    return this.state$.pipe(
+      filter(({ status }) => status !== 'loading'),
+      take(1),
+    );
   }
 
   public delete(routeId: number, rideId: number) {
