@@ -25,6 +25,8 @@ import dateFromISOString from '../../utils/dateFromISOString';
 export class StationSegmentComponent implements OnChanges {
   @Input() segmentData!: TStationSegmentData;
 
+  @Input() isLast!: boolean;
+
   @Output() dateChange = new EventEmitter<
     Omit<TStationSegmentData, 'name' | 'id'>
   >();

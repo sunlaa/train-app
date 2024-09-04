@@ -33,7 +33,7 @@
         }
       </div>
     }
-    @if (segmentData.departure) {
+    @if (segmentData.departure && !isLast) {
       <div class="date-wrapper">
         <span class="time-text">Departure: </span>
         @if (editMode) {

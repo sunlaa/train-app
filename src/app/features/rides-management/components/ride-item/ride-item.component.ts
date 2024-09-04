@@ -98,20 +98,10 @@ export class RideItemComponent implements OnChanges {
   get segments() {
     const segments: (TStationSegmentData | TPriceSegmentData)[] = [];
     this.stationSegments.forEach((segment, i) => {
-      if (this.stationSegments.length - 1 !== i) {
-        segments.push(segment);
-        const rideSegment = this.ride.segments[i];
-        if (rideSegment) {
-          segments.push(this.createPriceSegmentData(rideSegment, i));
-        }
-      } else {
-        const lastSegment: TStationSegmentData = {
-          id: segment.id,
-          name: segment.name,
-          arrival: segment.arrival,
-          departure: undefined,
-        };
-        segments.push(lastSegment);
+      segments.push(segment);
+      const rideSegment = this.ride.segments[i];
+      if (rideSegment && this.stationSegments.length - 1 !== i) {
+        segments.push(this.createPriceSegmentData(rideSegment, i));
       }
     });
     return segments;
