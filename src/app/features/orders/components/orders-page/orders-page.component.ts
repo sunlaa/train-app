@@ -17,6 +17,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
 import { PageEvent } from '@/core/models/shared.model';
+import UserStorage from '@/features/auth/utils/userStorage';
 import { ProfileFacadeService } from '@/features/profile/services/profile-facade.service';
 import { OrdersFacadeService } from '../../services/facade/orders-facade.service';
 import handleOrderData from '../../utils/handleOrderData';
@@ -64,7 +65,7 @@ export class OrdersPageComponent implements OnInit {
 
   public pageOrders: ReturnType<typeof handleOrderData>[] = [];
 
-  public isAdmin = false;
+  public isAdmin = UserStorage.getUser()?.role === 'manager';
 
   public isLoading = true;
 
