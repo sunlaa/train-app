@@ -15,6 +15,10 @@ type ActionResult = {
 export class ProfileFacadeService {
   private store = inject(Store);
 
+  get state$() {
+    return this.store.select(profileFeature.selectProfileState);
+  }
+
   get profile$(): Observable<ProfileModel> {
     return this.store.select(profileFeature.selectProfile);
   }
@@ -29,13 +33,10 @@ export class ProfileFacadeService {
     this.store.dispatch(profileActions.loadProfile());
   }
 
-  public updateProfile(
-    profile: Omit<ProfileModel, 'role'>,
-  ): Observable<ActionResult> {
+  public updateProfile(profile: Omit<ProfileModel, 'role'>) {
     this.store.dispatch(profileActions.updateProfile({ profile }));
-    return this.status$.pipe(
-      filter((status) => status !== 'loading'),
-      map((status) => ({ isSuccess: status === 'success' })),
+    return this.state$.pipe(
+      filter(({ status }) => status !== 'loading'),
       take(1),
     );
   }

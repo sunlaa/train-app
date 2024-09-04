@@ -20,10 +20,13 @@ export class ProfileEffects {
   loadProfile$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(profileActions.loadProfile),
-      switchMap(() => this.profileService.loadProfile()),
-      map((profile) => profileActions.loadProfileSuccess({ profile })),
-      catchError((error: HttpErrorResponse) =>
-        of(profileActions.loadProfileError({ error })),
+      switchMap(() =>
+        this.profileService.loadProfile().pipe(
+          map((profile) => profileActions.loadProfileSuccess({ profile })),
+          catchError((error: HttpErrorResponse) =>
+            of(profileActions.loadProfileError({ error })),
+          ),
+        ),
       ),
     );
   });
@@ -31,10 +34,13 @@ export class ProfileEffects {
   updateProfile$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(profileActions.updateProfile),
-      switchMap(({ profile }) => this.profileService.updateProfile(profile)),
-      map((profile) => profileActions.updateProfileSuccess({ profile })),
-      catchError((error: HttpErrorResponse) =>
-        of(profileActions.updateProfileError({ error })),
+      switchMap(({ profile }) =>
+        this.profileService.updateProfile(profile).pipe(
+          map((prof) => profileActions.updateProfileSuccess({ profile: prof })),
+          catchError((error) =>
+            of(profileActions.updateProfileError({ error })),
+          ),
+        ),
       ),
     );
   });
@@ -42,24 +48,27 @@ export class ProfileEffects {
   updatePassword$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(profileActions.updatePassword),
-      switchMap(({ password }) => {
-        return this.profileService.updatePassword(password).pipe(
+      switchMap(({ password }) =>
+        this.profileService.updatePassword(password).pipe(
           map(() => profileActions.updatePasswordSuccess()),
           catchError((error: HttpErrorResponse) =>
             of(profileActions.updatePasswordError({ error })),
           ),
-        );
-      }),
+        ),
+      ),
     );
   });
 
   logout$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(profileActions.logout),
-      switchMap(() => this.profileService.logout()),
-      map(() => profileActions.logoutSuccess()),
-      catchError((error: HttpErrorResponse) =>
-        of(profileActions.logoutError({ error })),
+      switchMap(() =>
+        this.profileService.logout().pipe(
+          map(() => profileActions.logoutSuccess()),
+          catchError((error: HttpErrorResponse) =>
+            of(profileActions.logoutError({ error })),
+          ),
+        ),
       ),
     );
   });
