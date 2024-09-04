@@ -18,6 +18,7 @@ import { PanelModule } from 'primeng/panel';
 import { ConfirmationService } from 'primeng/api';
 import { StationSegmentComponent } from '../station-segment/station-segment.component';
 import { PriceSegmentComponent } from '../price-segment/price-segment.component';
+import dateFromISOString from '../../utils/dateFromISOString';
 
 @Component({
   selector: 'app-ride-item',
@@ -41,6 +42,8 @@ export class RideItemComponent implements OnChanges {
 
   public stationSegments!: TStationSegmentData[];
 
+  public canDelete!: boolean;
+
   ngOnChanges(changes: SimpleChanges): void {
     if (this.hasRelevantChanges(changes)) {
       this.initializeStationSegments();
@@ -58,6 +61,7 @@ export class RideItemComponent implements OnChanges {
       departure: undefined,
       arrival: undefined,
     }));
+
     this.ride.segments.forEach((segment, i) => {
       const [departure, arrival] = segment.time;
       if (this.stationSegments[i]) {
@@ -73,6 +77,18 @@ export class RideItemComponent implements OnChanges {
         };
       }
     });
+
+    if (this.stationSegments && this.stationSegments[0]) {
+      const now = new Date();
+      const firstDepartureTime = this.stationSegments[0].departure?.time;
+      if (firstDepartureTime && now < dateFromISOString(firstDepartureTime)) {
+        this.canDelete = true;
+      } else {
+        this.canDelete = false;
+      }
+    } else {
+      this.canDelete = false;
+    }
   }
 
   get rideId() {
