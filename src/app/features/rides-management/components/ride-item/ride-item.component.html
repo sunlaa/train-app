@@ -6,9 +6,11 @@
   toggler="header"
 >
   <ng-template pTemplate="icons">
-    <button class="p-panel-header-icon" (click)="deleteClick($event)">
-      <span class="pi pi-trash"></span>
-    </button>
+    @if (canDelete) {
+      <button class="p-panel-header-icon" (click)="deleteClick($event)">
+        <span class="pi pi-trash"></span>
+      </button>
+    }
   </ng-template>
   @for (segment of segments; track $index) {
     @if (isStationSegmentData(segment)) {

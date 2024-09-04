@@ -18,7 +18,6 @@ import { NotificationService } from '@/shared/services/notification.service';
 import { RidesFacadeService } from '../../services/rides-facade.service';
 import { RideItemComponent } from '../ride-item/ride-item.component';
 import { RideFormComponent } from '../ride-form/ride-form.component';
-import { datesAreSequential } from '../../utils';
 
 @Component({
   selector: 'app-rides-page',
@@ -59,6 +58,8 @@ export class RidesPageComponent implements OnInit {
 
   public ridesState: RidesState | undefined;
 
+  private firstTimeError: boolean = true;
+
   public formToggle = false;
 
   ngOnInit(): void {
@@ -95,7 +96,14 @@ export class RidesPageComponent implements OnInit {
         filter((state) => state.status !== 'loading'),
       )
       .subscribe((state) => {
-        this.ridesState = state;
+        if (state.error) {
+          if (this.firstTimeError) {
+            this.ridesState = state;
+          }
+        } else {
+          this.ridesState = state;
+        }
+        this.firstTimeError = false;
       });
 
     this.ridesFacade.state$
@@ -169,22 +177,25 @@ export class RidesPageComponent implements OnInit {
 
   public rideCreateEvent({ segments }: Omit<TRouteRide, 'rideId'>) {
     if (this.routeId) {
-      this.ridesFacade.create(this.routeId, { segments });
+      this.ridesFacade
+        .create(this.routeId, { segments })
+        .subscribe(({ error }) => {
+          if (error) {
+            this.notificationService.messageError(error?.message);
+          }
+        });
     }
   }
 
   public rideChangeEvent({ rideId, segments }: TRouteRide) {
     if (this.routeId) {
-      const dates: Date[] = [];
-      segments.forEach(({ time }) => {
-        dates.push(new Date(time[0]));
-        dates.push(new Date(time[1]));
-      });
-      if (!datesAreSequential(dates)) {
-        this.notificationService.messageError('Dates are not sequential');
-        return;
-      }
-      this.ridesFacade.update(this.routeId, { id: rideId, segments });
+      this.ridesFacade
+        .update(this.routeId, { id: rideId, segments })
+        .subscribe(({ error }) => {
+          if (error) {
+            this.notificationService.messageError(error?.message);
+          }
+        });
     }
   }
 

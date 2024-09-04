@@ -22,14 +22,20 @@ const ridesReducer = createReducer(
     ridesActions.load,
     (state): RidesState => ({ ...state, status: 'loading' }),
   ),
-  on(
-    ridesActions.loadSuccess,
-    (state, { route }): RidesState => ({
-      route,
+  on(ridesActions.loadSuccess, (state, { route }): RidesState => {
+    const len = route.path.length;
+    return {
+      route: {
+        ...route,
+        schedule: route.schedule.map((sch) => ({
+          ...sch,
+          segments: sch.segments.slice(0, len - 1),
+        })),
+      },
       error: null,
       status: 'success',
-    }),
-  ),
+    };
+  }),
   on(
     ridesActions.loadError,
     (state, { error }): RidesState => ({
