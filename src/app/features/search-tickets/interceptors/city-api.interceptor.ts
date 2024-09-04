@@ -8,7 +8,7 @@ export function cityApiInterceptor(
     const newReq = req.clone({
       headers: req.headers.set(
         'X-Api-Key',
-        'ln8jhzuvHXfI10xojx5oQg==r0WkHuJ8YP34T7Hn',
+        '9I9XZsmicuEvV467OPol4g==FpgcMldQvHMBq7DF',
       ),
     });
 
