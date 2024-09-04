@@ -175,11 +175,9 @@ export class ProfilePageComponent implements OnInit {
         name: this.nameControl.value ?? '',
       })
       .pipe(takeUntil(this.destroy$))
-      .subscribe(({ isSuccess }) => {
-        if (!isSuccess) {
-          return this.notificationService.messageError(
-            'Error occurs during profile update',
-          );
+      .subscribe(({ error }) => {
+        if (error) {
+          return this.notificationService.messageError(error.message);
         }
 
         this.notificationService.messageSuccess('Profile has been updated!');

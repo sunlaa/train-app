@@ -26,8 +26,8 @@ const profileReducer = createReducer(
   on(
     profileActions.loadProfileSuccess,
     (state, { profile }): ProfileState => ({
-      ...state,
       status: 'success',
+      error: null,
       profile,
     }),
   ),
@@ -50,8 +50,8 @@ const profileReducer = createReducer(
   on(
     profileActions.updateProfileSuccess,
     (state, { profile }): ProfileState => ({
-      ...state,
       status: 'success',
+      error: null,
       profile,
     }),
   ),
@@ -105,9 +105,9 @@ const profileReducer = createReducer(
   ),
   on(
     profileActions.logoutSuccess,
-    (state): ProfileState => ({
-      ...state,
+    (): ProfileState => ({
       status: 'success',
+      error: null,
       profile: { role: 'guest', email: '', name: '' },
     }),
   ),
