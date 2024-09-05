@@ -13,6 +13,14 @@ describe('StationSegmentComponent', () => {
 
     fixture = TestBed.createComponent(StationSegmentComponent);
     component = fixture.componentInstance;
+
+    component.segmentData = {
+      id: 0,
+      name: 'Test',
+      arrival: undefined,
+      departure: undefined,
+    };
+
     fixture.detectChanges();
   });
 

@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
 import { ConfirmationService } from 'primeng/api';
 import { NotificationService } from '@/shared/services/notification.service';
-import { MockNotificationService, MockOrderFacade } from '@/testing/mocks';
+import { MockNotificationService, MockOrdersFacade } from '@/testing/mocks';
 import { OrdersFacadeService } from '../../services/facade/orders-facade.service';
 
 import { OrderItemComponent } from './order-item.component';
@@ -15,8 +14,7 @@ describe('OrderItemComponent', () => {
     await TestBed.configureTestingModule({
       imports: [OrderItemComponent],
       providers: [
-        provideMockStore({}),
-        { provide: OrdersFacadeService, useClass: MockOrderFacade },
+        { provide: OrdersFacadeService, useClass: MockOrdersFacade },
         { provide: NotificationService, useClass: MockNotificationService },
         ConfirmationService,
       ],

@@ -1,6 +1,6 @@
 import { MakeOrderBody } from '@/core/models/orders.model';
 
-export default class MockOrderFacade {
+export default class MockOrdersFacade {
   load(all?: boolean) {
     return all;
   }

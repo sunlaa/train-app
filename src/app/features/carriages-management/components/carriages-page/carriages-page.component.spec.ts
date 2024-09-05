@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockCarriagesFacade } from '@/testing/mocks';
 import { MessageService } from 'primeng/api';
 
 import { CarriagesPageComponent } from './carriages-page.component';
+import { CarriagesFacadeService } from '../../services/carriages-facade.service';
 
 describe('CarriagesPageComponent', () => {
   let component: CarriagesPageComponent;
@@ -11,7 +12,10 @@ describe('CarriagesPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CarriagesPageComponent],
-      providers: [provideMockStore({}), MessageService],
+      providers: [
+        { provide: CarriagesFacadeService, useClass: MockCarriagesFacade },
+        MessageService,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CarriagesPageComponent);

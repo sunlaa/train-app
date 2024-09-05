@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NotificationService } from '@/shared/services/notification.service';
 import { ConfirmationService } from 'primeng/api';
-import { provideMockStore } from '@ngrx/store/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MockNotificationService } from '@/testing/mocks';
+import { MockCarriagesFacade, MockNotificationService } from '@/testing/mocks';
+import { CarriagesFacadeService } from '../../services/carriages-facade.service';
 
 import { CarriageItemComponent } from './carriage-item.component';
 
@@ -16,8 +16,8 @@ describe('CarriageItemComponent', () => {
       imports: [CarriageItemComponent, NoopAnimationsModule],
       providers: [
         { provide: NotificationService, useClass: MockNotificationService },
+        { provide: CarriagesFacadeService, useClass: MockCarriagesFacade },
         ConfirmationService,
-        provideMockStore({}),
       ],
     }).compileComponents();
 

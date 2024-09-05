@@ -12,6 +12,22 @@ describe('TicketCardComponent', () => {
 
     fixture = TestBed.createComponent(TicketCardComponent);
     component = fixture.componentInstance;
+
+    component.ticket = {
+      rideId: 1,
+      fromId: 1,
+      toId: 1,
+      departureDate: 0,
+      arrivalDate: 0,
+      startCity: 'test',
+      endCity: 'test',
+      tripDuration: 0,
+      firstRouteStation: 'test',
+      lastRouteStation: 'test',
+      carriages: [],
+      routeDetails: { routeId: 1, stopInfo: [] },
+    };
+
     fixture.detectChanges();
   });
 
