@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+import { MessageService } from 'primeng/api';
 
 import { CarriagesPageComponent } from './carriages-page.component';
 
@@ -9,6 +11,7 @@ describe('CarriagesPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CarriagesPageComponent],
+      providers: [provideMockStore({}), MessageService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CarriagesPageComponent);
