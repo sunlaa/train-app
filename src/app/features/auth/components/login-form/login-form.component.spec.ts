@@ -51,9 +51,13 @@ describe('LoginFormComponent', () => {
     expect(component.isFormInvalid).toBeTruthy();
   });
 
-  it('should validate email field correctly', () => {
+  it('should validate email field', () => {
     component.onSubmit();
     const emailControl = component.email;
+
+    emailControl.setValue('');
+    expect(emailControl.valid).toBeFalsy();
+    expect(emailControl.hasError('required')).toBeTruthy();
 
     emailControl.setValue('invalid-email');
     expect(emailControl.valid).toBeFalsy();
@@ -63,7 +67,7 @@ describe('LoginFormComponent', () => {
     expect(emailControl.valid).toBeTruthy();
   });
 
-  it('should validate password field correctly', () => {
+  it('should validate password field', () => {
     component.onSubmit();
     const passwordControl = component.password;
 
@@ -75,7 +79,7 @@ describe('LoginFormComponent', () => {
     expect(passwordControl.valid).toBeTruthy();
   });
 
-  it('should call AuthService.signin on form submit', () => {
+  it('should call authService.signin on form submit', () => {
     const signinSpy = jest
       .spyOn(authService, 'signin')
       .mockReturnValue(of(null));
@@ -91,7 +95,7 @@ describe('LoginFormComponent', () => {
     });
   });
 
-  it('should handle AuthService.signin error', async () => {
+  it('should handle authService.signin error', async () => {
     const signinSpy = jest
       .spyOn(authService, 'signin')
       .mockReturnValue(of({ apiError: true }));
