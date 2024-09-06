@@ -1,4 +1,4 @@
-import { UserAuthData } from '@/features/auth/models/user-auth-data.model';
+import { UserAuthData } from '@/core/models/auth.model';
 
 export default class MockAuthService {
   signup(data: UserAuthData) {

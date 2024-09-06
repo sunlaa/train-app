@@ -1,4 +1,4 @@
-import { Role } from '@/features/auth/models/user-auth-data.model';
+import { Role } from './auth.model';
 
 export type ProfileModel = {
   role: Role;

@@ -6,8 +6,8 @@ import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
 import { ProfileFacadeService } from '@/features/profile/services/profile-facade.service';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
-import { Role } from '@/features/auth/models/user-auth-data.model';
 import { takeUntil } from 'rxjs';
+import { Role } from '@/core/models/auth.model';
 
 @Component({
   selector: 'app-header',

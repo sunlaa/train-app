@@ -1,5 +1,5 @@
 export { default as MockNotificationService } from './mock-notification';
-export { default as MockAuthService } from './mock-auth';
+export { default as MockAuthService } from './auth.mock';
 export { default as MockOrdersFacade } from './mock-orders-facade';
 export { default as MockUsersService } from './mock-user';
 export { default as MockProfileFacade } from './mock-profile-facade';
