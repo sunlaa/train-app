@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockSearchFacade } from '@/testing/mocks';
+import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
 
 import { ResultsComponent } from './results.component';
 
@@ -9,6 +11,12 @@ describe('ResultsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ResultsComponent],
+      providers: [
+        {
+          provide: SearchFacadeService,
+          useClass: MockSearchFacade,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ResultsComponent);

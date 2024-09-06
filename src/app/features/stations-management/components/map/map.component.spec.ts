@@ -13,6 +13,11 @@ describe('MapComponent', () => {
 
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
+
+    component.mainStation = { city: 'test', latitude: 0, longitude: 0 };
+    component.connectedStations = [];
+    component.disconnectedStations = [];
+
     fixture.detectChanges();
   });
 

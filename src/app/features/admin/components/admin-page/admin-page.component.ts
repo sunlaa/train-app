@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-page',
   standalone: true,
-  imports: [MenuModule],
+  imports: [MenuModule, RouterLink],
   templateUrl: './admin-page.component.html',
   styleUrl: './admin-page.component.scss',
 })

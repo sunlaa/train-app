@@ -4,7 +4,6 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs';
 import { PanelModule } from 'primeng/panel';
 import { ConfirmationService } from 'primeng/api';
-import { RoutesFacadeService } from '@/features/routes-management/services/routes-facade.service';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '@/shared/services/notification.service';
 import { TooltipModule } from 'primeng/tooltip';
@@ -24,8 +23,6 @@ export class StationItemComponent implements OnInit {
   private destroy$ = inject(DestroyService);
 
   private stationsFacade = inject(StationsFacadeService);
-
-  private routesFacade = inject(RoutesFacadeService);
 
   private notificationService = inject(NotificationService);
 

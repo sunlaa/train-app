@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DestroyService } from '@/core/services/destroy/destroy.service';
+import { provideRouter } from '@angular/router';
+import { MockAuthService } from '@/testing/mocks';
+import { AuthService } from '../../services/auth.service';
 
 import { RegisterFormComponent } from './register-form.component';
 
@@ -9,6 +13,11 @@ describe('RegisterFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RegisterFormComponent],
+      providers: [
+        { provide: AuthService, useClass: MockAuthService },
+        DestroyService,
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterFormComponent);
