@@ -12,3 +12,4 @@ export { default as MockRidesFacade } from './mock-rides-facade';
 export { default as MockSearchFacade } from './mock-search-facade';
 export { default as MockCityApi } from './mock-city-api';
 export { default as MockTripDetails } from './mock-trip';
+export { default as MockUsersStorage } from './mock-users-storage';
