@@ -134,7 +134,7 @@ describe('StationsEffects', () => {
     ) as jest.Mocked<StationsService>;
   });
 
-  it('should dispatch loadSuccess on successful station load', () => {
+  it('should dispatch loadSuccess on successful station load', (done) => {
     stationsService.getStations.mockReturnValue(of(mockStations));
     actions$ = of(stationsActions.load());
 
@@ -142,10 +142,11 @@ describe('StationsEffects', () => {
       expect(result).toEqual(
         stationsActions.loadSuccess({ stations: mockStations }),
       );
+      done();
     });
   });
 
-  it('should dispatch loadError on failed station load', () => {
+  it('should dispatch loadError on failed station load', (done) => {
     const errorResponse = new HttpErrorResponse({ error: 'Error' });
     stationsService.getStations.mockReturnValue(
       throwError(() => errorResponse),
@@ -156,10 +157,11 @@ describe('StationsEffects', () => {
       expect(result).toEqual(
         stationsActions.loadError({ error: errorResponse }),
       );
+      done();
     });
   });
 
-  it('should dispatch createSuccess on successful station creation', () => {
+  it('should dispatch createSuccess on successful station creation', (done) => {
     stationsService.createStation.mockReturnValue(of(newStation));
     stationsService.getStations.mockReturnValue(of(mockStations));
     actions$ = of(
@@ -172,10 +174,11 @@ describe('StationsEffects', () => {
       expect(result).toEqual(
         stationsActions.createSuccess({ stations: mockStations }),
       );
+      done();
     });
   });
 
-  it('should dispatch createError on failed station creation', () => {
+  it('should dispatch createError on failed station creation', (done) => {
     const errorResponse = new HttpErrorResponse({ error: 'Create Error' });
     stationsService.createStation.mockReturnValue(
       throwError(() => errorResponse),
@@ -190,19 +193,21 @@ describe('StationsEffects', () => {
       expect(result).toEqual(
         stationsActions.createError({ error: errorResponse }),
       );
+      done();
     });
   });
 
-  it('should dispatch deleteSuccess on successful station deletion', () => {
-    stationsService.deleteStation.mockReturnValue(of());
+  it('should dispatch deleteSuccess on successful station deletion', (done) => {
+    stationsService.deleteStation.mockReturnValue(of(undefined));
     actions$ = of(stationsActions.delete({ id: 1 }));
 
     effects.deleteStation$.subscribe((result) => {
       expect(result).toEqual(stationsActions.deleteSuccess({ id: 1 }));
+      done();
     });
   });
 
-  it('should dispatch deleteError on failed station deletion', () => {
+  it('should dispatch deleteError on failed station deletion', (done) => {
     const errorResponse = new HttpErrorResponse({ error: 'Delete Error' });
     stationsService.deleteStation.mockReturnValue(
       throwError(() => errorResponse),
@@ -213,6 +218,7 @@ describe('StationsEffects', () => {
       expect(result).toEqual(
         stationsActions.deleteError({ error: errorResponse }),
       );
+      done();
     });
   });
 });
