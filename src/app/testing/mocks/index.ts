@@ -1,5 +1,5 @@
 export { default as MockNotificationService } from './mock-notification';
-export { default as MockAuthService } from './mock-auth';
+export { default as MockAuthService } from './auth.mock';
 export { default as MockOrdersFacade } from './mock-orders-facade';
 export { default as MockUsersService } from './mock-user';
 export { default as MockProfileFacade } from './mock-profile-facade';
@@ -11,4 +11,5 @@ export { default as MockRidesFacade } from './mock-rides-facade';
 export { default as MockSearchFacade } from './mock-search-facade';
 export { default as MockCityApi } from './mock-city-api';
 export { default as MockTripDetails } from './mock-trip';
+export { default as MockUsersStorage } from './mock-users-storage';
 export * from './stations';

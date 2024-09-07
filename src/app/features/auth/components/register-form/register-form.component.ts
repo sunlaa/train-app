@@ -154,7 +154,7 @@ export class RegisterFormComponent implements OnInit {
           return;
         }
 
-        this.router.navigateByUrl('/signin');
+        this.router.navigate(['/signin']);
       });
   }
 

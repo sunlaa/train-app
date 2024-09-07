@@ -12,9 +12,9 @@ export default class MockProfileFacade {
     return profile;
   }
 
-  public updatePassword(password: string) {
+  updatePassword(password: string) {
     return password;
   }
 
-  public logout() {}
+  logout() {}
 }
