@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { profileFeature } from '@/redux/reducers';
-import { mockProfile, MockProfileState } from '@/testing/mocks';
+import { mockProfile, MockProfileState, mockUpdateData } from '@/testing/mocks';
 import { profileActions } from '@/redux/actions';
 
 import { ProfileFacadeService } from './profile-facade.service';
@@ -42,12 +42,10 @@ describe('ProfileFacadeService', () => {
   });
 
   it('should dispatch updateProfile action on updateProfile()', () => {
-    const profile = { name: 'Test', email: 'test@example.com' };
-
-    service.updateProfile(profile).subscribe();
+    service.updateProfile(mockUpdateData).subscribe();
 
     expect(dispatchSpy).toHaveBeenCalledWith(
-      profileActions.updateProfile({ profile }),
+      profileActions.updateProfile({ profile: mockUpdateData }),
     );
   });
 

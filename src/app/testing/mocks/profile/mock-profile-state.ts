@@ -7,6 +7,11 @@ export const mockProfile: ProfileModel = {
   email: 'test@example.com',
 };
 
+export const mockUpdateData: Omit<ProfileModel, 'role'> = {
+  name: 'Test',
+  email: 'test@example.com',
+};
+
 export class MockProfileState {
   static successState: ProfileState = {
     profile: mockProfile,
