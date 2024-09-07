@@ -2,8 +2,6 @@ import { TStationCreation, TStationListed } from '@/core/models/stations.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-// Load stations
-
 export const stationsActions = createActionGroup({
   source: 'Stations Management',
   events: {
