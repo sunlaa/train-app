@@ -10,6 +10,7 @@ export function tokenInterceptor(
   const authService = inject(AuthService);
 
   const token = authService.userToken;
+
   const request = req.clone({
     setHeaders: {
       Authorization: `Bearer ${token ?? ''}`,
