@@ -29,11 +29,12 @@ describe('StationsService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch stations (getStations)', () => {
+  it('should fetch stations (getStations)', (done) => {
     const mockStations = MockStationsData.listedStations;
 
     service.getStations().subscribe((stations) => {
       expect(stations).toEqual(mockStations);
+      done();
     });
 
     const req = httpTestingController.expectOne(baseURL);
@@ -41,11 +42,12 @@ describe('StationsService', () => {
     req.flush(mockStations);
   });
 
-  it('should create a station (createStation)', () => {
+  it('should create a station (createStation)', (done) => {
     const newStation = MockStationsData.creationStations[0];
 
     service.createStation(newStation).subscribe((response) => {
       expect(response).toEqual(newStation);
+      done();
     });
 
     const req = httpTestingController.expectOne(baseURL);
@@ -54,11 +56,12 @@ describe('StationsService', () => {
     req.flush(newStation);
   });
 
-  it('should delete a station (deleteStation)', () => {
+  it('should delete a station (deleteStation)', (done) => {
     const stationId = 1;
 
     service.deleteStation(stationId).subscribe((response) => {
-      expect(response).toBeUndefined();
+      expect(response).toBeNull();
+      done();
     });
 
     const req = httpTestingController.expectOne(`${baseURL}/${stationId}`);
