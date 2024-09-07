@@ -2,7 +2,7 @@ import { ProfileModel } from '@/core/models/profile.model';
 import { of } from 'rxjs';
 
 export default class MockProfileFacade {
-  profile$ = of({ role: 'guest', name: '', email: '' });
+  profile$ = of({});
 
   status$ = of(null);
 

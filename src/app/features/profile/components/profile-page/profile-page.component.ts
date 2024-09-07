@@ -134,7 +134,7 @@ export class ProfilePageComponent implements OnInit {
           );
         }
         this.authService.logout();
-        return this.router.navigateByUrl('/');
+        return this.router.navigate(['/']);
       });
   }
 
