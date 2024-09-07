@@ -4,16 +4,19 @@ This project is a web-based platform designed to manage train trips. It includes
 
 ## Team members 🤝
 
-Mentor: [Dzmitry Tsiareshchanka](https://github.com/dmitrytereshchenko)
+Mentors: [Dzmitry Tsiareshchanka](https://github.com/dmitrytereshchenko) and [Sergey Fedorov](https://github.com/Dazmond-ru)
 
 Developers:
 
-- [Mariia Bogdanova](https://github.com/mashabogdanova)
 - [Lada Santalava](https://github.com/sunlaa)
 - [Danila Markelov](https://github.com/hny-badger)
 - [Teymur Farhadov](https://github.com/teymurdev)
 
 ## Technical Details 🛠
+
+### Deployment
+
+[Deploy](https://train-app.netlify.app/)
 
 ### The technology stack
 
@@ -26,6 +29,4 @@ Developers:
 - [SCSS](https://sass-lang.com/)
 - [PrimeNG](https://primeng.org/)
 
-### Deployment
 
-[Deploy](#deployment)
