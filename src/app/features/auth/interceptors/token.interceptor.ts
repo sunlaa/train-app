@@ -11,11 +11,15 @@ export function tokenInterceptor(
 
   const token = authService.userToken;
 
-  const request = req.clone({
-    setHeaders: {
-      Authorization: `Bearer ${token ?? ''}`,
-    },
-  });
+  if (token) {
+    const request = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  return next(request);
+    return next(request);
+  }
+
+  return next(req);
 }
