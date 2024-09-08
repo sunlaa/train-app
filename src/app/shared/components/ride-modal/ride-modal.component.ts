@@ -1,7 +1,7 @@
 import { StopInfo } from '@/core/models/search.model';
 import { Component, Input } from '@angular/core';
 import { TimelineModule } from 'primeng/timeline';
-import { DurationPipe } from '../../../features/search-tickets/pipes/duration.pipe';
+import { DurationPipe } from '../../pipes/duration.pipe';
 
 @Component({
   selector: 'app-ride-modal',
