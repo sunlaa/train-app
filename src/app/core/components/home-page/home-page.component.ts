@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { SearchFormComponent } from '../search-form/search-form.component';
-import { ResultsComponent } from '../results/results.component';
+import { SearchFormComponent } from '../../../features/search-tickets/components/search-form/search-form.component';
+import { ResultsComponent } from '../../../features/search-tickets/components/results/results.component';
 
 @Component({
   selector: 'app-home-page',
