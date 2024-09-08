@@ -1,4 +1,4 @@
-import { AuthResponse } from '@/core/models/auth.model';
+import { AuthResponse, UserAuthData } from '@/core/models/auth.model';
 import {
   HttpClient,
   HttpErrorResponse,
@@ -8,7 +8,6 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { SearchFacadeService } from '@/features/search-tickets/services/search-facade/search-facade.service';
 import { ProfileFacadeService } from '@/features/profile/services/profile-facade.service';
-import { UserAuthData } from '../models/user-auth-data.model';
 import UserStorage from '../utils/userStorage';
 
 @Injectable({

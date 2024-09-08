@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { ProfileFacadeService } from '@/features/profile/services/profile-facade.service';
-import { map, take } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 
-export const adminGuard: CanActivateFn = () => {
+export const adminGuard: CanActivateFn = (): Observable<boolean> => {
   const profileFacade = inject(ProfileFacadeService);
   const router = inject(Router);
 

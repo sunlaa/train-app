@@ -4,7 +4,7 @@ import { ApiError } from '@/core/models/api.model';
 import UserStorage from '@/features/auth/utils/userStorage';
 import { profileActions } from '../actions';
 
-type ProfileState = {
+export type ProfileState = {
   profile: ProfileModel;
   error: ApiError | Error | null;
   status: 'loading' | 'error' | 'success' | 'not-loaded' | null;

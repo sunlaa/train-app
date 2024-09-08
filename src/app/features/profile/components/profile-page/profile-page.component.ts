@@ -10,7 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { ProfileModel } from '@/core/models/profile.model';
+import { ProfileFormContext, ProfileModel } from '@/core/models/profile.model';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NotificationService } from '@/shared/services/notification.service';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
@@ -20,7 +20,6 @@ import { take, takeUntil } from 'rxjs';
 import { PasswordModule } from 'primeng/password';
 import { AuthService } from '@/features/auth/services/auth.service';
 import { ProfileFacadeService } from '../../services/profile-facade.service';
-import { ProfileFormContext } from '../../models/profile-form-context.model';
 
 @Component({
   selector: 'app-profile-page',
@@ -134,7 +133,7 @@ export class ProfilePageComponent implements OnInit {
           );
         }
         this.authService.logout();
-        return this.router.navigateByUrl('/');
+        return this.router.navigate(['/']);
       });
   }
 
