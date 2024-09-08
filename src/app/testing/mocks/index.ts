@@ -6,7 +6,6 @@ export { default as MockProfileFacade } from './profile/mock-profile-facade';
 export * from './profile/mock-profile-state';
 export { default as MockStationsSection } from './mock-stations-section';
 export { default as MockCarriagesSection } from './mock-carriages-section';
-export { default as MockRidesFacade } from './mock-rides-facade';
 export { default as MockSearchFacade } from './mock-search-facade';
 export { default as MockCityApi } from './mock-city-api';
 export { default as MockTripDetails } from './mock-trip';
