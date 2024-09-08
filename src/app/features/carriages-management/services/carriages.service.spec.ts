@@ -32,8 +32,8 @@ describe('CarriagesService', () => {
   it('should fetch carriages (getCarriages)', (done) => {
     const mockCarriages = MockCarriagesData.carriages;
 
-    service.getCarriages().subscribe((stations) => {
-      expect(stations).toEqual(mockCarriages);
+    service.getCarriages().subscribe((response) => {
+      expect(response).toEqual(mockCarriages);
       done();
     });
 
