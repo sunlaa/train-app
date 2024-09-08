@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 
-export default class MockProfileFacade {
+export class MockProfileFacade {
   profile$ = of({});
 
   status$ = of(null);
