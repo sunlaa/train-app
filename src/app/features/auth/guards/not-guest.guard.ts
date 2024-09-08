@@ -7,7 +7,8 @@ export const notGuestGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (!authService.userToken) {
-    return router.navigateByUrl('/');
+    router.navigate(['/']);
+    return false;
   }
 
   return true;

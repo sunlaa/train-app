@@ -56,10 +56,10 @@ export class StationConnectionsService {
     const newStation = this.getStation(id);
     if (newStation) {
       const previousStation = this.connectedStations[index];
-      this.disconnectedStations = [
-        ...this.disconnectedStations,
-        previousStation,
-      ];
+      const newDisconnectStations = this.disconnectedStations.filter(
+        (s) => s.id !== newStation.id,
+      );
+      this.disconnectedStations = [...newDisconnectStations, previousStation];
       this.connectedStations[index] = newStation;
       this.updateStationOptions();
     }
