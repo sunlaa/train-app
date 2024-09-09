@@ -11,6 +11,7 @@ import {
   inject,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -27,7 +28,7 @@ import dateFromISOString from '../../utils/dateFromISOString';
   templateUrl: './ride-item.component.html',
   styleUrl: './ride-item.component.scss',
 })
-export class RideItemComponent implements OnChanges {
+export class RideItemComponent implements OnChanges, OnInit {
   @Input({ required: true }) ride!: TRouteRide;
 
   @Input({ required: true }) stations!: Entry<number>[];
@@ -43,6 +44,10 @@ export class RideItemComponent implements OnChanges {
   public stationSegments!: TStationSegmentData[];
 
   public canDelete!: boolean;
+
+  ngOnInit(): void {
+    this.initializeStationSegments();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.hasRelevantChanges(changes)) {
