@@ -11,7 +11,7 @@ export class SearchEffects {
     private searchService: SearchService,
   ) {}
 
-  loadCarriages$ = createEffect(() => {
+  search$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(searchActions.search),
       switchMap(({ params }) =>

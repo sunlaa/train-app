@@ -4,6 +4,7 @@ import {
   inject,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -11,7 +12,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { MessageService } from 'primeng/api';
 import {
   Entry,
   TRidePrice,
@@ -21,6 +21,7 @@ import {
 import { map, startWith, takeUntil } from 'rxjs';
 import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '@/shared/services/notification.service';
 import toLocalISODateString from '../../utils/toLocalISODateString';
 
 @Component({
@@ -37,7 +38,7 @@ import toLocalISODateString from '../../utils/toLocalISODateString';
   templateUrl: './ride-form.component.html',
   styleUrl: './ride-form.component.scss',
 })
-export class RideFormComponent implements OnChanges {
+export class RideFormComponent implements OnChanges, OnInit {
   @Input({ required: true }) stations!: Entry<number>[];
 
   @Input({ required: true }) carriages!: Entry<string>[];
@@ -48,7 +49,7 @@ export class RideFormComponent implements OnChanges {
 
   private destroy$ = inject(DestroyService);
 
-  private messageService = inject(MessageService);
+  private notificationService = inject(NotificationService);
 
   private fb = inject(FormBuilder);
 
@@ -71,6 +72,10 @@ export class RideFormComponent implements OnChanges {
     return this.rideForm.controls.prices;
   }
 
+  ngOnInit(): void {
+    this.updateInputs();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['stations'] || changes['carriages']) {
       this.updateInputs();
@@ -91,14 +96,6 @@ export class RideFormComponent implements OnChanges {
     }
   }
 
-  private messageError(message: string | undefined) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: message,
-    });
-  }
-
   public closeFormClick() {
     this.closeForm.emit();
     this.resetForm();
@@ -112,7 +109,7 @@ export class RideFormComponent implements OnChanges {
 
   public onSubmit() {
     if (!this.rideForm.valid) {
-      this.messageError('Fill out all fields');
+      this.notificationService.messageError('Fill out all fields');
       return;
     }
     const dates = this.dates.controls.map((ctrl) => ctrl.value) as Date[];
@@ -120,7 +117,7 @@ export class RideFormComponent implements OnChanges {
     const prices = this.prices.controls.map((ctrl) => ctrl.value) as number[];
     const packedPrices: TRidePrice[] = this.packPrices(prices);
     if (packedDates.length !== packedPrices.length) {
-      this.messageError('Something went wrong...');
+      this.notificationService.messageError('Something went wrong...');
       return;
     }
     const segments: TRideSegment[] = packedDates.map((time, i) => ({

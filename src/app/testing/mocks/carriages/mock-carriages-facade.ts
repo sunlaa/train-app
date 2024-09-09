@@ -7,7 +7,9 @@ import MockCarriagesData from './mock-carriages-data';
 export default class MockCarriagesFacade {
   carriageMap: Signal<CarriageMap | undefined> = signal({});
 
-  carriageMap$ = of({});
+  private carriageMapSubject = new Subject<CarriageMap>();
+
+  carriageMap$ = this.carriageMapSubject.asObservable();
 
   carriages$ = of(MockCarriagesData.carriages);
 
@@ -29,6 +31,10 @@ export default class MockCarriagesFacade {
 
   delete() {
     return this.state$;
+  }
+
+  setCarriageMap(map: CarriageMap) {
+    this.carriageMapSubject.next(map);
   }
 
   setState(state: CarriagesState) {

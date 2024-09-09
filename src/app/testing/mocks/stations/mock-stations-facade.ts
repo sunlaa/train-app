@@ -1,15 +1,18 @@
-import { StationMap } from '@/core/models/stations.model';
+import { StationMap, TStationListed } from '@/core/models/stations.model';
 import { Signal, signal } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { StationsState } from '@/redux/reducers';
-import MockStationsData from './mock-stations-data';
 
 export default class MockStationsFacade {
   stationMap: Signal<StationMap | undefined> = signal({ undefined });
 
-  stationsMap$ = of(MockStationsData.stationMaps[0]);
+  private stationsMapSubject = new Subject<StationMap>();
 
-  stations$ = of(MockStationsData.listedStations);
+  stationsMap$ = this.stationsMapSubject.asObservable();
+
+  private stationsSubject = new Subject<TStationListed[]>();
+
+  stations$ = this.stationsSubject.asObservable();
 
   private stateSubject = new Subject<StationsState>();
 
@@ -25,6 +28,14 @@ export default class MockStationsFacade {
 
   delete(): Observable<StationsState> {
     return this.state$;
+  }
+
+  setStationsMap(map: StationMap) {
+    this.stationsMapSubject.next(map);
+  }
+
+  setStations(stations: TStationListed[]) {
+    this.stationsSubject.next(stations);
   }
 
   setState(state: StationsState) {

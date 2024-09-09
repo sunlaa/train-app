@@ -29,7 +29,6 @@ export class StationsSectionService {
       this.stationOptions = [this.stations.map(formatStation)];
     } else {
       const options: SelectItem[][] = [];
-      const previousIds: number[] = [];
       for (let i = 0; i < selectedStationIds.length + 1; i += 1) {
         let commonIds: number[] = [];
         const previousStationId = selectedStationIds[i - 1];
@@ -51,7 +50,10 @@ export class StationsSectionService {
           }
         }
         if (previousStation || nextStation) {
-          commonIds = commonIds.filter((id) => !previousIds.includes(id));
+          commonIds = commonIds.filter(
+            (id) => !selectedStationIds.includes(id),
+          );
+          commonIds = [selectedStationIds[i], ...commonIds];
           const commonStations = commonIds.map((id) => this.getStation(id));
           const filteredStations: TStationListed[] = commonStations.filter(
             (station) => station !== undefined,
@@ -60,7 +62,6 @@ export class StationsSectionService {
         } else {
           options.push(this.stations.map(formatStation));
         }
-        previousIds.push(selectedStationIds[i]);
       }
       this.stationOptions = options;
     }
