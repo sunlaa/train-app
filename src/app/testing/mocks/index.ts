@@ -1,6 +1,5 @@
 export { default as MockNotificationService } from './mock-notification';
 export { default as MockAuthService } from './auth.mock';
-export { default as MockOrdersFacade } from './mock-orders-facade';
 export { default as MockUsersService } from './mock-user';
 export { default as MockStationsSection } from './mock-stations-section';
 export { default as MockCarriagesSection } from './mock-carriages-section';
@@ -12,3 +11,4 @@ export * from './search';
 export * from './stations';
 export * from './carriages';
 export * from './routes';
+export * from './orders';

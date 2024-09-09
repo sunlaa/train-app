@@ -88,21 +88,24 @@ describe('CarriagesFacadeService', () => {
     expect(service.carriageMap()).toEqual(mockCarriageMap);
   });
 
-  it('should return state$ observable from store', () => {
+  it('should return state$ observable from store', (done) => {
     service.state$.subscribe((state) => {
       expect(state).toEqual(mockCarriagesState);
+      done();
     });
   });
 
-  it('should return carriages$ observable from store', () => {
+  it('should return carriages$ observable from store', (done) => {
     service.carriages$.subscribe((carriages) => {
       expect(carriages).toEqual(mockCarriagesState.carriages);
+      done();
     });
   });
 
-  it('should return carriageMap$ observable from store', () => {
+  it('should return carriageMap$ observable from store', (done) => {
     service.carriageMap$.subscribe((carriageMap) => {
       expect(carriageMap).toEqual(mockCarriageMap);
+      done();
     });
   });
 });
