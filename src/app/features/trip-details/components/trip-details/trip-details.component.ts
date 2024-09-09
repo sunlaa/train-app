@@ -73,12 +73,6 @@ export class TripDetailsComponent implements OnInit {
 
   private profileFacade = inject(ProfileFacadeService);
 
-  // private routeParams: {
-  //   rideId: number | null;
-  //   fromId: number | null;
-  //   toId: number | null;
-  // } = { rideId: null, fromId: null, toId: null };
-
   private rideId: number | null = null;
 
   private fromId: number | null = null;
