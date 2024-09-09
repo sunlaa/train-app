@@ -1,15 +1,7 @@
-import { MakeOrderBody } from '@/core/models/orders.model';
-
 export default class MockOrdersFacade {
-  load(all?: boolean) {
-    return all;
-  }
+  load() {}
 
-  makeOrder(order: MakeOrderBody) {
-    return order;
-  }
+  makeOrder() {}
 
-  cancelOrder(id: number) {
-    return id;
-  }
+  cancelOrder() {}
 }
