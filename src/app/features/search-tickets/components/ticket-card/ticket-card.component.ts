@@ -7,7 +7,7 @@ import { DividerModule } from 'primeng/divider';
 import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { DurationPipe } from '../../pipes/duration.pipe';
+import { DurationPipe } from '../../../../shared/pipes/duration.pipe';
 import { RideModalComponent } from '../../../../shared/components/ride-modal/ride-modal.component';
 
 @Component({

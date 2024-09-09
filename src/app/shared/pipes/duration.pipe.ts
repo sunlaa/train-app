@@ -24,7 +24,7 @@ export class DurationPipe implements PipeTransform {
         if (days > 0 || hours > 0) {
           result += `${hours}h `;
         }
-        if (days > 0 || hours > 0 || minutes > 0) {
+        if (days > 0 || hours > 0 || minutes >= 0) {
           result += `${minutes}m`;
         }
         break;
@@ -48,7 +48,6 @@ export class DurationPipe implements PipeTransform {
         break;
       }
       default:
-        result = 'Invalid format';
         break;
     }
 

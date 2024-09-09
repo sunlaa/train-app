@@ -57,15 +57,17 @@ describe('RoutesFacadeService', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(routesActions.delete({ id }));
   });
 
-  it('should return state$ observable from store', () => {
+  it('should return state$ observable from store', (done) => {
     service.state$.subscribe((state) => {
       expect(state).toEqual(mockRoutesState);
+      done();
     });
   });
 
-  it('should return routes$ observable from store', () => {
+  it('should return routes$ observable from store', (done) => {
     service.routes$.subscribe((routes) => {
       expect(routes).toEqual(mockRoutesState.routes);
+      done();
     });
   });
 });
