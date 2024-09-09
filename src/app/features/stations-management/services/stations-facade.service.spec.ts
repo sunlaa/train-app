@@ -77,21 +77,24 @@ describe('StationsFacadeService', () => {
     expect(service.stationMap()).toEqual(mockStationMap);
   });
 
-  it('should return state$ observable from store', () => {
+  it('should return state$ observable from store', (done) => {
     service.state$.subscribe((state) => {
       expect(state).toEqual(mockStationsState);
+      done();
     });
   });
 
-  it('should return stations$ observable from store', () => {
+  it('should return stations$ observable from store', (done) => {
     service.stations$.subscribe((stations) => {
       expect(stations).toEqual(mockStationsState.stations);
+      done();
     });
   });
 
-  it('should return stationsMap$ observable from store', () => {
+  it('should return stationsMap$ observable from store', (done) => {
     service.stationsMap$.subscribe((stationMap) => {
       expect(stationMap).toEqual(mockStationMap);
+      done();
     });
   });
 });
