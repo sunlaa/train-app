@@ -68,15 +68,17 @@ describe('RidesFacadeService', () => {
     );
   });
 
-  it('should return state$ observable from store', () => {
+  it('should return state$ observable from store', (done) => {
     service.state$.subscribe((state) => {
       expect(state).toEqual(mockRoutesState);
+      done();
     });
   });
 
-  it('should return routes$ observable from store', () => {
+  it('should return route$ observable from store', (done) => {
     service.route$.subscribe((route) => {
       expect(route).toEqual(mockRoutesState.route);
+      done();
     });
   });
 });
