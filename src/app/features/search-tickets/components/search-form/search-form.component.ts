@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { map, Subject, take, takeUntil } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 import {
   AutoCompleteCompleteEvent,
   AutoCompleteModule,
@@ -18,7 +18,6 @@ import { DestroyService } from '@/core/services/destroy/destroy.service';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { SearchRequest, SearchStation } from '@/core/models/search.model';
 import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
-import { CityApiService } from '../../services/city-api/city-api.service';
 import { setTime, uniqueStations } from '../../utils';
 
 @Component({
@@ -44,8 +43,6 @@ export class SearchFormComponent implements OnInit {
   private stationsFacade = inject(StationsFacadeService);
 
   private searchFacade = inject(SearchFacadeService);
-
-  public cityApiService = inject(CityApiService);
 
   public options: SearchStation[] = [];
 
@@ -115,22 +112,15 @@ export class SearchFormComponent implements OnInit {
   public getStations(event: AutoCompleteCompleteEvent) {
     const { query } = event;
 
-    this.cityApiService
-      .searchCity(query)
-      .pipe(take(1))
-      .subscribe((apiStations) => {
-        const options = [...this.stations, ...apiStations];
+    const filtered: SearchStation[] = [];
 
-        const filtered: SearchStation[] = [];
+    this.stations.forEach((opt) => {
+      if (opt.city.toLowerCase().includes(query.toLowerCase())) {
+        filtered.push(opt);
+      }
+    });
 
-        options.forEach((opt) => {
-          if (opt.city.toLowerCase().includes(query.toLowerCase())) {
-            filtered.push(opt);
-          }
-        });
-
-        this.options = uniqueStations(...filtered);
-      });
+    this.options = uniqueStations(...filtered);
   }
 
   public search() {

@@ -6,7 +6,6 @@
   <label for="date">Date/Time:</label>
 
   <p-autoComplete
-    [delay]="500"
     class="autocomplete"
     styleClass="from"
     inputStyleClass="from"
@@ -22,7 +21,6 @@
   <i class="pi pi-arrows-h"></i>
 
   <p-autoComplete
-    [delay]="500"
     class="autocomplete"
     styleClass="to"
     inputId="to"
@@ -53,5 +51,10 @@
       [timeOnly]="true"
     />
   </div>
-  <p-button class="search" type="submit" label="Search" />
+  <p-button
+    [disabled]="searchForm.invalid"
+    class="search"
+    type="submit"
+    label="Search"
+  />
 </form>
