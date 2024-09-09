@@ -6,6 +6,7 @@ import { StationConnectionsService } from './station-connections.service';
 
 describe('StationConnectionsService', () => {
   let service: StationConnectionsService;
+  let facade: MockStationsFacade;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -14,6 +15,9 @@ describe('StationConnectionsService', () => {
       ],
     });
     service = TestBed.inject(StationConnectionsService);
+    facade = TestBed.inject(
+      StationsFacadeService,
+    ) as unknown as MockStationsFacade;
   });
 
   it('should be created', () => {
@@ -22,10 +26,12 @@ describe('StationConnectionsService', () => {
 
   it('should initialize with stations', () => {
     const mockLength = MockStationsData.listedStations.length;
+    facade.setStations(MockStationsData.listedStations);
     expect(service.stations.length).toBe(mockLength);
   });
 
   it('should connect a station', () => {
+    facade.setStations(MockStationsData.listedStations);
     const mockLength = MockStationsData.listedStations.length;
     const stationId = 1;
     service.connectStation(stationId);
@@ -34,6 +40,7 @@ describe('StationConnectionsService', () => {
   });
 
   it('should disconnect a station', () => {
+    facade.setStations(MockStationsData.listedStations);
     const mockLength = MockStationsData.listedStations.length;
     const stationId = 1;
     service.connectStation(stationId);
@@ -43,6 +50,7 @@ describe('StationConnectionsService', () => {
   });
 
   it('should reconnect a station', () => {
+    facade.setStations(MockStationsData.listedStations);
     const mockLength = MockStationsData.listedStations.length;
     const connectId = 1;
     const reconnectId = 2;
@@ -53,6 +61,7 @@ describe('StationConnectionsService', () => {
   });
 
   it('should reset connections', () => {
+    facade.setStations(MockStationsData.listedStations);
     const mockLength = MockStationsData.listedStations.length;
     const stationId = 1;
     service.connectStation(stationId);
@@ -62,6 +71,7 @@ describe('StationConnectionsService', () => {
   });
 
   it('should update station options correctly', () => {
+    facade.setStations(MockStationsData.listedStations);
     service.connectStation(1);
     const options = service.stationOptions;
     expect(options.length).toBe(2);

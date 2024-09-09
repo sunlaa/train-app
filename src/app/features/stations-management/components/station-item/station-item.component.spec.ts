@@ -51,6 +51,7 @@ describe('StationItemComponent', () => {
   });
 
   it('should display connected stations', () => {
+    facade.setStations(MockStationsData.listedStations);
     fixture.detectChanges();
     const connectedStationsText = fixture.nativeElement
       .querySelector('.stations')
