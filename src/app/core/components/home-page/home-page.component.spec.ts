@@ -6,8 +6,8 @@ import {
   MockSearchFacade,
   MockStationsFacade,
 } from '@/testing/mocks';
-import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
-import { CityApiService } from '../../services/city-api/city-api.service';
+import { SearchFacadeService } from '../../../features/search-tickets/services/search-facade/search-facade.service';
+import { CityApiService } from '../../../features/search-tickets/services/city-api/city-api.service';
 
 import { HomePageComponent } from './home-page.component';
 

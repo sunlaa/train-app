@@ -1,6 +1,6 @@
 import { Component, inject, Input, OnChanges } from '@angular/core';
 import { CardModule } from 'primeng/card';
-import { DurationPipe } from '@/features/search-tickets/pipes/duration.pipe';
+import { DurationPipe } from '@/shared/pipes/duration.pipe';
 import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
