@@ -3,8 +3,13 @@ import { of } from 'rxjs';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { CarriagesFacadeService } from '@/features/carriages-management/services/carriages-facade.service';
+import {
+  mockParamMap,
+  mockQueryParamMap,
+  mockTripPageData,
+} from '@/testing/mocks/trip';
 import { AuthService } from '@/features/auth/services/auth.service';
-import { RidePageData, SeatEventData } from '@/core/models/trip.model';
+import { SeatEventData } from '@/core/models/trip.model';
 import { signal } from '@angular/core';
 import {
   MockAuthService,
@@ -24,31 +29,6 @@ import { ProfileFacadeService } from '@/features/profile/services/profile-facade
 import { TripDetailsService } from '../../services/trip-details/trip.service';
 
 import { TripDetailsComponent } from './trip-details.component';
-
-const mockTripPageData: RidePageData = {
-  carriages: ['carriage1', 'carriage2'],
-  carriageMap: mockCarriageMap,
-  header: {
-    routeId: 222,
-    rideId: 1,
-    departureDate: 1234567,
-    arrivalDate: 234567,
-    stopInfo: [],
-  },
-  carriageList: [],
-};
-
-const mockParamMap = {
-  get: () => '1',
-};
-
-const mockQueryParamMap = {
-  get: (key: string) => {
-    if (key === 'from') return '2';
-    if (key === 'to') return '4';
-    return undefined;
-  },
-};
 
 describe('TripDetailsComponent', () => {
   let component: TripDetailsComponent;
