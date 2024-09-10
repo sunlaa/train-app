@@ -1,15 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { of } from 'rxjs';
-import {
-  MockCityApi,
-  MockSearchFacade,
-  MockStationsFacade,
-} from '@/testing/mocks';
+import { MockSearchFacade, MockStationsFacade } from '@/testing/mocks';
 import { MessageService } from 'primeng/api';
 import { StationsFacadeService } from '@/features/stations-management/services/stations-facade.service';
 import { SearchFacadeService } from '../../services/search-facade/search-facade.service';
-import { CityApiService } from '../../services/city-api/city-api.service';
 
 import { SearchFormComponent } from './search-form.component';
 
@@ -17,7 +12,6 @@ describe('SearchFormComponent', () => {
   let component: SearchFormComponent;
   let fixture: ComponentFixture<SearchFormComponent>;
   let stationsFacade: StationsFacadeService;
-  let apiService: CityApiService;
   let searchFacade: SearchFacadeService;
 
   beforeEach(async () => {
@@ -33,10 +27,6 @@ describe('SearchFormComponent', () => {
           provide: StationsFacadeService,
           useClass: MockStationsFacade,
         },
-        {
-          provide: CityApiService,
-          useClass: MockCityApi,
-        },
       ],
     }).compileComponents();
 
@@ -44,7 +34,6 @@ describe('SearchFormComponent', () => {
     component = fixture.componentInstance;
 
     stationsFacade = TestBed.inject(StationsFacadeService);
-    apiService = TestBed.inject(CityApiService);
     searchFacade = TestBed.inject(SearchFacadeService);
 
     fixture.detectChanges();
@@ -98,23 +87,13 @@ describe('SearchFormComponent', () => {
       { city: 'Paris', latitude: 1, longitude: 1 },
     ];
 
-    const apiStations = [
-      { city: 'London', latitude: 1, longitude: 1 },
-      { city: 'Berlin', latitude: 1, longitude: 1 },
-    ];
-
     // @ts-expect-error to test private method
     component.stations = existingStations;
 
-    jest.spyOn(apiService, 'searchCity').mockReturnValue(of(apiStations));
-
     component.getStations(event);
-
-    expect(apiService.searchCity).toHaveBeenCalledWith('lon');
 
     expect(component.options).toEqual([
       { city: 'Loneliness', latitude: 1, longitude: 1 },
-      { city: 'London', latitude: 1, longitude: 1 },
     ]);
   });
 
