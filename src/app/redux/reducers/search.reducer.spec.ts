@@ -103,7 +103,7 @@ describe('SearchReducer', () => {
     });
   });
 
-  it('should set error and status when searchError action is dispatched', () => {
+  it('should set APIError object and status when searchError action is dispatched', () => {
     const error = new HttpErrorResponse({ error: genericApiError });
 
     const state = searchFeature.reducer(
@@ -114,6 +114,21 @@ describe('SearchReducer', () => {
     expect(state).toEqual({
       ...initialState,
       error: genericApiError,
+      status: 'error',
+    });
+  });
+
+  it('should set Error object and status when searchError action is dispatched', () => {
+    const error = new Error('Huh?');
+
+    const state = searchFeature.reducer(
+      initialState,
+      searchActions.searchError({ error }),
+    );
+
+    expect(state).toEqual({
+      ...initialState,
+      error,
       status: 'error',
     });
   });
