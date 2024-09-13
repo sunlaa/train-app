@@ -7,11 +7,11 @@ import { RoutesPageComponent } from './features/routes-management/components/rou
 import { RidesPageComponent } from './features/rides-management/components/rides-page/rides-page.component';
 import { TripDetailsComponent } from './features/trip-details/components/trip-details/trip-details.component';
 import { tripQueryGuard } from './core/guards/trip/trip-query.guard';
-import { signupGuard } from './features/auth/guards/signup.guard';
-import { profileGuard } from './features/profile/guards/profile.guard';
+import { signupGuard } from './core/guards/signup/signup.guard';
+import { profileGuard } from './core/guards/profile/profile.guard';
 import { OrdersPageComponent } from './features/orders/components/orders-page/orders-page.component';
-import { notGuestGuard } from './features/auth/guards/not-guest.guard';
-import { adminGuard } from './features/auth/guards/admin.guard';
+import { notGuestGuard } from './core/guards/not-guest/not-guest.guard';
+import { adminGuard } from './core/guards/admin/admin.guard';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { NotAuthorizedComponent } from './core/components/not-authorized/not-authorized.component';
 
