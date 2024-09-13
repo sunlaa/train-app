@@ -12,7 +12,6 @@ import { provideRouterStore } from '@ngrx/router-store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
-import { tokenInterceptor } from './features/auth/interceptors/token.interceptor';
 import {
   CarriagesEffects,
   StationsEffects,
@@ -31,6 +30,7 @@ import { searchFeature } from './redux/reducers/search.reducer';
 import { SearchEffects } from './redux/effects/search.effects';
 import { ordersFeature } from './redux/reducers/orders.reducer';
 import { OrdersEffects } from './redux/effects/orders.effects';
+import { tokenInterceptor } from './core/interceptors/token.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

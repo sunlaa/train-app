@@ -8,13 +8,13 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../../features/auth/services/auth.service';
 
-import { notGuestGuard } from './not-guest.guard';
+import { signupGuard } from './signup.guard';
 
-describe('notGuestGuard', () => {
+describe('signupGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) =>
-    TestBed.runInInjectionContext(() => notGuestGuard(...guardParameters));
+    TestBed.runInInjectionContext(() => signupGuard(...guardParameters));
 
   const route = {} as ActivatedRouteSnapshot;
   const state = {} as RouterStateSnapshot;
@@ -38,9 +38,9 @@ describe('notGuestGuard', () => {
     expect(executeGuard).toBeTruthy();
   });
 
-  it("should allow access and don't navigate for non quests", () => {
+  it("should allow access and don't navigate for quests", () => {
     Object.defineProperty(authService, 'userToken', {
-      get: () => 'token',
+      get: () => null,
     });
     const routerSpy = jest.spyOn(router, 'navigate');
 
@@ -50,9 +50,9 @@ describe('notGuestGuard', () => {
     expect(routerSpy).not.toHaveBeenCalled();
   });
 
-  it('should deny access and navigate for quests', () => {
+  it('should deny access and navigate for non quests', () => {
     Object.defineProperty(authService, 'userToken', {
-      get: () => null,
+      get: () => 'token',
     });
 
     const routerSpy = jest.spyOn(router, 'navigate');
