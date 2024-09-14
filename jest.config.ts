@@ -14,6 +14,7 @@ const config: Config = {
     '!src/app/testing/**',
     '!src/app/app.config.ts',
     '!src/app/app.routes.ts',
+    '!src/app/**/index.ts',
   ],
   transform: {
     '^.+\\.(ts|html)$': [
