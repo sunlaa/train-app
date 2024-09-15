@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { AuthService } from '@/features/auth/services/auth.service';
 import {
   HttpTestingController,
   provideHttpClientTesting,
@@ -8,7 +9,6 @@ import {
   provideHttpClient,
   withInterceptors,
 } from '@angular/common/http';
-import { AuthService } from '../services/auth.service';
 import { tokenInterceptor } from './token.interceptor';
 
 describe('TokenInterceptor', () => {

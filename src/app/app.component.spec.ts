@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ProfileFacadeService } from './features/profile/services/profile-facade.service';
 import { MockProfileFacade } from './testing/mocks';
@@ -9,6 +10,7 @@ describe('AppComponent', () => {
       imports: [AppComponent],
       providers: [
         { provide: ProfileFacadeService, useClass: MockProfileFacade },
+        provideRouter([]),
       ],
     }).compileComponents();
   });
