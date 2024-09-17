@@ -1,0 +1,148 @@
+@switch (status$ | async) {
+  @case ("loading") {
+    <p-progressSpinner styleClass="profile-loader"></p-progressSpinner>
+  }
+  @case ("not-loaded") {
+    <p>Cannot Load Profile</p>
+    <p-button [routerLink]="'/'">Main Page</p-button>
+  }
+  @default {
+    <p-toast />
+    <div class="container">
+      <div class="profile__info">
+        <div>
+          @let name = profile.name;
+          @let email = profile.email;
+
+          <p-avatar
+            [label]="name?.[0] || email?.[0] || 'P'"
+            styleClass="mr-2"
+            size="xlarge"
+            shape="circle"
+          />
+        </div>
+
+        <div class="user-info">
+          @if (isManager) {
+            <b>Manager</b>
+          }
+          <p-button
+            [link]="true"
+            severity="secondary"
+            (onClick)="showModalDialog()"
+            >Change Password</p-button
+          >
+        </div>
+      </div>
+
+      @for (editableField of ["name", "email"]; track editableField) {
+        <ng-container
+          *ngTemplateOutlet="
+            formField;
+            context: { $implicit: getContext(editableField) }
+          "
+        ></ng-container>
+      }
+
+      <p-button severity="danger" class="profile__logout" (onClick)="logout()"
+        >Logout</p-button
+      >
+      <p-dialog
+        [breakpoints]="{ '685px': '80vw' }"
+        [style]="{ width: '40vw' }"
+        header="Change Password"
+        [(visible)]="isModalVisible"
+        [modal]="true"
+        [draggable]="false"
+        [dismissableMask]="true"
+      >
+        <div class="dialog__body">
+          <div class="field__data">
+            <span class="new-password">New password</span>
+            <p-password
+              id="password"
+              styleClass="password-cont"
+              feedback="false"
+              [formControl]="password"
+            />
+            @if (password.invalid && (password.touched || password.dirty)) {
+              @if (password.hasError("required")) {
+                <small class="error" id="password">
+                  You need to enter the password.
+                </small>
+              }
+
+              @if (password.hasError("minlength")) {
+                <small class="error" id="password">
+                  The minimum password length is 8 characters.
+                </small>
+              }
+            }
+          </div>
+          <p-button
+            class="dialog__save"
+            (onClick)="updatePassword()"
+            [disabled]="!password.valid"
+            >Save</p-button
+          >
+        </div>
+      </p-dialog>
+    </div>
+  }
+}
+
+<ng-template #field let-context>
+  @if (context?.isEditMode) {
+    <input pInputText id="name" [formControl]="context.control" />
+    @if (
+      context.control.invalid &&
+      (context.control.touched || context.control.dirty)
+    ) {
+      @if (context.control.hasError("required")) {
+        <small class="error"> You need to fill in the field. </small>
+      }
+
+      @if (context.control.hasError("pattern")) {
+        <small class="error"> Incorrect email. </small>
+      }
+    }
+  } @else {
+    <span class="identifiers">{{ context?.field || "-" }}</span>
+  }
+</ng-template>
+
+<ng-template #formField let-context>
+  <div class="profile__field">
+    <div class="field__data">
+      <span class="identifiers-title">{{ context.title }}:</span>
+      <ng-container
+        *ngTemplateOutlet="
+          field;
+          context: {
+            $implicit: {
+              field: context.field,
+              control: context.control,
+              isEditMode: context.isEditMode,
+            },
+          }
+        "
+      ></ng-container>
+    </div>
+    <div class="field__action">
+      @if (!context.isEditMode) {
+        <p-button
+          severity="secondary"
+          icon="pi pi-pencil"
+          (onClick)="context.onEdit()"
+        ></p-button>
+      } @else {
+        <p-button
+          severity="secondary"
+          [disabled]="!context.control.valid"
+          icon="pi pi-save"
+          (onClick)="onSave()"
+        ></p-button>
+      }
+    </div>
+  </div>
+</ng-template>

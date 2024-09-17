@@ -1,0 +1,60 @@
+<p-card>
+  <p-tag [severity]="tagSeverity" [value]="order.status | titlecase"></p-tag>
+  @if (!!isAdmin && order.owner) {
+    <div class="info-box">
+      <b>Owner:</b>
+      <span class="limit-width">{{ order.owner }}</span>
+    </div>
+  }
+  <div class="path">
+    <div class="point">
+      <h4>Arrival</h4>
+      <p class="date">
+        {{ order.startTripTime | date: "MMMM dd, hh:mm" : "UTC" }}
+      </p>
+      <p class="city">{{ order.startCity }}</p>
+    </div>
+
+    <p-divider align="center" type="solid" class="path-divider">
+      <b class="duration">{{ order.tripDuration | duration: "hm" }}</b>
+    </p-divider>
+
+    <div class="point">
+      <h4>Departure</h4>
+      <p class="date">
+        {{ order.endTripTime | date: "MMMM dd, hh:mm" : "UTC" }}
+      </p>
+      <p class="city">{{ order.endCity }}</p>
+    </div>
+  </div>
+
+  <div class="info-box highlighted">
+    <h3>Total:</h3>
+    <div class="info-box">
+      <i>Carriage type:</i>
+      <span class="limit-width total-data">{{ order.carriageType }}</span>
+    </div>
+    <div class="info-box">
+      <i>Car number:</i>
+      <span class="total-data">{{ order.carNumber }}</span>
+    </div>
+    <div class="info-box">
+      <i>Seat number:</i>
+      <span class="total-data">{{ order.seatNumber }}</span>
+    </div>
+    <div class="info-box">
+      <p class="price-title">Price:</p>
+      <span class="limit-width total-price">{{
+        order.price | currency: "USD"
+      }}</span>
+    </div>
+  </div>
+  @if (order.status === "active") {
+    <p-button
+      severity="danger"
+      (onClick)="cancel($event)"
+      label="Cancel"
+      class="cancel-btn"
+    ></p-button>
+  }
+</p-card>

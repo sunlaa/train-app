@@ -1,0 +1,48 @@
+@let filteredTickets = tickets$ | async;
+@let isLoading = isLoading$ | async;
+@let status = status$ | async;
+
+@if (isLoading) {
+  <p-progressSpinner
+    ariaLabel="loading"
+    strokeWidth="3"
+    styleClass="results-loader"
+  />
+} @else {
+  @if (filteredTickets && filteredTickets.length > 0) {
+    <p-tabView [scrollable]="true" [activeIndex]="0" class="search-results">
+      @for (dayTickets of filteredTickets; track dayTickets.date) {
+        @let ticketsCount = dayTickets.tickets.length;
+        <p-tabPanel>
+          <ng-template pTemplate="header">
+            @if (ticketsCount !== 0) {
+              <p-badge
+                styleClass="badge"
+                [value]="ticketsCount"
+                severity="secondary"
+              />
+            }
+            <div class="tab">
+              <h3>{{ dayTickets.date | date: "MMMM dd" : "UTC" }}</h3>
+              <p>{{ dayTickets.date | date: "EEEE" : "UTC" }}</p>
+            </div>
+          </ng-template>
+          @if (ticketsCount === 0) {
+            <h2 class="message">No rides available.</h2>
+          } @else {
+            @for (ticket of dayTickets.tickets; track $index) {
+              <app-ticket-card [ticket]="ticket"></app-ticket-card>
+            }
+          }
+        </p-tabPanel>
+      }
+    </p-tabView>
+  } @else {
+    @if (status) {
+      <div class="no-routes">
+        <h3>Unfortunately, we didn't find any routes.</h3>
+        <p>Try another date or city.</p>
+      </div>
+    }
+  }
+}

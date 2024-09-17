@@ -1,0 +1,31 @@
+<p-panel
+  class="panel"
+  header="Ride {{ rideId }}"
+  [toggleable]="true"
+  [collapsed]="true"
+  toggler="header"
+>
+  <ng-template pTemplate="icons">
+    @if (canDelete) {
+      <button class="p-panel-header-icon" (click)="deleteClick($event)">
+        <span class="pi pi-trash"></span>
+      </button>
+    }
+  </ng-template>
+  @for (segment of segments; track $index) {
+    @if (isStationSegmentData(segment)) {
+      <h4 class="grid-item name">{{ segment.name }}</h4>
+      <app-station-segment
+        (dateChange)="dateChangeEvent($event)"
+        class="grid-item station"
+        [segmentData]="segment"
+      ></app-station-segment>
+    } @else {
+      <app-price-segment
+        (priceChange)="priceChangeEvent($event)"
+        class="grid-item price"
+        [segmentData]="segment"
+      ></app-price-segment>
+    }
+  }
+</p-panel>

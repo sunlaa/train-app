@@ -1,0 +1,68 @@
+::ng-deep {
+  .panel > .p-panel > {
+    .p-panel-header {
+      cursor: pointer;
+    }
+    .p-toggleable-content > .p-panel-content {
+      width: 100%;
+      display: grid;
+      grid-template-columns: min-content 1fr auto;
+      align-items: center;
+      gap: 1em;
+    }
+  }
+}
+
+h4 {
+  margin: 0;
+}
+
+.name {
+  grid-column: 1;
+}
+
+.station {
+  padding: 1em;
+  width: 90%;
+  grid-column: 2;
+  border: solid 1px;
+  border-color: var(--surface-border);
+  border-radius: var(--border-radius);
+}
+
+.price {
+  grid-column: 1 / span 4;
+  justify-self: end;
+  padding: 1em;
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  background-color: color-mix(
+    in srgb,
+    var(--primary-color) 3%,
+    transparent 95%
+  );
+}
+
+@media screen and (max-width: 768px) {
+  .station {
+    grid-column: 2 / span 3;
+
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  ::ng-deep {
+    .panel > .p-panel > {
+      .p-toggleable-content > .p-panel-content {
+        grid-template-columns: auto;
+        justify-content: center;
+      }
+    }
+  }
+
+  .station,
+  .price {
+    grid-column: 1;
+  }
+}

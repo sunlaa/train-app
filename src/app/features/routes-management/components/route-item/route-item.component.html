@@ -1,0 +1,48 @@
+<p-panel class="panel" [header]="id">
+  <ng-template pTemplate="icons">
+    <button
+      (click)="editClick()"
+      pTooltip="Update"
+      tooltipPosition="bottom"
+      class="p-panel-header-icon"
+    >
+      <span class="pi pi-pen-to-square"></span>
+    </button>
+    <button
+      (click)="assignRideClick()"
+      pTooltip="Assign ride"
+      tooltipPosition="bottom"
+      class="p-panel-header-icon"
+    >
+      <span class="pi pi-calendar-clock"></span>
+    </button>
+    <button
+      (click)="deleteClick($event)"
+      pTooltip="Delete"
+      tooltipPosition="bottom"
+      class="p-panel-header-icon"
+    >
+      <span class="pi pi-trash"></span>
+    </button>
+  </ng-template>
+  <div class="info-section">
+    <h3>Cities</h3>
+    @if (stations && stations.length) {
+      <p>
+        {{ stations }}
+      </p>
+    } @else {
+      <p-skeleton height="3rem" />
+    }
+  </div>
+  <div class="info-section">
+    <h3>Carriages</h3>
+    @if (carriages && carriages.length) {
+      <p>
+        {{ carriages }}
+      </p>
+    } @else {
+      <p-skeleton height="3rem" />
+    }
+  </div>
+</p-panel>

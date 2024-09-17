@@ -1,0 +1,40 @@
+<div class="heading">
+  <h4>Price</h4>
+  @if (editMode) {
+    <p-button
+      (onClick)="saveClick()"
+      icon="pi pi-save"
+      [rounded]="true"
+      [text]="true"
+    />
+  } @else {
+    <p-button
+      (onClick)="editClick()"
+      icon="pi pi-pen-to-square"
+      [rounded]="true"
+      [text]="true"
+    />
+  }
+</div>
+<form [formGroup]="priceForm">
+  <div formArrayName="prices" class="prices">
+    @for (priceData of carriagePrices; track priceData.carriage) {
+      <div class="price-data">
+        <i class="carriage">{{ priceData.carriage }}:</i>
+        @if (editMode) {
+          <p-inputNumber
+            [formControlName]="$index"
+            inputId="currency-us"
+            mode="currency"
+            currency="USD"
+            locale="en-US"
+            [min]="0"
+            class="price-input"
+          />
+        } @else {
+          <span class="price">{{ priceData.price | currency: "USD" }}</span>
+        }
+      </div>
+    }
+  </div>
+</form>

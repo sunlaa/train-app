@@ -1,0 +1,72 @@
+<app-map
+  [mainStation]="mainStation"
+  [connectedStations]="connectedStations"
+  [disconnectedStations]="disconnectedStations"
+  (mapClick)="mapClick($event)"
+  (connect)="connect($event)"
+  (disconnect)="disconnect($event)"
+></app-map>
+<form [formGroup]="stationForm">
+  <div [formGroup]="stationForm.controls.mapData" class="map-data">
+    <div class="input-box">
+      <label for="name">City name</label>
+      <input pInputText formControlName="name" id="name" />
+    </div>
+    <div class="input-box">
+      <label for="latitude">Latitude</label>
+      <p-inputNumber
+        inputId="latitude"
+        mode="decimal"
+        formControlName="latitude"
+        [maxFractionDigits]="7"
+        [min]="-90"
+        [max]="90"
+      />
+    </div>
+    <div class="input-box">
+      <label for="longitude">Longitude</label>
+      <p-inputNumber
+        inputId="longitude"
+        mode="decimal"
+        formControlName="longitude"
+        [maxFractionDigits]="7"
+        [min]="-180"
+        [max]="180"
+      />
+    </div>
+  </div>
+  <div class="connections-wrapper">
+    <p>Connected</p>
+    <div formArrayName="connections" class="connections">
+      @for (
+        connection of connections.controls;
+        track trackStation(connection.value, $index)
+      ) {
+        <div class="connection-box">
+          <p-dropdown
+            [options]="options[$index]"
+            [formControlName]="$index"
+            placeholder="Select a station"
+            (onChange)="connectionChange($event.value, $index)"
+            class="dropdown"
+          ></p-dropdown>
+          @if (connections.length > 1 && !$last) {
+            <p-button
+              (onClick)="removeConnection($index)"
+              icon="pi pi-times"
+              class="remove-dropdown"
+              severity="danger"
+            ></p-button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+  <p-button
+    label="Save"
+    icon="pi pi-check"
+    class="save"
+    (onClick)="submitForm()"
+    [disabled]="buttonDisabled$ | async"
+  ></p-button>
+</form>

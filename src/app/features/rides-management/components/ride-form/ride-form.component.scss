@@ -1,0 +1,122 @@
+:host {
+  ::ng-deep {
+    .p-inputnumber {
+      width: 100%;
+      max-width: 250px;
+
+      .p-inputnumber-input {
+        width: 100%;
+      }
+    }
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  border-radius: var(--border-radius);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  padding: 1em 0.5em;
+}
+
+p,
+h4 {
+  margin: 0;
+}
+
+.buttons {
+  align-self: center;
+  display: flex;
+  gap: 0.5em;
+}
+
+.ride {
+  display: grid;
+  grid-template-columns: min-content 1fr auto;
+  align-items: center;
+  gap: 1em;
+
+  .name {
+    grid-column: 1;
+  }
+
+  .station {
+    padding: 1em;
+    width: 90%;
+    grid-column: 2;
+    border: solid 1px;
+    border-color: var(--surface-border);
+    border-radius: var(--border-radius);
+
+    .dates {
+      grid-column: 2 / span 2;
+      gap: 0.25em;
+
+      .date-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        flex-wrap: wrap;
+      }
+
+      .time-text {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .price {
+    grid-column: 1 / span 3;
+    justify-self: end;
+    padding: 1em;
+    border-bottom: 1px solid #e2e8f0;
+    border-radius: var(--border-radius);
+    background-color: color-mix(
+      in srgb,
+      var(--primary-color) 3%,
+      transparent 95%
+    );
+
+    .prices {
+      display: flex;
+      gap: 0.5em;
+      flex-direction: column;
+
+      .price-data {
+        display: flex;
+        gap: 0.5em;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .price {
+          text-align: end;
+        }
+
+        .carriage {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .station {
+      grid-column: 2 / span 3;
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    grid-template-columns: auto;
+    justify-content: center;
+
+    .station,
+    .price {
+      grid-column: 1;
+    }
+  }
+}

@@ -1,0 +1,53 @@
+<form [formGroup]="dateForm">
+  @if (editMode) {
+    <p-button
+      (onClick)="saveClick()"
+      icon=" pi pi-save"
+      [rounded]="true"
+      [text]="true"
+      class="edit-btn"
+    />
+  } @else {
+    <p-button
+      (onClick)="editClick()"
+      icon=" pi pi-pen-to-square"
+      [rounded]="true"
+      [text]="true"
+      class="edit-btn"
+    />
+  }
+  <div class="dates">
+    @if (segmentData.arrival) {
+      <div class="date-wrapper">
+        <span class="time-text">Arrival: </span>
+        @if (editMode) {
+          <p-calendar
+            formControlName="arrival"
+            [showTime]="true"
+            hourFormat="24"
+          />
+        } @else {
+          <span>{{
+            segmentData.arrival.time | date: "M/d/yy HH:mm" : "UTC"
+          }}</span>
+        }
+      </div>
+    }
+    @if (segmentData.departure) {
+      <div class="date-wrapper">
+        <span class="time-text">Departure: </span>
+        @if (editMode) {
+          <p-calendar
+            formControlName="departure"
+            [showTime]="true"
+            hourFormat="24"
+          />
+        } @else {
+          <span>{{
+            segmentData.departure.time | date: "M/d/yy HH:mm" : "UTC"
+          }}</span>
+        }
+      </div>
+    }
+  </div>
+</form>

@@ -1,0 +1,11 @@
+:host {
+  ::ng-deep {
+    .p-panel-content {
+      overflow: scroll;
+    }
+  }
+}
+
+.preview {
+  pointer-events: none;
+}

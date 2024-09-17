@@ -1,0 +1,33 @@
+:host {
+  flex: 1;
+  width: 100%;
+  display: flex;
+}
+
+::ng-deep {
+  .p-menuitem-link-active {
+    background-color: color-mix(
+      in srgb,
+      var(--primary-color) 15%,
+      #00000000 85%
+    );
+    border-radius: var(--border-radius);
+  }
+}
+
+.desktop-menu {
+  flex-shrink: 0;
+  display: flex;
+}
+
+.content {
+  flex: 1;
+  padding: 1em;
+  overflow: auto;
+}
+
+@media screen and (max-width: 960px) {
+  .desktop-menu {
+    display: none;
+  }
+}

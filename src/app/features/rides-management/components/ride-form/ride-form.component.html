@@ -1,0 +1,75 @@
+<form [formGroup]="rideForm">
+  <div class="ride">
+    @for (station of stations; let stationIndex = $index; track station) {
+      <h4 class="name">{{ station.name }}</h4>
+      <div class="station" formArrayName="dates">
+        <div class="dates">
+          @if (!$first) {
+            <div class="date-wrapper">
+              <span class="time-text">Arrival: </span>
+              <p-calendar
+                [formControlName]="stationIndex * 2 - 1"
+                [showTime]="true"
+                hourFormat="24"
+              />
+            </div>
+          }
+          @if (!$last) {
+            <div class="date-wrapper">
+              <span class="time-text">Departure: </span>
+              <p-calendar
+                [formControlName]="$first ? 0 : stationIndex * 2"
+                [showTime]="true"
+                hourFormat="24"
+              />
+            </div>
+          }
+        </div>
+      </div>
+      @if (!$last) {
+        <div class="price" formArrayName="prices">
+          <div class="heading">
+            <h4>Price</h4>
+          </div>
+          <div class="prices">
+            @for (
+              carriage of carriages;
+              let carriageIndex = $index;
+              track carriage
+            ) {
+              <div class="price-data">
+                <i class="carriage">{{ carriage.name }}:</i>
+                <p-inputNumber
+                  [formControlName]="
+                    stationIndex * carriages.length + carriageIndex
+                  "
+                  inputId="currency-us"
+                  mode="currency"
+                  currency="USD"
+                  locale="en-US"
+                  [min]="0"
+                  class="price-input"
+                />
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+  <div class="buttons">
+    <p-button
+      label="Close"
+      icon="pi pi-times"
+      (onClick)="closeFormClick()"
+      [outlined]="true"
+      severity="danger"
+    ></p-button>
+    <p-button
+      label="Save"
+      icon="pi pi-check"
+      (onClick)="onSubmit()"
+      [disabled]="buttonIsDisabled$ | async"
+    ></p-button>
+  </div>
+</form>

@@ -1,0 +1,132 @@
+:host {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+::ng-deep {
+  .search-form {
+    .date-time {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+
+    .date {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .time {
+      border-left: none;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      width: 4.5em;
+    }
+  }
+}
+
+.search-form {
+  border: solid 1px;
+  border-color: var(--surface-border);
+  border-radius: var(--border-radius);
+  max-width: 1100px;
+  width: 100%;
+  padding: 1em;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  grid-template-rows: 2;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: 250;
+}
+
+label[for="to"] {
+  grid-column: 3;
+}
+
+label[for="date"] {
+  grid-column: 4 / span 3;
+}
+
+@media screen and (max-width: 900px) {
+  .search-form {
+    grid-template-columns: auto 1.5em auto;
+    justify-content: center;
+  }
+
+  label[for="from"] {
+    grid-column: 1;
+  }
+
+  label[for="to"] {
+    grid-column: 3;
+  }
+
+  label[for="date"] {
+    grid-column: 1 / span 3;
+    grid-row: 3;
+  }
+
+  .search {
+    grid-column: 1 / span 3;
+  }
+
+  .pi {
+    justify-self: center;
+  }
+
+  ::ng-deep .search-form {
+    .date-time {
+      grid-column: 1 / span 3;
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+
+      .p-calendar {
+        width: 100%;
+      }
+    }
+
+    .search button {
+      width: 100%;
+    }
+
+    .from,
+    .to {
+      width: 100%;
+      input {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .search-form {
+    grid-template-columns: 1fr;
+  }
+
+  .pi {
+    display: none;
+  }
+
+  label[for="from"],
+  label[for="to"] {
+    grid-column: 1;
+  }
+
+  label[for="date"] {
+    grid-row: 5;
+  }
+
+  ::ng-deep .search-form {
+    .autocomplete:has(.from) {
+      grid-row: 2;
+    }
+
+    .autocomplete:has(.to) {
+      grid-row: 4;
+    }
+  }
+}

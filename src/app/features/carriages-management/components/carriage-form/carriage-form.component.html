@@ -1,0 +1,70 @@
+<form [formGroup]="carriageForm">
+  @if (carriage) {
+    <h2>
+      {{ carriage.code }}
+    </h2>
+  }
+  <div class="inputs">
+    <div class="input-group">
+      <div class="input-box">
+        <label for="name">Name</label>
+        <input type="text" id="name" pInputText formControlName="name" />
+      </div>
+      <div class="input-box">
+        <label for="rows">Rows</label>
+        <p-inputNumber
+          inputId="rows"
+          formControlName="rows"
+          [max]="22"
+          [min]="1"
+        />
+      </div>
+    </div>
+    <div class="input-group">
+      <div class="input-box">
+        <label for="leftSeats">Left seats</label>
+        <p-inputNumber
+          inputId="leftSeats"
+          formControlName="leftSeats"
+          [max]="4"
+          [min]="1"
+        />
+      </div>
+      <div class="input-box">
+        <label for="rightSeats">Right seats</label>
+        <p-inputNumber
+          inputId="rightSeats"
+          formControlName="rightSeats"
+          [max]="4"
+          [min]="1"
+        />
+      </div>
+    </div>
+  </div>
+
+  <h3>Preview</h3>
+  <div class="preview-wrapper">
+    <app-carriage
+      [rows]="rows.value ?? 0"
+      [leftSeats]="leftSeats.value ?? 0"
+      [rightSeats]="rightSeats.value ?? 0"
+      class="preview"
+    ></app-carriage>
+  </div>
+
+  <div class="buttons">
+    <p-button
+      label="Close"
+      icon="pi pi-times"
+      (onClick)="closeFormClick()"
+      [outlined]="true"
+      severity="danger"
+    ></p-button>
+    <p-button
+      [label]="carriage ? 'Update' : 'Save'"
+      icon="pi pi-check"
+      (onClick)="onSubmit()"
+      [disabled]="buttonIsDisabled$ | async"
+    ></p-button>
+  </div>
+</form>

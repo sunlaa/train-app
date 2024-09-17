@@ -27,6 +27,64 @@ Developers:
   - [NgRx](https://ngrx.io/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [SCSS](https://sass-lang.com/)
-- [PrimeNG](https://primeng.org/)
+- [PrimeNG](https://primeng.org)
+
+### Scripts 
+
+| Script              | Description                                                                   |
+| ------------------- | ----------------------------------------------------------------------------- |
+| **`start`**         | Runs the Angular development server for local development with live reloading |
+| **`build`**         | Compiles the Angular project into production bundle                           |
+| **`watch`**         | Continuously builds the project in development mode, detecting changes        |
+| **`lint`**          | Lints the project files according to coding standards and configuration       |
+| **`prettier`**      | Formats the code files using Prettier to ensure a consistent style            |
+| **`prepare`**       | Initializes Husky to manage Git hooks                                         |
+| **`test`**          | Runs the test suite using Jest to verify the correctness of the application   |
+| **`test:watch`**    | Runs Jest in watch mode, rerunning tests when files change                    |
+| **`test:coverage`** | Generates a code coverage report to show how much of the code is tested       |
+
+### Getting started
+
+#### **Prerequisites**
+
+Before you begin, ensure you have the following installed:
+- **Node.js and npm**<br>
+  You can download it from [Node.js official site](https://nodejs.org)
+- **Angular CLI**<br>
+  Install globally with the following command:
+  ```
+  npm install -g @angular/cli
+  ```
+
+#### **Project Setup**
+1. **Clone the Repository**<br>
+    Start by cloning the project to your local machine:
+    ```
+    git clone https://github.com/sunlaa/train-app.git
+    ```
+2. **Install Dependencies**<br>
+    Install the required dependencies by running:
+    ```
+    npm install
+    ```
+3. **Run the Application**<br>
+    Start the development server to view the application locally:
+    ```
+    npm start
+    ```
+    The app will be accessible at `http://localhost:4200/`.
+4. **Running Tests**<br>
+    To run the test suite with Jest:
+    ```
+    npm test
+    ```
+5. **Build for Production**<br>
+    To create a production build:
+    ```
+    npm run build
+    ```
+**Additional Commands**<br>
+Refer to the **Scripts** section above for more commands you can run.
+
 
 

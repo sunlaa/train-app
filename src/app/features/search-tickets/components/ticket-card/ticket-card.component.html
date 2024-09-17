@@ -1,0 +1,64 @@
+<p-card styleClass="ticket-card" (click)="toTrip()">
+  <div class="first-section">
+    <div class="path">
+      <div class="point">
+        <h3>{{ ticket.departureDate | date: "HH:mm" : "UTC" }}</h3>
+        <p class="date">
+          {{ ticket.departureDate | date: "MMMM dd" : "UTC" }}
+        </p>
+        <p class="city">{{ ticket.startCity }}</p>
+      </div>
+
+      <p-divider align="center" type="solid" class="path-divider">
+        <b class="duration">{{ ticket.tripDuration | duration }}</b>
+      </p-divider>
+
+      <div class="point">
+        <h3>{{ ticket.arrivalDate | date: "HH:mm" : "UTC" }}</h3>
+        <p class="date">{{ ticket.arrivalDate | date: "MMMM dd" : "UTC" }}</p>
+        <p class="city">{{ ticket.endCity }}</p>
+      </div>
+    </div>
+
+    <div class="interact">
+      <p-chip>
+        <i class="pi pi-compass"></i>
+        <span>{{ ticket.firstRouteStation }}</span>
+        <i class="pi pi-arrow-right"></i>
+        <span>{{ ticket.lastRouteStation }}</span>
+      </p-chip>
+
+      <p-button
+        size="small"
+        label="Route"
+        [link]="true"
+        icon="pi pi-info-circle"
+        iconPos="right"
+        (onClick)="showRoute($event)"
+      />
+    </div>
+  </div>
+  <div class="second-section">
+    @for (carriage of ticket.carriages; track $index) {
+      <div class="price-tile">
+        <p class="carriage-type">Carriage type: {{ carriage.name }}</p>
+        <p class="seats">{{ carriage.freeSeats }} seats</p>
+        <h4>{{ carriage.price | currency }}</h4>
+      </div>
+    }
+  </div>
+</p-card>
+
+<p-dialog
+  [draggable]="false"
+  [modal]="true"
+  [dismissableMask]="true"
+  [(visible)]="modalVisible"
+  [breakpoints]="{ '1000px': '85vw', '575px': '90vw' }"
+  [style]="{ width: '70vw' }"
+>
+  <ng-template pTemplate="header">
+    <h3>Route {{ ticket.routeDetails.routeId }}</h3>
+  </ng-template>
+  <app-ride-modal [details]="ticket.routeDetails.stopInfo"></app-ride-modal>
+</p-dialog>

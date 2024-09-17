@@ -1,0 +1,43 @@
+:host {
+  ::ng-deep {
+    .p-button {
+      width: 25px;
+      height: 25px;
+
+      .p-button-icon {
+        font-size: 0.8em;
+      }
+    }
+  }
+}
+
+p {
+  margin: 0;
+}
+
+form {
+  display: flex;
+  align-items: center;
+}
+
+.dates {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+
+  .date-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    flex-wrap: wrap;
+  }
+
+  .time-text {
+    font-weight: 500;
+  }
+}
+
+.edit-btn {
+  order: 2;
+}

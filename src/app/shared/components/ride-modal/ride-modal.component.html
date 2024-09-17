@@ -1,0 +1,32 @@
+<div class="header">
+  <p>Time</p>
+  <p>Station</p>
+  <p>Stop</p>
+</div>
+
+<div class="modal-body">
+  <p-timeline [value]="details" class="timeline">
+    <ng-template pTemplate="marker" let-event>
+      <span class="marker">
+        <i class="pi pi-map-marker"></i>
+      </span>
+    </ng-template>
+    <ng-template pTemplate="opposite" let-info>
+      @if (info.arrivalOnStation) {
+        <p class="time">{{ info.arrivalOnStation }}</p>
+      }
+      @if (info.departureFromStation) {
+        <p class="time">{{ info.departureFromStation }}</p>
+      }
+    </ng-template>
+    <ng-template pTemplate="content" let-info>
+      <p class="station">{{ info.station }}</p>
+
+      @if (isString(info.stopDuration)) {
+        <p class="duration">{{ info.stopDuration }}</p>
+      } @else {
+        <p class="duration">{{ info.stopDuration | duration: "m" }}</p>
+      }
+    </ng-template>
+  </p-timeline>
+</div>

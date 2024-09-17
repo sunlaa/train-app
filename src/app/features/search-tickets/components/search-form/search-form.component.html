@@ -1,0 +1,60 @@
+<p-toast />
+
+<form [formGroup]="searchForm" (ngSubmit)="search()" class="search-form">
+  <label for="from">From:</label>
+  <label for="to">To:</label>
+  <label for="date">Date/Time:</label>
+
+  <p-autoComplete
+    class="autocomplete"
+    styleClass="from"
+    inputStyleClass="from"
+    inputId="from"
+    placeholder="Paris"
+    formControlName="from"
+    [suggestions]="options"
+    [forceSelection]="true"
+    field="city"
+    (completeMethod)="getStations($event)"
+  />
+
+  <i class="pi pi-arrows-h"></i>
+
+  <p-autoComplete
+    class="autocomplete"
+    styleClass="to"
+    inputId="to"
+    placeholder="Madrid"
+    formControlName="to"
+    [suggestions]="options"
+    [forceSelection]="true"
+    field="city"
+    (completeMethod)="getStations($event)"
+  />
+
+  <div class="date-time">
+    <p-calendar
+      inputId="date"
+      inputStyleClass="date"
+      placeholder="12 August, 2024"
+      formControlName="date"
+      dateFormat="dd MM, yy"
+      [showIcon]="true"
+      [iconDisplay]="'input'"
+      [minDate]="minDate"
+    />
+    <p-calendar
+      inputStyleClass="time"
+      placeholder="00:00"
+      formControlName="time"
+      inputId="calendar-timeonly"
+      [timeOnly]="true"
+    />
+  </div>
+  <p-button
+    [disabled]="searchForm.invalid"
+    class="search"
+    type="submit"
+    label="Search"
+  />
+</form>
